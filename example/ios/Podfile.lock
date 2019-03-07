@@ -1,0 +1,35 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_ijkplayer (0.0.1):
+    - Flutter
+    - ijkplayer (~> 1.1.3)
+  - ijkplayer (1.1.3)
+  - permission (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_ijkplayer (from `/Users/caijinglong/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec`)
+  - permission (from `/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/permission-0.1.1/ios/permission.podspec`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - ijkplayer
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  flutter_ijkplayer:
+    :path: "/Users/caijinglong/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec"
+  permission:
+    :path: "/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/permission-0.1.1/ios/permission.podspec"
+
+SPEC CHECKSUMS:
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  flutter_ijkplayer: 7d74293774f0ea2a0cb21bb8581b5a92d00640e9
+  ijkplayer: 1a1a33f5b0387bd7ea297337853130b9ddb20093
+  permission: 3781bb5a85794b350fa6d978f702abe4d87ff2d9
+
+PODFILE CHECKSUM: a14c63eb48a9d676ed6d876506b3258fd9c85235
+
+COCOAPODS: 1.5.3
