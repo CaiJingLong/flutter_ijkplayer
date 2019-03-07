@@ -1,14 +1,13 @@
 # ijkplayer
 
-A new flutter plugin project.
+ijkplayer,通过内接纹理的方式接入 bilibili/ijkplayer
 
-## Getting Started
+## 目前进度
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.io/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+### android
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+仅支持 android, 还需要重新编译 ffmpeg,目前的 so 库不支持 http 协议
+
+### ios
+
+未开启
