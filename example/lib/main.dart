@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
-import 'package:permission/permission.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,12 +23,11 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  IjkController controller = IjkController();
+  IjkMediaController controller = IjkMediaController();
 
   @override
   void initState() {
     super.initState();
-    controller.initIjk();
   }
 
   @override
@@ -61,12 +59,13 @@ class HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.play_arrow),
         onPressed: () async {
-          await Permission.requestPermissions([PermissionName.Storage]);
-          await controller.initIjk();
-          await controller.setNetData(
+          await controller.setDataSource(
             'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4',
+            // 'https://www.sample-videos.com/video123/flv/720/big_buck_bunny_720p_10mb.flv',
+            // 'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
             // "file:///sdcard/Download/Sample1.mp4",
           );
+          print("set data source success");
           controller.play();
         },
       ),

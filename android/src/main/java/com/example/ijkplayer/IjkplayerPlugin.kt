@@ -12,33 +12,43 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
 
     private val manager: IjkManager = IjkManager(registrar)
+    //    private val threadPool = Executors.newScheduledThreadPool(10)
+//    private val handler = Handler(Looper.getMainLooper())
+//
+//    private inline fun runOnMainThread(crossinline runnable: () -> Unit) {
+//        handler.post {
+//            runnable()
+//        }
+//    }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
+        handleMethodCall(call, result)
+    }
+
+    private fun handleMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "create" -> {
                 try {
                     val ijk = manager.create()
                     result.success(ijk.id)
                 } catch (e: Exception) {
-                    result.error("error", "创建失败", null)
+                    result.error("1", "创建失败", e)
                 }
             }
             "dispose" -> {
-                val id = call.arguments<Long>()
+                val id = call.getLongArg()
                 manager.dispose(id)
             }
-            "setData" -> {
+            "setDataSource" -> {
                 val id = call.argument<Int>("id")!!
                 val uri = call.argument<String>("uri")!!
-                manager.findIJK(id.toLong())?.setUri(uri) {
-                    result.success(1)
-                }
-            }
-            "setNetData" -> {
-                val id = call.argument<Int>("id")!!
-                val uri = call.argument<String>("uri")!!
-                manager.findIJK(id.toLong())?.setNetUri(uri) {
-                    result.success(1)
+                manager.findIJK(id.toLong())?.setUri(uri) { throwable ->
+                    if (throwable == null) {
+                        result.success(throwable)
+                    } else {
+                        throwable.printStackTrace()
+                        result.error("2", "加载失败", throwable)
+                    }
                 }
             }
             "play" -> {
@@ -56,6 +66,14 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
             }
             else -> result.notImplemented()
         }
+    }
+
+    fun MethodCall.getLongArg(key: String): Long {
+        return this.argument<Int>(key)!!.toLong()
+    }
+
+    fun MethodCall.getLongArg(): Long {
+        return this.arguments<Int>().toLong()
     }
 
     companion object {

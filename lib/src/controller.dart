@@ -1,11 +1,13 @@
 part of './ijkplayer.dart';
 
-class IjkController extends ChangeNotifier {
+/// Media Controller
+class IjkMediaController extends ChangeNotifier {
+  /// textureId
   int textureId;
 
   bool get isInit => textureId == null;
 
-  Future initIjk() async {
+  Future _initIjk() async {
     try {
       var id = await _IjkPlugin.createIjk();
       this.textureId = id;
@@ -16,18 +18,20 @@ class IjkController extends ChangeNotifier {
   }
 
   void dispose() {
-    super.dispose();
     var id = textureId;
     this.textureId = null;
+    this.notifyListeners();
+    super.dispose();
     _IjkPlugin.dispose(id);
   }
 
-  Future setData(String url) async {
-    await _IjkPlugin.setData(id: this.textureId, uri: url);
-  }
-
-  Future setNetData(String uri) async {
-    await _IjkPlugin.setNetData(id: this.textureId, uri: uri);
+  Future setDataSource(String url) async {
+    if (this.textureId != null) {
+      await _IjkPlugin.dispose(this.textureId);
+    }
+    await _initIjk();
+    await _IjkPlugin.setDataSource(id: this.textureId, uri: url);
+    this.notifyListeners();
   }
 
   Future play() async {
@@ -60,13 +64,8 @@ class _IjkPlugin {
     channel.invokeMethod("stop", id);
   }
 
-  static Future setData({int id, String uri}) async {
+  static Future setDataSource({int id, String uri}) async {
     print("id = $id , uri = $uri");
-    channel.invokeMethod("setData", {"id": id, "uri": uri});
-  }
-
-  static Future setNetData({int id, String uri}) async {
-    print("id = $id , uri = $uri");
-    channel.invokeMethod("setNetData", {"id": id, "uri": uri});
+    channel.invokeMethod("setDataSource", {"id": id, "uri": uri});
   }
 }

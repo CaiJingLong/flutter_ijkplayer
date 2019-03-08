@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 part './controller.dart';
 
 class IjkPlayer extends StatefulWidget {
-  final IjkController controller;
+  final IjkMediaController controller;
 
   const IjkPlayer({Key key, this.controller}) : super(key: key);
 
@@ -15,7 +15,7 @@ class IjkPlayer extends StatefulWidget {
 }
 
 class _IjkPlayerState extends State<IjkPlayer> {
-  IjkController get controller => widget.controller;
+  IjkMediaController get controller => widget.controller;
 
   StreamController<int> _streamController = StreamController.broadcast();
 
@@ -53,11 +53,16 @@ class _IjkPlayerState extends State<IjkPlayer> {
 
   Widget _buildContent(int id) {
     if (id == null) {
-      return Container();
+      return Container(
+        color: Colors.black,
+      );
     }
 
-    return Texture(
-      textureId: id,
+    return Container(
+      color: Colors.black,
+      child: Texture(
+        textureId: id,
+      ),
     );
   }
 }

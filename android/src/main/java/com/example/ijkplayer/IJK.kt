@@ -3,14 +3,14 @@ package com.example.ijkplayer
 /// create 2019/3/7 by cai
 
 
-import android.net.Uri
 import io.flutter.plugin.common.PluginRegistry
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
+import java.util.concurrent.Executors
 
 class IJK(private val registry: PluginRegistry.Registrar) {
     private val textureEntry = registry.textures().createSurfaceTexture()
-
+    private val threadPool = Executors.newCachedThreadPool()
     val id: Long
         get() = textureEntry.id()
 
@@ -22,29 +22,22 @@ class IJK(private val registry: PluginRegistry.Registrar) {
         mediaPlayer.surfaceTexture = textureEntry.surfaceTexture()
     }
 
-    fun setUri(uri: String, callback: () -> Unit) {
-        mediaPlayer.setDataSource(registry.activeContext(), Uri.parse(uri))
-        mediaPlayer.setOnPreparedListener {
-            callback()
-        }
-    }
-
-    fun setNetUri(uri: String, callback: () -> Unit) {
+    fun setUri(uri: String, callback: (Throwable?) -> Unit) {
         try {
             ijkPlayer.setOnPreparedListener {
-                callback()
+                callback(null)
             }
             ijkPlayer.dataSource = uri
             ijkPlayer.prepareAsync()
         } catch (e: Exception) {
             e.printStackTrace()
+            callback(e)
         }
     }
 
     fun dispose() {
-        mediaPlayer.releaseSurfaceTexture()
+        mediaPlayer.stop()
         mediaPlayer.release()
-        ijkPlayer.release()
         textureEntry.release()
     }
 
@@ -63,6 +56,10 @@ class IJK(private val registry: PluginRegistry.Registrar) {
 
     fun stop() {
         mediaPlayer.stop()
+    }
+
+    fun reset() {
+        mediaPlayer.reset()
     }
 
     fun seekTo(msec: Long) {
