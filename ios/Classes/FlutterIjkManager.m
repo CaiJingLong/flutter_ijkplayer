@@ -7,7 +7,7 @@
 #import <IJKMediaFramework/IJKMediaFramework.h>
 
 @implementation FlutterIjkManager {
-    NSObject <FlutterTextureRegistry> *textures;
+    NSMutableDictionary<NSNumber *, FlutterIJK * > *dict;
 }
 
 
@@ -15,7 +15,7 @@
     self = [super init];
     if (self) {
         self.registrar = registrar;
-        textures = [registrar textures];
+        dict = [NSMutableDictionary new];
     }
 
     return self;
@@ -27,8 +27,21 @@
 
 - (int64_t)create {
     FlutterIJK *ijk = [FlutterIJK ijkWithRegistrar:self.registrar];
+    NSNumber *number = @([ijk id]);
+    dict[number] = ijk;
     return [ijk id];
 }
 
+- (FlutterIJK *)findIJKWithId:(int64_t)id {
+    return dict[@(id)];
+}
+
+- (void)disposeWithId:(int64_t)id {
+    FlutterIJK *ijk = dict[@(id)];
+    if (ijk) {
+        [ijk dispose];
+        [dict removeObjectForKey:@(id)];
+    }
+}
 
 @end

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:photo/photo.dart';
 
 void main() => runApp(MyApp());
 
@@ -41,6 +42,12 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plugin example app'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.videocam),
+            onPressed: _pickVideo,
+          ),
+        ],
       ),
       body: Container(
         // width: MediaQuery.of(context).size.width,
@@ -70,5 +77,23 @@ class HomePageState extends State<HomePage> {
         },
       ),
     );
+  }
+
+  void _pickVideo() async {
+    var list = await PhotoPicker.pickAsset(
+      context: context,
+      pickType: PickType.onlyVideo,
+    );
+    if (list != null && list.isNotEmpty) {
+      var asset = list[0];
+      var fileUri = (await asset.file).uri;
+      playUri(fileUri.toString());
+    }
+  }
+
+  void playUri(String uri) async {
+    await controller.setDataSource(uri);
+    print("set data source success");
+    controller.play();
   }
 }

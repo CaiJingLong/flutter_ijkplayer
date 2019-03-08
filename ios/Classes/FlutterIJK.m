@@ -8,6 +8,9 @@
 #import <AVFoundation/AVFoundation.h>
 
 @interface IJKVideoPlayer : NSObject <FlutterTexture>
+@property(nonatomic, strong) IJKFFMoviePlayerController *controller;
+
+- (void)setDataSource:(NSString *)uri;
 @end
 
 @interface FlutterIJK ()
@@ -23,6 +26,7 @@
         self.registrar = registrar;
         IJKMPMoviePlayerController *controller = [[IJKMPMoviePlayerController alloc] initWithContentURLString:@""];
         NSObject <FlutterTextureRegistry> *textures = [self.registrar textures];
+        player = [IJKVideoPlayer new];
         textureId = [textures registerTexture:player];
     }
 
@@ -37,20 +41,39 @@
     return textureId;
 }
 
+- (void)dispose {
+    IJKFFMoviePlayerController *ctl = [player controller];
+    [ctl stop];
+    [ctl shutdown];
+}
+
+- (void)play {
+    IJKFFMoviePlayerController *ctl = [player controller];
+    [ctl play];
+}
+
+- (void)pause {
+    [[player controller] pause];
+}
+
+- (void)stop {
+    [[player controller] stop];
+}
+
+- (void)setDateSourceWithUri:(NSString *)uri {
+    [player setDataSource:uri];
+}
+
 @end
 
 @implementation IJKVideoPlayer {
-    IJKFFMoviePlayerController *controller;
+//    IJKFFMoviePlayerController *controller;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        IJKFFOptions *options = [IJKFFOptions optionsByDefault];
-        NSString *urlString = @"https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4";
-        controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:urlString withOptions:options];
-        [controller prepareToPlay];
-        [controller play];
+
     }
 
     return self;
@@ -58,7 +81,14 @@
 
 
 - (CVPixelBufferRef _Nullable)copyPixelBuffer {
-    return [controller framePixelbuffer];
+    return [self.controller framePixelbuffer];
 }
+
+- (void)setDataSource:(NSString *)uri {
+    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+    self.controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:uri withOptions:options];
+    [self.controller prepareToPlay];
+}
+
 
 @end

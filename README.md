@@ -6,8 +6,10 @@ ijkplayer,通过内接纹理的方式接入 bilibili/ijkplayer
 
 ### android
 
-仅支持 android, 还需要重新编译 ffmpeg,目前的 so 库不支持 http 协议
+- [x] 重新编译 ijkplayer,支持 https
 
 ### ios
 
-未开启
+- [x] 重新编译 ijkplayer,支持 https
+
+需要修复一个 iOS 的 UI 线程 bug

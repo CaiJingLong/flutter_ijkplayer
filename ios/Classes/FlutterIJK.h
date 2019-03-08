@@ -15,4 +15,13 @@
 
 - (int64_t)id;
 
+- (void)dispose;
+
+- (void)play;
+
+- (void)pause;
+
+- (void)stop;
+
+- (void)setDateSourceWithUri:(NSString *)uri;
 @end
