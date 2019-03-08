@@ -50,7 +50,7 @@ class HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             AspectRatio(
-              aspectRatio: 1,
+              aspectRatio: 1280 / 720,
               child: IjkPlayer(
                 controller: controller,
               ),
@@ -64,8 +64,9 @@ class HomePageState extends State<HomePage> {
           await Permission.requestPermissions([PermissionName.Storage]);
           await controller.initIjk();
           await controller.setNetData(
-              // 'http://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4',
-              "file:///sdcard/Download/Sample1.mp4");
+            'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4',
+            // "file:///sdcard/Download/Sample1.mp4",
+          );
           controller.play();
         },
       ),

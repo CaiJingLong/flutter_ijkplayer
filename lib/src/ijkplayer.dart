@@ -56,11 +56,8 @@ class _IjkPlayerState extends State<IjkPlayer> {
       return Container();
     }
 
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Texture(
-        textureId: id,
-      ),
+    return Texture(
+      textureId: id,
     );
   }
 }
