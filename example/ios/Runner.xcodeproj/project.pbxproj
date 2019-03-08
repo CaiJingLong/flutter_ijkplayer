@@ -107,6 +107,7 @@
 				97C146EF1CF9000F007C117D /* Products */,
 				2ABB07C25A743DD406317260 /* Pods */,
 				6E7E052C96895F1848299B95 /* Frameworks */,
+				17FCB4C9246909762D05E086 /* FLTVideoPlayer.m */,
 			);
 			sourceTree = "<group>";
 		};
