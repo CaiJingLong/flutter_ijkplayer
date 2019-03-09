@@ -7,16 +7,16 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
-  - flutter_ijkplayer (from `/Volumes/Evo512/code/flutter/plugins/ijkplayer/ios/flutter_ijkplayer.podspec`)
-  - photo_manager (from `/Users/cai/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.2/ios/photo_manager.podspec`)
+  - flutter_ijkplayer (from `/Users/caijinglong/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec`)
+  - photo_manager (from `/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.2/ios/photo_manager.podspec`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
   flutter_ijkplayer:
-    :path: "/Volumes/Evo512/code/flutter/plugins/ijkplayer/ios/flutter_ijkplayer.podspec"
+    :path: "/Users/caijinglong/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec"
   photo_manager:
-    :path: "/Users/cai/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.2/ios/photo_manager.podspec"
+    :path: "/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.2/ios/photo_manager.podspec"
 
 SPEC CHECKSUMS:
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296

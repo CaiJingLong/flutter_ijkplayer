@@ -24,7 +24,6 @@
     self = [super init];
     if (self) {
         self.registrar = registrar;
-        IJKMPMoviePlayerController *controller = [[IJKMPMoviePlayerController alloc] initWithContentURLString:@""];
         NSObject <FlutterTextureRegistry> *textures = [self.registrar textures];
         player = [IJKVideoPlayer new];
         textureId = [textures registerTexture:player];
@@ -79,9 +78,12 @@
     return self;
 }
 
-
 - (CVPixelBufferRef _Nullable)copyPixelBuffer {
-    return [self.controller framePixelbuffer];
+    [self.controller framePixelbufferLock];
+    CVPixelBufferRef pixelBuffer = [self.controller framePixelbuffer];
+    [self.controller framePixelbufferUnlock];
+    NSLog(@"buffer = %@",pixelBuffer);
+    return pixelBuffer;
 }
 
 - (void)setDataSource:(NSString *)uri {
