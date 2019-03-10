@@ -6,11 +6,18 @@
 #import <IJKMediaFramework/IJKMediaFramework.h>
 #import <IJKMediaFramework/IJKMediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
+#import <libkern/OSAtomic.h>
 
 @interface IJKVideoPlayer : NSObject <FlutterTexture>
 @property(nonatomic, strong) IJKFFMoviePlayerController *controller;
+@property(nonatomic, strong) NSObject <FlutterTextureRegistry> *textures;
+@property(nonatomic, assign) int64_t textureId;
 
 - (void)setDataSource:(NSString *)uri;
+
+- (void)play;
+
+- (void)dispose;
 @end
 
 @interface FlutterIJK ()
@@ -19,6 +26,7 @@
 @implementation FlutterIJK {
     int64_t textureId;
     IJKVideoPlayer *player;
+    CADisplayLink *displayLink;
 }
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     self = [super init];
@@ -27,6 +35,8 @@
         NSObject <FlutterTextureRegistry> *textures = [self.registrar textures];
         player = [IJKVideoPlayer new];
         textureId = [textures registerTexture:player];
+        player.textureId = textureId;
+        player.textures = textures;
     }
 
     return self;
@@ -41,14 +51,15 @@
 }
 
 - (void)dispose {
-    IJKFFMoviePlayerController *ctl = [player controller];
-    [ctl stop];
-    [ctl shutdown];
+//    IJKFFMoviePlayerController *ctl = [player controller];
+//    [ctl stop];
+//    [ctl shutdown];
+    [[self.registrar textures]unregisterTexture:self.id];
+    [player dispose];
 }
 
 - (void)play {
-    IJKFFMoviePlayerController *ctl = [player controller];
-    [ctl play];
+    [player play];
 }
 
 - (void)pause {
@@ -67,6 +78,8 @@
 
 @implementation IJKVideoPlayer {
 //    IJKFFMoviePlayerController *controller;
+    CADisplayLink *displayLink;
+    CVPixelBufferRef latestPixelBuffer;
 }
 
 - (instancetype)init {
@@ -79,18 +92,43 @@
 }
 
 - (CVPixelBufferRef _Nullable)copyPixelBuffer {
-    [self.controller framePixelbufferLock];
-    CVPixelBufferRef pixelBuffer = [self.controller framePixelbuffer];
-    [self.controller framePixelbufferUnlock];
-    NSLog(@"buffer = %@",pixelBuffer);
-    return pixelBuffer;
+    CVPixelBufferRef newBuffer = [self.controller framePixelbuffer];
+    if(newBuffer){
+        CFRetain(newBuffer);
+        CVPixelBufferRef pixelBuffer = latestPixelBuffer;
+        while (!OSAtomicCompareAndSwapPtrBarrier(pixelBuffer, newBuffer, (void **)&latestPixelBuffer)) {
+            pixelBuffer = latestPixelBuffer;
+        }
+        
+        return pixelBuffer;
+    }    return NULL;
 }
 
 - (void)setDataSource:(NSString *)uri {
     IJKFFOptions *options = [IJKFFOptions optionsByDefault];
     self.controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:uri withOptions:options];
     [self.controller prepareToPlay];
+    displayLink = [CADisplayLink displayLinkWithTarget:self
+                                              selector:@selector(onDisplayLink:)];
+    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    displayLink.paused = YES;
 }
 
+- (void)onDisplayLink:(CADisplayLink *)link {
+    [self.textures textureFrameAvailable:self.textureId];
+}
+
+- (void) play{
+    [self.controller play];
+    displayLink.paused = NO;
+}
+
+- (void) dispose{
+    [self.controller stop];
+    [self.controller shutdown];
+    self.controller = nil;
+    displayLink.paused = YES;
+    [displayLink invalidate];
+}
 
 @end

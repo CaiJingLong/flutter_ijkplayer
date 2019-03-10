@@ -97,10 +97,11 @@ typedef enum IJKLogLevel {
 - (void)setPauseInBackground:(BOOL)pause;
 - (BOOL)isVideoToolboxOpen;
 
-#pragma mark for flutter
+//add for flutter
 - (CVPixelBufferRef)framePixelbuffer;
 - (void)framePixelbufferLock;
 - (void)framePixelbufferUnlock;
+//end
 
 - (void)setHudValue:(NSString *)value forKey:(NSString *)key;
 

@@ -75,10 +75,11 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 - (void)shutdown;
 - (void)setPauseInBackground:(BOOL)pause;
 
-#pragma mark for flutter
+//added for flutter
 - (CVPixelBufferRef)framePixelbuffer;
 - (void)framePixelbufferLock;
 - (void)framePixelbufferUnlock;
+//end
 
 @property(nonatomic, readonly)  UIView *view;
 @property(nonatomic)            NSTimeInterval currentPlaybackTime;
