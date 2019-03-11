@@ -92,6 +92,7 @@
 }
 
 - (CVPixelBufferRef _Nullable)copyPixelBuffer {
+    NSLog(@"copyPixelBuffer is running");
     CVPixelBufferRef newBuffer = [self.controller framePixelbuffer];
     if(newBuffer){
         CFRetain(newBuffer);
@@ -101,7 +102,8 @@
         }
         
         return pixelBuffer;
-    }    return NULL;
+    }
+    return NULL;
 }
 
 - (void)setDataSource:(NSString *)uri {
@@ -116,6 +118,8 @@
 
 - (void)onDisplayLink:(CADisplayLink *)link {
     [self.textures textureFrameAvailable:self.textureId];
+//    CVPixelBufferRef ref = [self copyPixelBuffer];
+//    NSLog(@"buffer = %p", ref);
 }
 
 - (void) play{
