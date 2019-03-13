@@ -1,6 +1,6 @@
 # ijkplayer
 
-ijkplayer,通过内接纹理的方式接入 bilibili/ijkplayer
+ijkplayer,通过纹理的方式接入 bilibili/ijkplayer
 
 ## 目前进度
 
