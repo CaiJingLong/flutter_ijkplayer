@@ -4,7 +4,7 @@ ijkplayer,通过内接纹理的方式接入 bilibili/ijkplayer
 
 ## 目前进度
 
-- [ ]参考 video_player 设计 api，以保证 video_player 无缝切换到 ijkplayer
+- [ ] 参考 video_player 设计 api，以保证 video_player 无缝切换到 ijkplayer
 
 ### dart
 
