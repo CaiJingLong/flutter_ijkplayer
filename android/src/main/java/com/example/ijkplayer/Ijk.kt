@@ -9,7 +9,7 @@ import io.flutter.plugin.common.PluginRegistry
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
 
-class Ijk(registry: PluginRegistry.Registrar) : MethodChannel.MethodCallHandler {
+class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.MethodCallHandler {
 
     private val textureEntry = registry.textures().createSurfaceTexture()
     val id: Long
@@ -28,10 +28,19 @@ class Ijk(registry: PluginRegistry.Registrar) : MethodChannel.MethodCallHandler 
 
     override fun onMethodCall(call: MethodCall?, result: MethodChannel.Result?) {
         when (call?.method) {
-            "dispose" -> {
-                IjkplayerPlugin.manager.dispose(id)
-            }
             "setDataSource" -> {
+                val uri = call.argument<String>("uri")!!
+                setUri(uri) { throwable ->
+                    if (throwable == null) {
+                        result?.success(throwable)
+                    } else {
+                        throwable.printStackTrace()
+                        result?.error("2", "加载失败", throwable)
+                    }
+                }
+            }
+            "setAssetDataSource" -> {
+
                 val uri = call.argument<String>("uri")!!
                 setUri(uri) { throwable ->
                     if (throwable == null) {
@@ -64,6 +73,28 @@ class Ijk(registry: PluginRegistry.Registrar) : MethodChannel.MethodCallHandler 
                 callback(null)
             }
             ijkPlayer.dataSource = uri
+            ijkPlayer.prepareAsync()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            callback(e)
+        }
+    }
+
+    private fun setAssetUri(name: String, `package`: String?, callback: (Throwable?) -> Unit) {
+        try {
+            ijkPlayer.setOnPreparedListener {
+                callback(null)
+            }
+            val asset =
+                    if (`package` == null) {
+                        registry.lookupKeyForAsset(name)
+                    } else {
+                        registry.lookupKeyForAsset(name, `package`)
+                    }
+
+            // 设置资产系的datasource
+
+
             ijkPlayer.prepareAsync()
         } catch (e: Exception) {
             e.printStackTrace()

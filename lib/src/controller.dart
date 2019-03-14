@@ -9,7 +9,7 @@ class IjkMediaController extends ChangeNotifier {
 
   bool get isInit => textureId == null;
 
-  Future _initIjk() async {
+  Future<void> _initIjk() async {
     try {
       var id = await createIjk();
       this.textureId = id;
@@ -27,7 +27,7 @@ class IjkMediaController extends ChangeNotifier {
     super.dispose();
   }
 
-  Future setDataSource(String url) async {
+  Future<void> setDataSource(String url) async {
     if (this.textureId != null) {
       await _plugin?.dispose();
     }
@@ -36,7 +36,16 @@ class IjkMediaController extends ChangeNotifier {
     this.notifyListeners();
   }
 
-  Future play() async {
+  Future<void> setAssetDataSource(String name, {String package}) async {
+    if (this.textureId != null) {
+      await _plugin?.dispose();
+    }
+    await _initIjk();
+    await _plugin?.setAssetDataSource(name, package);
+    this.notifyListeners();
+  }
+
+  Future<void> play() async {
     await _plugin?.play();
     this.notifyListeners();
   }
@@ -56,24 +65,32 @@ class _IjkPlugin {
 
   _IjkPlugin(this.textureId);
 
-  Future dispose() async {
-    channel.invokeMethod("dispose");
+  Future<void> dispose() async {
+    _globalChannel.invokeMethod("dispose", {"id": textureId});
   }
 
-  Future play() async {
+  Future<void> play() async {
     await channel.invokeMethod("play");
   }
 
-  Future pause() async {
+  Future<void> pause() async {
     channel.invokeMethod("pause");
   }
 
-  Future stop() async {
+  Future<void> stop() async {
     channel.invokeMethod("stop");
   }
 
-  Future setDataSource({String uri}) async {
+  Future<void> setDataSource({String uri}) async {
     print("id = $textureId uri = $uri");
     channel.invokeMethod("setDataSource", {"uri": uri});
+  }
+
+  Future<void> setAssetDataSource(String name, String package) async {
+    print("id = $textureId asset name = $name package = $package");
+    channel.invokeMethod("setAssetDataSource", <String, dynamic>{
+      "name": name,
+      "package": package,
+    });
   }
 }

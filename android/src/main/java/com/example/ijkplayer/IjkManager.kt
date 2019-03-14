@@ -15,7 +15,7 @@ class IjkManager(private val registrar: PluginRegistry.Registrar) {
         return ijk
     }
 
-    fun findIJK(id: Long): Ijk? {
+    private fun findIJK(id: Long): Ijk? {
         return ijkList.find { it.id == id }
     }
 

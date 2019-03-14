@@ -26,7 +26,10 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
                     result.error("1", "创建失败", e)
                 }
             }
-
+            "dispose" -> {
+                val id = call.argument<Int>("id")!!.toLong()
+                manager.dispose(id)
+            }
             else -> result.notImplemented()
         }
     }
