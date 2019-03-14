@@ -35,7 +35,8 @@ class _IjkPlayerState extends State<IjkPlayer> {
   @override
   void dispose() {
     controller?.removeListener(updateTextureId);
-    _streamController.close();
+    _streamController?.close();
+    controller?.dispose();
     super.dispose();
   }
 

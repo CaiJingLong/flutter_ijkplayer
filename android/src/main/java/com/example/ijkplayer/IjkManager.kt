@@ -7,15 +7,15 @@ import io.flutter.plugin.common.PluginRegistry
 import java.util.*
 
 class IjkManager(private val registrar: PluginRegistry.Registrar) {
-    private val ijkList = ArrayList<IJK>()
+    private val ijkList = ArrayList<Ijk>()
 
-    fun create(): IJK {
-        val ijk = IJK(registrar)
+    fun create(): Ijk {
+        val ijk = Ijk(registrar)
         ijkList.add(ijk)
         return ijk
     }
 
-    fun findIJK(id: Long): IJK? {
+    fun findIJK(id: Long): Ijk? {
         return ijkList.find { it.id == id }
     }
 

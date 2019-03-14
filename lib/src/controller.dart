@@ -5,12 +5,15 @@ class IjkMediaController extends ChangeNotifier {
   /// textureId
   int textureId;
 
+  _IjkPlugin _plugin;
+
   bool get isInit => textureId == null;
 
   Future _initIjk() async {
     try {
-      var id = await _IjkPlugin.createIjk();
+      var id = await createIjk();
       this.textureId = id;
+      _plugin = _IjkPlugin(id);
     } catch (e) {
       print(e);
       print("初始化失败");
@@ -18,54 +21,59 @@ class IjkMediaController extends ChangeNotifier {
   }
 
   void dispose() {
-    var id = textureId;
     this.textureId = null;
     this.notifyListeners();
+    _plugin?.dispose();
     super.dispose();
-    _IjkPlugin.dispose(id);
   }
 
   Future setDataSource(String url) async {
     if (this.textureId != null) {
-      await _IjkPlugin.dispose(this.textureId);
+      await _plugin?.dispose();
     }
     await _initIjk();
-    await _IjkPlugin.setDataSource(id: this.textureId, uri: url);
+    await _plugin?.setDataSource(uri: url);
     this.notifyListeners();
   }
 
   Future play() async {
-    await _IjkPlugin.play(this.textureId);
+    await _plugin?.play();
     this.notifyListeners();
   }
 }
 
+const MethodChannel _globalChannel = MethodChannel("top.kikt/ijkplayer");
+
+Future<int> createIjk() async {
+  int id = await _globalChannel.invokeMethod("create");
+  return id;
+}
+
 class _IjkPlugin {
-  static MethodChannel channel = MethodChannel("top.kikt/ijkplayer");
+  MethodChannel get channel => MethodChannel("top.kikt/ijkplayer/$textureId");
 
-  static Future<int> createIjk() async {
-    int id = await channel.invokeMethod("create");
-    return id;
+  int textureId;
+
+  _IjkPlugin(this.textureId);
+
+  Future dispose() async {
+    channel.invokeMethod("dispose");
   }
 
-  static Future dispose(int id) async {
-    channel.invokeMethod("dispose", id);
+  Future play() async {
+    await channel.invokeMethod("play");
   }
 
-  static Future play(int id) async {
-    await channel.invokeMethod("play", id);
+  Future pause() async {
+    channel.invokeMethod("pause");
   }
 
-  static Future pause(int id) async {
-    channel.invokeMethod("pause", id);
+  Future stop() async {
+    channel.invokeMethod("stop");
   }
 
-  static Future stop(int id) async {
-    channel.invokeMethod("stop", id);
-  }
-
-  static Future setDataSource({int id, String uri}) async {
-    print("id = $id , uri = $uri");
-    channel.invokeMethod("setDataSource", {"id": id, "uri": uri});
+  Future setDataSource({String uri}) async {
+    print("id = $textureId uri = $uri");
+    channel.invokeMethod("setDataSource", {"uri": uri});
   }
 }
