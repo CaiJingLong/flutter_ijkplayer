@@ -32,7 +32,7 @@ class IjkMediaController extends ChangeNotifier {
       await _plugin?.dispose();
     }
     await _initIjk();
-    await _plugin?.setDataSource(uri: url);
+    await _plugin?.setNetworkDataSource(uri: url);
     this.notifyListeners();
   }
 
@@ -81,7 +81,8 @@ class _IjkPlugin {
     channel.invokeMethod("stop");
   }
 
-  Future<void> setDataSource({String uri}) async {
+  Future<void> setNetworkDataSource({String uri}) async {
+    // todo
     print("id = $textureId uri = $uri");
     channel.invokeMethod("setDataSource", {"uri": uri});
   }
@@ -92,5 +93,9 @@ class _IjkPlugin {
       "name": name,
       "package": package,
     });
+  }
+
+  Future<void> setFileDataSource(String path) async {
+    // todo 
   }
 }
