@@ -10,10 +10,17 @@
 - (NSString *)getStringParam:(NSString *)key;
 @end
 
+static IjkplayerPlugin *__sharedInstance;
+
 @implementation IjkplayerPlugin {
     FlutterIjkManager *manager;
 
 }
+
++ (instancetype)sharedInstance {
+    return __sharedInstance;
+}
+
 
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     self = [super init];
@@ -36,6 +43,7 @@
                   binaryMessenger:[registrar messenger]];
     IjkplayerPlugin *instance = [IjkplayerPlugin pluginWithRegistrar:registrar];
     [registrar addMethodCallDelegate:instance channel:channel];
+    __sharedInstance = instance;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
@@ -50,42 +58,13 @@
                 result([FlutterError errorWithCode:@"1" message:@"创建失败" details:exception]);
             }
         } else if ([@"dispose" isEqualToString:call.method]) {
-            int64_t id = [call getId];
+            NSDictionary *params = [call arguments];
+            int id = [params[@"id"] intValue];
             [self->manager disposeWithId:id];
-        } else if ([@"play" isEqualToString:call.method]) {
-            FlutterIJK *ijk = [self->manager findIJKWithId:call.getId];
-            if (ijk) {
-                [ijk play];
-                result(@(1));
-            }
-        } else if ([@"pause" isEqualToString:call.method]) {
-            FlutterIJK *ijk = [self->manager findIJKWithId:[call getId]];
-            if (ijk) {
-                [ijk pause];
-            }
-        } else if ([@"stop" isEqualToString:call.method]) {
-            FlutterIJK *ijk = [self->manager findIJKWithId:[call getId]];
-            if (ijk) {
-                [ijk stop];
-            }
-        } else if ([@"setDataSource" isEqualToString:call.method]) {
-            FlutterIJK *ijk = [self->manager findIJKWithId:[call getIdParamFromDict]];
-            if (ijk) {
-                NSString *uri = [call getStringParam:@"uri"];
-                [ijk setDateSourceWithUri:uri];
-                result(nil);
-            } else {
-                result([FlutterError errorWithCode:@"1" message:@"设置失败" details:nil]);
-            }
         } else {
             result(FlutterMethodNotImplemented);
         }
     });
-}
-
-- (void)runOnUI:(DISPATCH_NOESCAPE dispatch_block_t)block {
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    dispatch_sync(mainQueue, block);
 }
 
 @end

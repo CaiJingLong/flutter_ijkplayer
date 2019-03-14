@@ -8,38 +8,54 @@
 #import <AVFoundation/AVFoundation.h>
 #import <libkern/OSAtomic.h>
 
-@interface IJKVideoPlayer : NSObject <FlutterTexture>
-@property(nonatomic, strong) IJKFFMoviePlayerController *controller;
-@property(nonatomic, strong) NSObject <FlutterTextureRegistry> *textures;
-@property(nonatomic, assign) int64_t textureId;
-
-- (void)setDataSource:(NSString *)uri;
-
-- (void)play;
-
-- (void)dispose;
-@end
-
-@interface FlutterIJK ()
+@interface FlutterIJK () <FlutterTexture>
 @end
 
 @implementation FlutterIJK {
     int64_t textureId;
-    IJKVideoPlayer *player;
     CADisplayLink *displayLink;
+    NSObject <FlutterTextureRegistry> *textures;
+    IJKFFMoviePlayerController *controller;
+    CVPixelBufferRef latestPixelBuffer;
+    FlutterMethodChannel *channel;
+    FlutterMethodCallHandler handler;
 }
+
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     self = [super init];
     if (self) {
         self.registrar = registrar;
-        NSObject <FlutterTextureRegistry> *textures = [self.registrar textures];
-        player = [IJKVideoPlayer new];
-        textureId = [textures registerTexture:player];
-        player.textureId = textureId;
-        player.textures = textures;
+        textures = [self.registrar textures];
+        textureId = [textures registerTexture:self];
+        NSString *channelName = [NSString stringWithFormat:@"top.kikt/ijkplayer/%lli", textureId];
+        channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:[registrar messenger]];
+        [channel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
+            [self handleMethodCall:call result:result];
+        }];
     }
 
     return self;
+}
+
+- (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
+    if ([@"play" isEqualToString:call.method]) {
+        [self play];
+    } else if ([@"pause" isEqualToString:call.method]) {
+        [self pause];
+    } else if ([@"stop" isEqualToString:call.method]) {
+        [self stop];
+    } else if ([@"setDataSource" isEqualToString:call.method]) {
+        @try {
+            NSDictionary *params = call.arguments;
+            NSString *uri = params[@"uri"];
+            [self setDateSourceWithUri:uri];
+            result(nil);
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Exception occurred: %@, %@", exception, [exception userInfo]);
+            result([FlutterError errorWithCode:@"1" message:@"设置失败" details:nil]);
+        }
+    }
 }
 
 + (instancetype)ijkWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
@@ -51,88 +67,52 @@
 }
 
 - (void)dispose {
-//    IJKFFMoviePlayerController *ctl = [player controller];
-//    [ctl stop];
-//    [ctl shutdown];
     [[self.registrar textures]unregisterTexture:self.id];
-    [player dispose];
+    [controller stop];
+    [controller shutdown];
+    controller = nil;
+    displayLink.paused = YES;
+    [displayLink invalidate];
 }
 
 - (void)play {
-    [player play];
+    [controller play];
 }
 
 - (void)pause {
-    [[player controller] pause];
+    [controller pause];
 }
 
 - (void)stop {
-    [[player controller] stop];
+    [controller stop];
 }
 
 - (void)setDateSourceWithUri:(NSString *)uri {
-    [player setDataSource:uri];
-}
-
-@end
-
-@implementation IJKVideoPlayer {
-//    IJKFFMoviePlayerController *controller;
-    CADisplayLink *displayLink;
-    CVPixelBufferRef latestPixelBuffer;
-}
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-
-    }
-
-    return self;
-}
-
-- (CVPixelBufferRef _Nullable)copyPixelBuffer {
-    NSLog(@"copyPixelBuffer is running");
-    CVPixelBufferRef newBuffer = [self.controller framePixelbuffer];
-    if(newBuffer){
-        CFRetain(newBuffer);
-        CVPixelBufferRef pixelBuffer = latestPixelBuffer;
-        while (!OSAtomicCompareAndSwapPtrBarrier(pixelBuffer, newBuffer, (void **)&latestPixelBuffer)) {
-            pixelBuffer = latestPixelBuffer;
-        }
-        
-        return pixelBuffer;
-    }
-    return NULL;
-}
-
-- (void)setDataSource:(NSString *)uri {
     IJKFFOptions *options = [IJKFFOptions optionsByDefault];
-    self.controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:uri withOptions:options];
-    [self.controller prepareToPlay];
-    displayLink = [CADisplayLink displayLinkWithTarget:self
-                                              selector:@selector(onDisplayLink:)];
+    controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:uri withOptions:options];
+    [controller prepareToPlay];
+    displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onDisplayLink:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     displayLink.paused = YES;
 }
 
 - (void)onDisplayLink:(CADisplayLink *)link {
-    [self.textures textureFrameAvailable:self.textureId];
-//    CVPixelBufferRef ref = [self copyPixelBuffer];
-//    NSLog(@"buffer = %p", ref);
+    [textures textureFrameAvailable:textureId];
 }
 
-- (void) play{
-    [self.controller play];
-    displayLink.paused = NO;
+- (CVPixelBufferRef _Nullable)copyPixelBuffer {
+    CVPixelBufferRef newBuffer = [controller framePixelbuffer];
+    if (newBuffer) {
+        CFRetain(newBuffer);
+        CVPixelBufferRef pixelBuffer = latestPixelBuffer;
+        while (!OSAtomicCompareAndSwapPtrBarrier(pixelBuffer, newBuffer, (void **) &latestPixelBuffer)) {
+            pixelBuffer = latestPixelBuffer;
+        }
+
+        return pixelBuffer;
+    }
+    return NULL;
 }
 
-- (void) dispose{
-    [self.controller stop];
-    [self.controller shutdown];
-    self.controller = nil;
-    displayLink.paused = YES;
-    [displayLink invalidate];
-}
 
 @end
