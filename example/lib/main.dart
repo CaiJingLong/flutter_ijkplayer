@@ -143,6 +143,11 @@ class HomePageState extends State<HomePage> {
       onPressed: () async {
         await controller.setAssetDataSource("assets/sample1.mp4");
         controller.play();
+
+        Future.delayed(Duration(seconds: 2), () async {
+          var info = await controller.getVideoInfo();
+          print("info = $info");
+        });
       },
     );
   }

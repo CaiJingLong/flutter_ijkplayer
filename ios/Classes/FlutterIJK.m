@@ -3,6 +3,7 @@
 //
 
 #import "FlutterIJK.h"
+#import "KKVideoInfo.h"
 #import <IJKMediaFramework/IJKMediaFramework.h>
 #import <IJKMediaFramework/IJKMediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
@@ -72,10 +73,18 @@
         NSDictionary *params = call.arguments;
         NSString *path = params[@"path"];
         IJKFFMoviePlayerController *playerController = [self createControllerWithPath:path];
+    } else if ([@"seekTo" isEqualToString:call.method]) {
+        NSDictionary *params = call.arguments;
+        double target = [params[@"target"] doubleValue];
+        [self seekTo:target];
+    } else if ([@"getInfo" isEqualToString:call.method]) {
+        KKVideoInfo *info = [self getInfo];
+        result([info toMap]);
     } else {
         result(FlutterMethodNotImplemented);
     }
 }
+
 
 + (instancetype)ijkWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     return [[self alloc] initWithRegistrar:registrar];
@@ -159,6 +168,10 @@
     return [[IJKFFMoviePlayerController alloc] initWithContentURL:url withOptions:options];
 }
 
+- (void)seekTo:(double)target {
+    [controller setCurrentPlaybackTime:target];
+}
+
 - (void)onDisplayLink:(CADisplayLink *)link {
     [textures textureFrameAvailable:textureId];
 }
@@ -177,5 +190,18 @@
     return NULL;
 }
 
+- (KKVideoInfo *)getInfo {
+    KKVideoInfo *info = [KKVideoInfo new];
+
+    CGSize size = [controller naturalSize];
+    NSTimeInterval duration = [controller duration];
+    NSTimeInterval currentPlaybackTime = [controller currentPlaybackTime];
+
+    info.size = size;
+    info.duration = duration;
+    info.currentPosition = currentPlaybackTime;
+
+    return info;
+}
 
 @end

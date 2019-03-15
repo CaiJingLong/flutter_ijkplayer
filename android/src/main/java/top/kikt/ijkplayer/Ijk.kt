@@ -1,4 +1,4 @@
-package com.example.ijkplayer
+package top.kikt.ijkplayer
 
 /// create 2019/3/7 by cai
 
@@ -7,6 +7,7 @@ import android.util.Base64
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
+import top.kikt.ijkplayer.entity.Info
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
 import java.io.File
@@ -69,10 +70,33 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
             "stop" -> {
                 stop()
             }
+            "getInfo" -> {
+                val info = getInfo()
+                result?.success(info.toMap())
+            }
+            "seekTo" -> {
+                val target = call.argument<Double>("target")
+                if (target != null) {
+                    seekTo((target * 1000).toLong())
+                }
+            }
             else -> {
                 result?.notImplemented()
             }
         }
+    }
+
+    private fun getInfo(): Info {
+        val duration = ijkPlayer.duration
+        val currentPosition = ijkPlayer.currentPosition
+        val width = ijkPlayer.videoWidth
+        val height = ijkPlayer.videoHeight
+        return Info(
+                duration = duration.toDouble() / 1000,
+                currentPosition = currentPosition.toDouble() / 1000,
+                width = width,
+                height = height
+        )
     }
 
     private fun handleSetUriResult(throwable: Throwable?, result: MethodChannel.Result?) {
@@ -132,7 +156,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
     private fun play() {
         try {
-            mediaPlayer.start()
+            ijkPlayer.start()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -148,10 +172,6 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
     fun seekTo(msec: Long) {
         mediaPlayer.seekTo(msec)
-    }
-
-    fun getDuration(): Long {
-        return mediaPlayer.duration
     }
 
 }

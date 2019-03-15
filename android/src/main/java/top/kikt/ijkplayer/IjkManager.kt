@@ -1,4 +1,4 @@
-package com.example.ijkplayer
+package top.kikt.ijkplayer
 
 /// create 2019/3/7 by cai
 

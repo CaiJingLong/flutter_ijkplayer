@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ijkplayer/src/video_info.dart';
 import './error.dart';
 
 part './controller.dart';

@@ -1,4 +1,4 @@
-package com.example.ijkplayer
+package top.kikt.ijkplayer
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

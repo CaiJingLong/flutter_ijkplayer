@@ -49,6 +49,15 @@ class IjkMediaController extends ChangeNotifier {
     await _plugin?.play();
     this.notifyListeners();
   }
+
+  Future<void> seekTo(double target) async {
+    await _plugin?.seekTo(target);
+  }
+
+  Future<VideoInfo> getVideoInfo() async {
+    Map<String, dynamic> result = await _plugin.getInfo();
+    return VideoInfo.fromMap(result);
+  }
 }
 
 const MethodChannel _globalChannel = MethodChannel("top.kikt/ijkplayer");
@@ -107,5 +116,20 @@ class _IjkPlugin {
     });
     // todo
     print("id = $textureId file path = $path");
+  }
+
+  Future<Map<String, dynamic>> getInfo() async {
+    var map = await channel.invokeMethod("getInfo");
+    if (map == null) {
+      return null;
+    } else {
+      return map.cast<String, dynamic>();
+    }
+  }
+
+  Future<void> seekTo(double target) async {
+    await channel.invokeMethod("seekTo", <String, dynamic>{
+      "target": target,
+    });
   }
 }

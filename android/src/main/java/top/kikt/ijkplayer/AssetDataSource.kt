@@ -1,4 +1,4 @@
-package com.example.ijkplayer
+package top.kikt.ijkplayer
 
 import android.content.res.AssetFileDescriptor
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource
