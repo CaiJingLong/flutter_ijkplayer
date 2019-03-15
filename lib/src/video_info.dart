@@ -11,7 +11,7 @@ class VideoInfo {
 
   double get radio => width / height;
 
-  double get progress => currentPosition / duration;
+  double get progress => currentPosition ?? 0 / duration ?? 1;
 
   VideoInfo.fromMap(Map<String, dynamic> map) {
     if (map == null) {
@@ -27,6 +27,9 @@ class VideoInfo {
 
   @override
   String toString() {
+    if (_map == null) {
+      return "null";
+    }
     return json.encode(_map);
   }
 }

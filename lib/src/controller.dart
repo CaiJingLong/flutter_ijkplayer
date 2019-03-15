@@ -11,6 +11,8 @@ class IjkMediaController extends ChangeNotifier {
 
   IJKEventChannel eventChannel;
 
+  bool isPlaying = false;
+
   Future<void> _initIjk() async {
     try {
       var id = await createIjk();
@@ -62,7 +64,7 @@ class IjkMediaController extends ChangeNotifier {
   }
 
   Future<VideoInfo> getVideoInfo() async {
-    Map<String, dynamic> result = await _plugin.getInfo();
+    Map<String, dynamic> result = await _plugin?.getInfo();
     return VideoInfo.fromMap(result);
   }
 }
@@ -98,9 +100,8 @@ class _IjkPlugin {
   }
 
   Future<void> setNetworkDataSource({String uri}) async {
-    // todo
     print("id = $textureId net uri = $uri");
-    channel.invokeMethod("setNetworkDataSource", {"uri": uri});
+    await channel.invokeMethod("setNetworkDataSource", {"uri": uri});
   }
 
   Future<void> setAssetDataSource(String name, String package) async {
@@ -111,17 +112,16 @@ class _IjkPlugin {
     if (package != null) {
       params["package"] = package;
     }
-    channel.invokeMethod("setAssetDataSource", params);
+    await channel.invokeMethod("setAssetDataSource", params);
   }
 
   Future<void> setFileDataSource(String path) async {
     if (!File(path).existsSync()) {
       return Error.fileNotExists;
     }
-    channel.invokeMethod("setFileDataSource", <String, dynamic>{
+    await channel.invokeMethod("setFileDataSource", <String, dynamic>{
       "path": path,
     });
-    // todo
     print("id = $textureId file path = $path");
   }
 

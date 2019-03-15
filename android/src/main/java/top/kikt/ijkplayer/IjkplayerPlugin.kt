@@ -23,6 +23,7 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
                     val ijk = manager.create()
                     result.success(ijk.id)
                 } catch (e: Exception) {
+                    e.printStackTrace()
                     result.error("1", "创建失败", e)
                 }
             }

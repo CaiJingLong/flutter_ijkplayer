@@ -18,13 +18,12 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
     val id: Long
         get() = textureEntry.id()
 
-    private val ijkPlayer: IjkMediaPlayer = IjkMediaPlayer()
+    val ijkPlayer: IjkMediaPlayer = IjkMediaPlayer()
     private val mediaPlayer: TextureMediaPlayer
 
     private val methodChannel: MethodChannel = MethodChannel(registry.messenger(), "top.kikt/ijkplayer/$id")
 
-
-    private val eventChannel = MethodChannel(registry.messenger(), "top.kikt/ijkplayer/event/$id")
+    private val notifyChannel: NotifyChannel = NotifyChannel(registry, id, this)
 
     init {
         mediaPlayer = TextureMediaPlayer(ijkPlayer)
@@ -89,7 +88,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
         }
     }
 
-    private fun getInfo(): Info {
+    fun getInfo(): Info {
         val duration = ijkPlayer.duration
         val currentPosition = ijkPlayer.currentPosition
         val width = ijkPlayer.videoWidth
@@ -153,6 +152,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
     }
 
     fun dispose() {
+        notifyChannel.dispose()
         methodChannel.setMethodCallHandler(null)
         mediaPlayer.stop()
         mediaPlayer.release()

@@ -91,34 +91,20 @@
 
 - (void)moviePlayBackFinish:(NSNotification *)notification {
     int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
+    int type = 2;
     switch (reason) {
         case IJKMPMovieFinishReasonPlaybackEnded:
-//            if ([_infoDelegate isLooping]) {
-//                [_controller setCurrentPlaybackTime:0];
-//                [_controller play];
-//            }
-
+            type = 0;
             break;
-
         case IJKMPMovieFinishReasonUserExited:
-            if (_eventSink) {
-                _eventSink(@{@"event": @"user quit"});
-            }
+            type = 1;
             break;
-
         case IJKMPMovieFinishReasonPlaybackError:
-            if (_eventSink) {
-                _eventSink([FlutterError
-                        errorWithCode:@"VideoError"
-                              message:@"Video finished with error"
-                              details:nil]);
-            }
             break;
-
         default:
             break;
     }
-//    [channel invokeMethod:@"playFinish" arguments:[self getInfo]];
+    [channel invokeMethod:@"finish" arguments:@{@"type": @(type)}];
 }
 
 - (void)loadStateDidChange:(NSNotification *)notification {

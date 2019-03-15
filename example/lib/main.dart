@@ -149,6 +149,9 @@ class HomePageState extends State<HomePage> {
         Timer.periodic(Duration(seconds: 2), (timer) async {
           var info = await controller.getVideoInfo();
           print("info = $info");
+          if (info == null) {
+            return;
+          }
 
           if (info.progress >= 0.95) {
             timer.cancel();
