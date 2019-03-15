@@ -27,7 +27,7 @@ class IjkMediaController extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> setDataSource(String url) async {
+  Future<void> setNetworkDataSource(String url) async {
     if (this.textureId != null) {
       await _plugin?.dispose();
     }
@@ -83,19 +83,29 @@ class _IjkPlugin {
 
   Future<void> setNetworkDataSource({String uri}) async {
     // todo
-    print("id = $textureId uri = $uri");
-    channel.invokeMethod("setDataSource", {"uri": uri});
+    print("id = $textureId net uri = $uri");
+    channel.invokeMethod("setNetworkDataSource", {"uri": uri});
   }
 
   Future<void> setAssetDataSource(String name, String package) async {
     print("id = $textureId asset name = $name package = $package");
-    channel.invokeMethod("setAssetDataSource", <String, dynamic>{
+    var params = <String, dynamic>{
       "name": name,
-      "package": package,
-    });
+    };
+    if (package != null) {
+      params["package"] = package;
+    }
+    channel.invokeMethod("setAssetDataSource", params);
   }
 
   Future<void> setFileDataSource(String path) async {
-    // todo 
+    if (!File(path).existsSync()) {
+      return Error.fileNotExists;
+    }
+    channel.invokeMethod("setFileDataSource", <String, dynamic>{
+      "path": path,
+    });
+    // todo
+    print("id = $textureId file path = $path");
   }
 }

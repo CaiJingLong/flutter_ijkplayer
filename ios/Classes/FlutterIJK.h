@@ -23,5 +23,5 @@
 
 - (void)stop;
 
-- (void)setDateSourceWithUri:(NSString *)uri;
+- (void)setDataSourceWithUri:(NSString *)uri;
 @end

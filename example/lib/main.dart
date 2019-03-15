@@ -61,16 +61,18 @@ class HomePageState extends State<HomePage> {
                 controller: controller,
               ),
             ),
+            _buildPlayAssetButton(),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.play_arrow),
         onPressed: () async {
-          await controller.setDataSource(
-            'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4',
+          await controller.setNetworkDataSource(
+            // 'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4',
             // 'rtmp://172.16.100.245/live1',
             // 'https://www.sample-videos.com/video123/flv/720/big_buck_bunny_720p_10mb.flv',
+            "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
             // 'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
             // "file:///sdcard/Download/Sample1.mp4",
           );
@@ -130,8 +132,18 @@ class HomePageState extends State<HomePage> {
   }
 
   void playUri(String uri) async {
-    await controller.setDataSource(uri);
+    await controller.setNetworkDataSource(uri);
     print("set data source success");
     controller.play();
+  }
+
+  _buildPlayAssetButton() {
+    return FlatButton(
+      child: Text("play sample asset"),
+      onPressed: () async {
+        await controller.setAssetDataSource("assets/sample1.mp4");
+        controller.play();
+      },
+    );
   }
 }

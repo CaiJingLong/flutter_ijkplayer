@@ -3,11 +3,13 @@ package com.example.ijkplayer
 /// create 2019/3/7 by cai
 
 
+import android.util.Base64
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
+import java.io.File
 
 class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.MethodCallHandler {
 
@@ -28,26 +30,32 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
     override fun onMethodCall(call: MethodCall?, result: MethodChannel.Result?) {
         when (call?.method) {
-            "setDataSource" -> {
-                val uri = call.argument<String>("uri")!!
+            "setNetworkDataSource" -> {
+                val uri = call.argument<String>("uri")
+                if (uri == null) {
+                    handleSetUriResult(Exception("uri是必传参数"), result)
+                    return
+                }
                 setUri(uri) { throwable ->
-                    if (throwable == null) {
-                        result?.success(throwable)
-                    } else {
-                        throwable.printStackTrace()
-                        result?.error("2", "加载失败", throwable)
-                    }
+                    handleSetUriResult(throwable, result)
                 }
             }
             "setAssetDataSource" -> {
-
-                val uri = call.argument<String>("uri")!!
-                setUri(uri) { throwable ->
-                    if (throwable == null) {
-                        result?.success(throwable)
-                    } else {
-                        throwable.printStackTrace()
-                        result?.error("2", "加载失败", throwable)
+                val name = call.argument<String>("name")
+                val `package` = call.argument<String>("package")
+                if (name != null) {
+                    setAssetUri(name, `package`) { throwable ->
+                        handleSetUriResult(throwable, result)
+                    }
+                } else {
+                    handleSetUriResult(Exception("没有找到资源"), result)
+                }
+            }
+            "setFileDataSource" -> {
+                val path = call.argument<String>("path")
+                if (path != null) {
+                    setUri("file://$path") { throwable ->
+                        handleSetUriResult(throwable, result)
                     }
                 }
             }
@@ -64,6 +72,15 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
             else -> {
                 result?.notImplemented()
             }
+        }
+    }
+
+    private fun handleSetUriResult(throwable: Throwable?, result: MethodChannel.Result?) {
+        if (throwable == null) {
+            result?.success(null)
+        } else {
+            throwable.printStackTrace()
+            result?.error("1", "设置资源失败", throwable)
         }
     }
 
@@ -91,10 +108,15 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
                     } else {
                         registry.lookupKeyForAsset(name, `package`)
                     }
+            val assetManager = registry.context().assets
+            val fd = assetManager.openFd(asset)
+            val cacheDir = registry.context().cacheDir.absoluteFile.path
 
-            // 设置资产系的datasource
-
-
+            val fileName = Base64.encodeToString(asset.toByteArray(), Base64.DEFAULT)
+            val file = File(cacheDir, fileName)
+            fd.createInputStream().copyTo(file.outputStream())
+            ijkPlayer.dataSource = file.path
+//            ijkPlayer.setDataSource(fd.fileDescriptor) // can't use,
             ijkPlayer.prepareAsync()
         } catch (e: Exception) {
             e.printStackTrace()

@@ -44,17 +44,36 @@
         [self pause];
     } else if ([@"stop" isEqualToString:call.method]) {
         [self stop];
-    } else if ([@"setDataSource" isEqualToString:call.method]) {
+    } else if ([@"setNetworkDataSource" isEqualToString:call.method]) {
         @try {
             NSDictionary *params = call.arguments;
             NSString *uri = params[@"uri"];
-            [self setDateSourceWithUri:uri];
+            [self setDataSourceWithUri:uri];
             result(nil);
         }
         @catch (NSException *exception) {
             NSLog(@"Exception occurred: %@, %@", exception, [exception userInfo]);
             result([FlutterError errorWithCode:@"1" message:@"设置失败" details:nil]);
         }
+    } else if ([@"setAssetDataSource" isEqualToString:call.method]) {
+        @try {
+            NSDictionary *params = [call arguments];
+            NSString *name = params[@"name"];
+            NSString *pkg = params[@"package"];
+            IJKFFMoviePlayerController *playerController = [self createControllerWithAssetName:name pkg:pkg];
+            [self setDataSourceWithController:playerController];
+            result(nil);
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Exception occurred: %@, %@", exception, [exception userInfo]);
+            result([FlutterError errorWithCode:@"1" message:@"设置失败" details:nil]);
+        }
+    } else if ([@"setFileDataSource" isEqualToString:call.method]) {
+        NSDictionary *params = call.arguments;
+        NSString *path = params[@"path"];
+        IJKFFMoviePlayerController *playerController = [self createControllerWithPath:path];
+    } else {
+        result(FlutterMethodNotImplemented);
     }
 }
 
@@ -87,13 +106,57 @@
     [controller stop];
 }
 
-- (void)setDateSourceWithUri:(NSString *)uri {
+- (void)setDataSourceWithController:(IJKFFMoviePlayerController *)ctl {
+    if (ctl) {
+        controller = ctl;
+        [self prepare];
+    }
+}
+
+- (IJKFFOptions *)createOption {
     IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+    return options;
+}
+
+- (void)setDataSourceWithUri:(NSString *)uri {
+    IJKFFOptions *options = [self createOption];
     controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:uri withOptions:options];
+    [self prepare];
+}
+
+- (void)prepare {
     [controller prepareToPlay];
+
+    if (displayLink) {
+        displayLink.paused = YES;
+        [displayLink invalidate];
+        displayLink = nil;
+    }
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onDisplayLink:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     displayLink.paused = YES;
+}
+
+- (IJKFFMoviePlayerController *)createControllerWithAssetName:(NSString *)assetName pkg:(NSString *)pkg {
+    NSString *asset;
+    if (!pkg) {
+        asset = [self.registrar lookupKeyForAsset:assetName];
+    } else {
+        asset = [self.registrar lookupKeyForAsset:assetName fromPackage:pkg];
+    }
+    NSString *path = [[NSBundle mainBundle] pathForResource:asset ofType:nil];
+    NSURL *url = [NSURL fileURLWithPath:path];
+
+    IJKFFOptions *options = [self createOption];
+
+    return [[IJKFFMoviePlayerController alloc] initWithContentURL:url withOptions:options];
+}
+
+
+- (IJKFFMoviePlayerController *)createControllerWithPath:(NSString *)path {
+    NSURL *url = [NSURL fileURLWithPath:path];
+    IJKFFOptions *options = [self createOption];
+    return [[IJKFFMoviePlayerController alloc] initWithContentURL:url withOptions:options];
 }
 
 - (void)onDisplayLink:(CADisplayLink *)link {
