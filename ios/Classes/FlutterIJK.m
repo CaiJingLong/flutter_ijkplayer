@@ -4,12 +4,13 @@
 
 #import "FlutterIJK.h"
 #import "KKVideoInfo.h"
+#import "KKIjkNotifyChannel.h"
 #import <IJKMediaFramework/IJKMediaFramework.h>
 #import <IJKMediaFramework/IJKMediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 #import <libkern/OSAtomic.h>
 
-@interface FlutterIJK () <FlutterTexture>
+@interface FlutterIJK () <FlutterTexture, KKIjkNotifyDelegate>
 @end
 
 @implementation FlutterIJK {
@@ -19,7 +20,7 @@
     IJKFFMoviePlayerController *controller;
     CVPixelBufferRef latestPixelBuffer;
     FlutterMethodChannel *channel;
-    FlutterMethodCallHandler handler;
+    KKIjkNotifyChannel *notifyChannel;
 }
 
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
@@ -36,6 +37,17 @@
     }
 
     return self;
+}
+
+
+- (void)dispose {
+    [notifyChannel dispose];
+    [[self.registrar textures] unregisterTexture:self.id];
+    [controller stop];
+    [controller shutdown];
+    controller = nil;
+    displayLink.paused = YES;
+    [displayLink invalidate];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
@@ -94,15 +106,6 @@
     return textureId;
 }
 
-- (void)dispose {
-    [[self.registrar textures]unregisterTexture:self.id];
-    [controller stop];
-    [controller shutdown];
-    controller = nil;
-    displayLink.paused = YES;
-    [displayLink invalidate];
-}
-
 - (void)play {
     [controller play];
 }
@@ -135,15 +138,18 @@
 
 - (void)prepare {
     [controller prepareToPlay];
-
     if (displayLink) {
         displayLink.paused = YES;
         [displayLink invalidate];
         displayLink = nil;
     }
+
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onDisplayLink:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     displayLink.paused = YES;
+
+    notifyChannel = [KKIjkNotifyChannel channelWithController:controller textureId:textureId registrar:self.registrar];
+    notifyChannel.infoDelegate = self;
 }
 
 - (IJKFFMoviePlayerController *)createControllerWithAssetName:(NSString *)assetName pkg:(NSString *)pkg {
@@ -200,6 +206,7 @@
     info.size = size;
     info.duration = duration;
     info.currentPosition = currentPlaybackTime;
+    info.isPlaying = [controller isPlaying];
 
     return info;
 }

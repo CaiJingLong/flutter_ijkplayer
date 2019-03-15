@@ -5,6 +5,7 @@ class VideoInfo {
   int height;
   double duration;
   double currentPosition;
+  bool isPlaying;
 
   Map<String, dynamic> _map;
 
@@ -21,6 +22,7 @@ class VideoInfo {
     this.height = map["height"];
     this.duration = map["duration"];
     this.currentPosition = map["currentPosition"];
+    this.isPlaying = map["isPlaying"];
   }
 
   @override

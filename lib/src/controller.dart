@@ -9,11 +9,15 @@ class IjkMediaController extends ChangeNotifier {
 
   bool get isInit => textureId == null;
 
+  IJKEventChannel eventChannel;
+
   Future<void> _initIjk() async {
     try {
       var id = await createIjk();
       this.textureId = id;
       _plugin = _IjkPlugin(id);
+      eventChannel = IJKEventChannel(this);
+      await eventChannel.init();
     } catch (e) {
       print(e);
       print("初始化失败");
@@ -24,6 +28,9 @@ class IjkMediaController extends ChangeNotifier {
     this.textureId = null;
     this.notifyListeners();
     _plugin?.dispose();
+    _plugin = null;
+    eventChannel?.dispose();
+    eventChannel = null;
     super.dispose();
   }
 

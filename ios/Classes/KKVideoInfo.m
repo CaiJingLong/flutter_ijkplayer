@@ -15,6 +15,7 @@
     dict[@"height"] = @((int) self.size.height);
     dict[@"duration"] = @(self.duration);
     dict[@"currentPosition"] = @(self.currentPosition);
+    dict[@"isPlaying"] = @(self.isPlaying);
     return dict;
 }
 

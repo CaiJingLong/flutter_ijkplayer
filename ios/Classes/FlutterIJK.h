@@ -4,6 +4,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Flutter/Flutter.h>
+#import "KKIjkNotifyChannel.h"
 
 @interface FlutterIJK : NSObject
 
@@ -17,11 +18,6 @@
 
 - (void)dispose;
 
-- (void)play;
-
-- (void)pause;
-
-- (void)stop;
-
 - (void)setDataSourceWithUri:(NSString *)uri;
+
 @end

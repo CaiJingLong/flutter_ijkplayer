@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:photo/photo.dart';
@@ -144,9 +146,13 @@ class HomePageState extends State<HomePage> {
         await controller.setAssetDataSource("assets/sample1.mp4");
         controller.play();
 
-        Future.delayed(Duration(seconds: 2), () async {
+        Timer.periodic(Duration(seconds: 2), (timer) async {
           var info = await controller.getVideoInfo();
           print("info = $info");
+
+          if (info.progress >= 0.95) {
+            timer.cancel();
+          }
         });
       },
     );

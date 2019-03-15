@@ -13,6 +13,8 @@
 
 @property(nonatomic, assign) CGSize size;
 
+@property(nonatomic, assign) BOOL isPlaying;
+
 - (NSDictionary *)toMap;
 
 @end
