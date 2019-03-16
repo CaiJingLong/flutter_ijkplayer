@@ -53,16 +53,19 @@
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     if ([@"play" isEqualToString:call.method]) {
         [self play];
+        result(@(YES));
     } else if ([@"pause" isEqualToString:call.method]) {
         [self pause];
+        result(@(YES));
     } else if ([@"stop" isEqualToString:call.method]) {
         [self stop];
+        result(@(YES));
     } else if ([@"setNetworkDataSource" isEqualToString:call.method]) {
         @try {
             NSDictionary *params = call.arguments;
             NSString *uri = params[@"uri"];
             [self setDataSourceWithUri:uri];
-            result(nil);
+            result(@(YES));
         }
         @catch (NSException *exception) {
             NSLog(@"Exception occurred: %@, %@", exception, [exception userInfo]);
@@ -75,7 +78,7 @@
             NSString *pkg = params[@"package"];
             IJKFFMoviePlayerController *playerController = [self createControllerWithAssetName:name pkg:pkg];
             [self setDataSourceWithController:playerController];
-            result(nil);
+            result(@(YES));
         }
         @catch (NSException *exception) {
             NSLog(@"Exception occurred: %@, %@", exception, [exception userInfo]);
@@ -85,10 +88,13 @@
         NSDictionary *params = call.arguments;
         NSString *path = params[@"path"];
         IJKFFMoviePlayerController *playerController = [self createControllerWithPath:path];
+        [self setDataSourceWithController:playerController];
+        result(@(YES));
     } else if ([@"seekTo" isEqualToString:call.method]) {
         NSDictionary *params = call.arguments;
         double target = [params[@"target"] doubleValue];
         [self seekTo:target];
+        result(@(YES));
     } else if ([@"getInfo" isEqualToString:call.method]) {
         KKVideoInfo *info = [self getInfo];
         result([info toMap]);

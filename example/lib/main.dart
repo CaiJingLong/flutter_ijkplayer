@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
@@ -64,6 +65,7 @@ class HomePageState extends State<HomePage> {
               ),
             ),
             _buildPlayAssetButton(),
+            _buildControllerButtons(),
           ],
         ),
       ),
@@ -71,15 +73,15 @@ class HomePageState extends State<HomePage> {
         child: Icon(Icons.play_arrow),
         onPressed: () async {
           await controller.setNetworkDataSource(
-            // 'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4',
-            // 'rtmp://172.16.100.245/live1',
-            // 'https://www.sample-videos.com/video123/flv/720/big_buck_bunny_720p_10mb.flv',
-            "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
-            // 'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
-            // "file:///sdcard/Download/Sample1.mp4",
-          );
+              // 'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4',
+              // 'rtmp://172.16.100.245/live1',
+              // 'https://www.sample-videos.com/video123/flv/720/big_buck_bunny_720p_10mb.flv',
+              "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
+              // 'http://184.72.239.149/vod/smil:BigBuckBunny.smil/playlist.m3u8',
+              // "file:///sdcard/Download/Sample1.mp4",
+              autoPlay: true);
           print("set data source success");
-          controller.play();
+          // controller.playOrPause();
         },
       ),
     );
@@ -128,23 +130,27 @@ class HomePageState extends State<HomePage> {
 
     if (imgList != null && imgList.isNotEmpty) {
       var asset = imgList[0];
-      var fileUri = (await asset.file).uri;
-      playUri(fileUri.toString());
+      var file = (await asset.file).absolute;
+      playFile(file);
     }
   }
 
+  void playFile(File file) async {
+    await controller.setFileDataSource(file, autoPlay: true);
+  }
+
   void playUri(String uri) async {
-    await controller.setNetworkDataSource(uri);
-    print("set data source success");
-    controller.play();
+    await controller.setNetworkDataSource(uri, autoPlay: true);
   }
 
   _buildPlayAssetButton() {
     return FlatButton(
       child: Text("play sample asset"),
       onPressed: () async {
-        await controller.setAssetDataSource("assets/sample1.mp4");
-        controller.play();
+        await controller.setAssetDataSource(
+          "assets/sample1.mp4",
+          autoPlay: true,
+        );
 
         Timer.periodic(Duration(seconds: 2), (timer) async {
           var info = await controller.getVideoInfo();
@@ -158,6 +164,33 @@ class HomePageState extends State<HomePage> {
           }
         });
       },
+    );
+  }
+
+  _buildControllerButtons() {
+    return Row(
+      children: <Widget>[
+        FlatButton(
+          child: Text("播放"),
+          onPressed: () async {
+            var info = await controller?.getVideoInfo();
+            print(info);
+            await controller?.play();
+            info = await controller?.getVideoInfo();
+            print(info);
+          },
+        ),
+        FlatButton(
+          child: Text("暂停"),
+          onPressed: () async {
+            var info = await controller?.getVideoInfo();
+            print(info);
+            await controller?.pause();
+            info = await controller?.getVideoInfo();
+            print(info);
+          },
+        ),
+      ],
     );
   }
 }

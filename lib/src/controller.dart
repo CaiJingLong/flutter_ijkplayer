@@ -15,7 +15,7 @@ class IjkMediaController extends ChangeNotifier {
 
   Future<void> _initIjk() async {
     try {
-      var id = await createIjk();
+      var id = await _createIjk();
       this.textureId = id;
       _plugin = _IjkPlugin(id);
       eventChannel = IJKEventChannel(this);
@@ -36,26 +36,65 @@ class IjkMediaController extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> setNetworkDataSource(String url) async {
+  Future<void> setNetworkDataSource(
+    String url, {
+    bool autoPlay = false,
+  }) async {
+    await _initDataSource(() async {
+      await _plugin?.setNetworkDataSource(uri: url);
+    }, autoPlay);
+  }
+
+  Future<void> setAssetDataSource(
+    String name, {
+    String package,
+    bool autoPlay = false,
+  }) async {
+    await _initDataSource(() async {
+      await _plugin?.setAssetDataSource(name, package);
+    }, autoPlay);
+  }
+
+  Future<void> setFileDataSource(
+    File file, {
+    bool autoPlay = false,
+  }) async {
+    await _initDataSource(() async {
+      await _plugin?.setFileDataSource(file.absolute.path);
+    }, autoPlay);
+  }
+
+  Future<void> _initDataSource(
+    Future setDataSource(),
+    bool autoPlay,
+  ) async {
+    autoPlay ??= false;
+
     if (this.textureId != null) {
       await _plugin?.dispose();
     }
     await _initIjk();
-    await _plugin?.setNetworkDataSource(uri: url);
+    _autoPlay(autoPlay);
+    await setDataSource();
     this.notifyListeners();
   }
 
-  Future<void> setAssetDataSource(String name, {String package}) async {
-    if (this.textureId != null) {
-      await _plugin?.dispose();
+  Future<void> playOrPause() async {
+    if (isPlaying == true) {
+      await _plugin?.play();
+    } else {
+      await _plugin?.pause();
     }
-    await _initIjk();
-    await _plugin?.setAssetDataSource(name, package);
     this.notifyListeners();
   }
 
   Future<void> play() async {
     await _plugin?.play();
+    this.notifyListeners();
+  }
+
+  Future<void> pause() async {
+    await _plugin?.pause();
     this.notifyListeners();
   }
 
@@ -65,13 +104,23 @@ class IjkMediaController extends ChangeNotifier {
 
   Future<VideoInfo> getVideoInfo() async {
     Map<String, dynamic> result = await _plugin?.getInfo();
-    return VideoInfo.fromMap(result);
+    var info = VideoInfo.fromMap(result);
+    isPlaying = info.isPlaying;
+    return info;
+  }
+
+  void _autoPlay(bool autoPlay) {
+    if (autoPlay) {
+      eventChannel.autoPlay(this);
+    }
   }
 }
 
+/// about channel
+
 const MethodChannel _globalChannel = MethodChannel("top.kikt/ijkplayer");
 
-Future<int> createIjk() async {
+Future<int> _createIjk() async {
   int id = await _globalChannel.invokeMethod("create");
   return id;
 }
@@ -84,7 +133,7 @@ class _IjkPlugin {
   _IjkPlugin(this.textureId);
 
   Future<void> dispose() async {
-    _globalChannel.invokeMethod("dispose", {"id": textureId});
+    await _globalChannel.invokeMethod("dispose", {"id": textureId});
   }
 
   Future<void> play() async {
@@ -92,11 +141,11 @@ class _IjkPlugin {
   }
 
   Future<void> pause() async {
-    channel.invokeMethod("pause");
+    await channel.invokeMethod("pause");
   }
 
   Future<void> stop() async {
-    channel.invokeMethod("stop");
+    await channel.invokeMethod("stop");
   }
 
   Future<void> setNetworkDataSource({String uri}) async {

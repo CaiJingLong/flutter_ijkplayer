@@ -61,6 +61,7 @@ static IjkplayerPlugin *__sharedInstance;
             NSDictionary *params = [call arguments];
             int id = [params[@"id"] intValue];
             [self->manager disposeWithId:id];
+            result(@(YES));
         } else {
             result(FlutterMethodNotImplemented);
         }

@@ -64,13 +64,15 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
             }
             "play" -> {
                 play()
-                result?.success(1)
+                result?.success(true)
             }
             "pause" -> {
                 pause()
+                result?.success(true)
             }
             "stop" -> {
                 stop()
+                result?.success(true)
             }
             "getInfo" -> {
                 val info = getInfo()
@@ -81,6 +83,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
                 if (target != null) {
                     seekTo((target * 1000).toLong())
                 }
+                result?.success(true)
             }
             else -> {
                 result?.notImplemented()
@@ -104,7 +107,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
     private fun handleSetUriResult(throwable: Throwable?, result: MethodChannel.Result?) {
         if (throwable == null) {
-            result?.success(null)
+            result?.success(true)
         } else {
             throwable.printStackTrace()
             result?.error("1", "设置资源失败", throwable)
@@ -113,11 +116,9 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
     private fun setUri(uri: String, callback: (Throwable?) -> Unit) {
         try {
-            ijkPlayer.setOnPreparedListener {
-                callback(null)
-            }
             ijkPlayer.dataSource = uri
             ijkPlayer.prepareAsync()
+            callback(null)
         } catch (e: Exception) {
             e.printStackTrace()
             callback(e)

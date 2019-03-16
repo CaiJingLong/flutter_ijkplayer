@@ -23,20 +23,31 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
         }
         player.setOnCompletionListener {
             logi("completion $info")
+            channel.invokeMethod("completion", info)
         }
         player.setOnBufferingUpdateListener { mp, percent ->
+            /// 在线视频缓冲
             logi("completion buffer update $info $percent")
         }
         player.setOnSeekCompleteListener {
             logi("onSeekCompletion $info")
         }
         player.setOnErrorListener { mp, what, extra ->
+            channel.invokeMethod("error", what)
             logi("onError $what")
             false
         }
         player.setOnInfoListener { mp, what, extra ->
             logi("onInfoListener $what")
             false
+        }
+        player.setOnNativeInvokeListener { what, args ->
+            logi("onNativeInvoke $what")
+            false
+        }
+        player.setOnControlMessageListener {
+            logi("onController message $it")
+            ""
         }
     }
 

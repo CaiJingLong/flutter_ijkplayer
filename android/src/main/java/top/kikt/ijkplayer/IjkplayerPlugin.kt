@@ -30,6 +30,7 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
             "dispose" -> {
                 val id = call.argument<Int>("id")!!.toLong()
                 manager.dispose(id)
+                result.success(true)
             }
             else -> result.notImplemented()
         }

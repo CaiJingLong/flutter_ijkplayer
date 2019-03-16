@@ -90,21 +90,22 @@
 }
 
 - (void)moviePlayBackFinish:(NSNotification *)notification {
-    int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
-    int type = 2;
-    switch (reason) {
-        case IJKMPMovieFinishReasonPlaybackEnded:
-            type = 0;
-            break;
-        case IJKMPMovieFinishReasonUserExited:
-            type = 1;
-            break;
-        case IJKMPMovieFinishReasonPlaybackError:
-            break;
-        default:
-            break;
-    }
-    [channel invokeMethod:@"finish" arguments:@{@"type": @(type)}];
+//    int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
+//    int type = 2;
+//    switch (reason) {
+//        case IJKMPMovieFinishReasonPlaybackEnded:
+//            type = 0;
+//            break;
+//        case IJKMPMovieFinishReasonUserExited:
+//            type = 1;
+//            break;
+//        case IJKMPMovieFinishReasonPlaybackError:
+//            break;
+//        default:
+//            break;
+//    }
+//    [channel invokeMethod:@"finish" arguments:@{@"type": @(type)}];
+    [channel invokeMethod:@"finish" arguments:[self getInfo]];
 }
 
 - (void)loadStateDidChange:(NSNotification *)notification {
