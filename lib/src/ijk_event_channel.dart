@@ -29,7 +29,7 @@ class IJKEventChannel {
 
   Future<dynamic> handler(MethodCall call) async {
     switch (call.method) {
-      case "finish": // 对应状态变化
+      case "finish": // 播放完毕
         // var index = call.arguments["type"];
         // var type = FinishType.values[index];
         onPlayFinish(getInfo(call));
@@ -45,6 +45,7 @@ class IJKEventChannel {
           "$channelName ${call.method} not implement",
         );
     }
+    return true;
   }
 
   VideoInfo getInfo(MethodCall call) {
@@ -57,12 +58,10 @@ class IJKEventChannel {
   }
 
   void onPlayStateChange(VideoInfo info) {
-    print("onPlayStateChange $info");
     controller.isPlaying = info.isPlaying;
   }
 
   void onPrepare(VideoInfo info) {
-    print("onPrepare $info");
     controller.isPlaying = info.isPlaying;
     _prepareCompleter?.complete();
     _prepareCompleter = null;

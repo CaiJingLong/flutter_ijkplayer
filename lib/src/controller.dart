@@ -11,7 +11,13 @@ class IjkMediaController extends ChangeNotifier {
 
   IJKEventChannel eventChannel;
 
-  bool isPlaying = false;
+  bool _isPlaying = false;
+
+  bool get isPlaying => _isPlaying;
+
+  set isPlaying(bool value) {
+    this._isPlaying = value;
+  }
 
   Future<void> _initIjk() async {
     try {
@@ -80,10 +86,13 @@ class IjkMediaController extends ChangeNotifier {
   }
 
   Future<void> playOrPause() async {
-    if (isPlaying == true) {
-      await _plugin?.play();
-    } else {
+    var playing = isPlaying == true;
+    if (playing) {
       await _plugin?.pause();
+      playing = false;
+    } else {
+      await _plugin?.play();
+      playing = true;
     }
     this.notifyListeners();
   }
@@ -113,6 +122,12 @@ class IjkMediaController extends ChangeNotifier {
     if (autoPlay) {
       eventChannel.autoPlay(this);
     }
+  }
+
+  Future<void> stop() async {
+    await _plugin?.stop();
+    isPlaying = false;
+    this.notifyListeners();
   }
 }
 

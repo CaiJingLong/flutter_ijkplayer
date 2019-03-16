@@ -173,21 +173,13 @@ class HomePageState extends State<HomePage> {
         FlatButton(
           child: Text("播放"),
           onPressed: () async {
-            var info = await controller?.getVideoInfo();
-            print(info);
             await controller?.play();
-            info = await controller?.getVideoInfo();
-            print(info);
           },
         ),
         FlatButton(
-          child: Text("暂停"),
+          child: Text("停止"),
           onPressed: () async {
-            var info = await controller?.getVideoInfo();
-            print(info);
-            await controller?.pause();
-            info = await controller?.getVideoInfo();
-            print(info);
+            await controller?.stop();
           },
         ),
       ],
