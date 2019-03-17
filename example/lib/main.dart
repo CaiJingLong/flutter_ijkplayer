@@ -61,7 +61,7 @@ class HomePageState extends State<HomePage> {
             AspectRatio(
               aspectRatio: 1280 / 720,
               child: IjkPlayer(
-                controller: controller,
+                mediaController: controller,
               ),
             ),
             _buildPlayAssetButton(),
@@ -171,9 +171,16 @@ class HomePageState extends State<HomePage> {
     return Row(
       children: <Widget>[
         FlatButton(
-          child: Text("播放"),
+          child: StreamBuilder<bool>(
+            stream: controller.playingStream,
+            initialData: controller.isPlaying,
+            builder: (context, snapshot) {
+              var isPlaying = snapshot.data;
+              return Text(isPlaying ? "暂停" : "播放");
+            },
+          ),
           onPressed: () async {
-            await controller?.play();
+            await controller?.playOrPause();
           },
         ),
         FlatButton(

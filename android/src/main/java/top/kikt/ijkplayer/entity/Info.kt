@@ -15,7 +15,7 @@ data class Info(
         map["currentPosition"] = currentPosition
         map["width"] = width
         map["height"] = height
-        map["playing"] = isPlaying
+        map["isPlaying"] = isPlaying
         return map
     }
 

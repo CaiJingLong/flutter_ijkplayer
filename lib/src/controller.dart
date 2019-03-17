@@ -13,11 +13,20 @@ class IjkMediaController extends ChangeNotifier {
 
   bool _isPlaying = false;
 
-  bool get isPlaying => _isPlaying;
+  bool get isPlaying => _isPlaying == true;
 
   set isPlaying(bool value) {
     this._isPlaying = value;
+    _playingController.add(value);
   }
+
+  StreamController<bool> _playingController = StreamController.broadcast();
+
+  Stream<bool> get playingStream => _playingController.stream;
+
+  StreamController<VideoInfo> _videoInfoController = StreamController.broadcast();
+
+  Stream<VideoInfo> get videoInfoStream => _videoInfoController.stream;
 
   Future<void> _initIjk() async {
     try {
@@ -32,14 +41,20 @@ class IjkMediaController extends ChangeNotifier {
     }
   }
 
-  void dispose() {
+  void dispose() async {
+    await reset();
+    _playingController.close();
+    _videoInfoController.close();
+    super.dispose();
+  }
+
+  Future<void> reset() async {
     this.textureId = null;
     this.notifyListeners();
     _plugin?.dispose();
     _plugin = null;
     eventChannel?.dispose();
     eventChannel = null;
-    super.dispose();
   }
 
   Future<void> setNetworkDataSource(
@@ -86,36 +101,44 @@ class IjkMediaController extends ChangeNotifier {
   }
 
   Future<void> playOrPause() async {
-    var playing = isPlaying == true;
+    var videoInfo = await getVideoInfo();
+    print(videoInfo);
+
+    var playing = videoInfo.isPlaying;
     if (playing) {
       await _plugin?.pause();
-      playing = false;
     } else {
       await _plugin?.play();
-      playing = true;
     }
-    this.notifyListeners();
+    refreshVideoInfo();
   }
 
   Future<void> play() async {
     await _plugin?.play();
-    this.notifyListeners();
+    refreshVideoInfo();
   }
 
   Future<void> pause() async {
     await _plugin?.pause();
-    this.notifyListeners();
+    refreshVideoInfo();
   }
 
   Future<void> seekTo(double target) async {
     await _plugin?.seekTo(target);
+    refreshVideoInfo();
   }
 
   Future<VideoInfo> getVideoInfo() async {
     Map<String, dynamic> result = await _plugin?.getInfo();
     var info = VideoInfo.fromMap(result);
-    isPlaying = info.isPlaying;
     return info;
+  }
+
+  Future<void> refreshVideoInfo() async {
+    var info = await getVideoInfo();
+    isPlaying = info.isPlaying;
+    _videoInfoController.add(info);
+    this.notifyListeners();
   }
 
   void _autoPlay(bool autoPlay) {
@@ -125,9 +148,11 @@ class IjkMediaController extends ChangeNotifier {
   }
 
   Future<void> stop() async {
-    await _plugin?.stop();
-    isPlaying = false;
-    this.notifyListeners();
+//    await _plugin?.stop();
+//    refreshVideoInfo();
+    await _plugin.pause();
+    await _plugin.seekTo(0);
+    refreshVideoInfo();
   }
 }
 

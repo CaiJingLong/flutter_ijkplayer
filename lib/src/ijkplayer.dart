@@ -7,19 +7,28 @@ import 'package:flutter_ijkplayer/src/ijk_event_channel.dart';
 import 'package:flutter_ijkplayer/src/video_info.dart';
 import './error.dart';
 
+import './controller_builder_delegate.dart';
+
 part './controller.dart';
 
-class IjkPlayer extends StatefulWidget {
-  final IjkMediaController controller;
+typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
 
-  const IjkPlayer({Key key, this.controller}) : super(key: key);
+class IjkPlayer extends StatefulWidget {
+  final IjkMediaController mediaController;
+  final ControllerWidgetBuilder controllerWidgetBuilder;
+
+  const IjkPlayer({
+    Key key,
+    this.mediaController,
+    this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
+  }) : super(key: key);
 
   @override
-  _IjkPlayerState createState() => _IjkPlayerState();
+  IjkPlayerState createState() => IjkPlayerState();
 }
 
-class _IjkPlayerState extends State<IjkPlayer> {
-  IjkMediaController get controller => widget.controller;
+class IjkPlayerState extends State<IjkPlayer> {
+  IjkMediaController controller;
 
   StreamController<int> _streamController = StreamController.broadcast();
 
@@ -28,6 +37,7 @@ class _IjkPlayerState extends State<IjkPlayer> {
   @override
   void initState() {
     super.initState();
+    controller = widget.mediaController ?? IjkMediaController();
     controller?.addListener(updateTextureId);
   }
 
@@ -46,17 +56,25 @@ class _IjkPlayerState extends State<IjkPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<int>(
-        stream: stream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container();
-          }
-          return _buildContent(snapshot.data);
-        });
+    var video = StreamBuilder<int>(
+      stream: stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container();
+        }
+        return _buildVideoContent(snapshot.data);
+      },
+    );
+    var controllerWidget = widget.controllerWidgetBuilder?.call(controller);
+    return Stack(
+      children: <Widget>[
+        video,
+        controllerWidget,
+      ],
+    );
   }
 
-  Widget _buildContent(int id) {
+  Widget _buildVideoContent(int id) {
     if (id == null) {
       return Container(
         color: Colors.black,

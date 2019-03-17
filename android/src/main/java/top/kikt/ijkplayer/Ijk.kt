@@ -101,7 +101,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
                 currentPosition = currentPosition.toDouble() / 1000,
                 width = width,
                 height = height,
-                isPlaying = ijkPlayer.isPlaying
+                isPlaying = mediaPlayer.isPlaying
         )
     }
 

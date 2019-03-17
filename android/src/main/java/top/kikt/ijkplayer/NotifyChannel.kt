@@ -2,6 +2,7 @@ package top.kikt.ijkplayer
 
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
+import tv.danmaku.ijk.media.player.IMediaPlayer
 
 class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long, val ijk: Ijk) {
 
@@ -38,7 +39,12 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
             false
         }
         player.setOnInfoListener { mp, what, extra ->
-            logi("onInfoListener $what")
+            logi("onInfoListener $what, extra = $extra, isPlaying = ${player.isPlaying} ")
+            when (what) {
+                IMediaPlayer.MEDIA_INFO_AUDIO_DECODED_START, IMediaPlayer.MEDIA_INFO_VIDEO_DECODED_START -> {
+                    channel.invokeMethod("playStateChange", info)
+                }
+            }
             false
         }
         player.setOnNativeInvokeListener { what, args ->
@@ -46,7 +52,7 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
             false
         }
         player.setOnControlMessageListener {
-            logi("onController message $it")
+            logi("onController message $it, isPlaying = ${player.isPlaying}")
             ""
         }
     }
