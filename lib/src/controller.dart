@@ -102,8 +102,6 @@ class IjkMediaController extends ChangeNotifier {
 
   Future<void> playOrPause() async {
     var videoInfo = await getVideoInfo();
-    print(videoInfo);
-
     var playing = videoInfo.isPlaying;
     if (playing) {
       await _plugin?.pause();
@@ -138,7 +136,6 @@ class IjkMediaController extends ChangeNotifier {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
     _videoInfoController.add(info);
-    this.notifyListeners();
   }
 
   void _autoPlay(bool autoPlay) {
