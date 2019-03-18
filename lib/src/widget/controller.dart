@@ -6,8 +6,12 @@ import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
 class DefaultControllerWidget extends StatefulWidget {
   final IjkMediaController controller;
+  final bool doubleTapPlay;
 
-  const DefaultControllerWidget(this.controller);
+  const DefaultControllerWidget({
+    this.controller,
+    this.doubleTapPlay = false,
+  });
 
   @override
   _DefaultControllerWidgetState createState() =>
@@ -60,10 +64,13 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: buildContent(),
-      onDoubleTap: () {
-        print("ondouble tap");
-        controller.playOrPause();
-      },
+      onDoubleTap: widget.doubleTapPlay
+          ? () {
+              print("ondouble tap");
+              controller.playOrPause();
+            }
+          : null,
+      onTap: () => isShow = !isShow,
     );
   }
 
@@ -74,23 +81,93 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
     return StreamBuilder<VideoInfo>(
       stream: controller.videoInfoStream,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        var info = snapshot.data;
+        if (info == null || !info.hasData) {
           return Container();
         }
-        var info = snapshot.data;
-        return Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(),
-            ),
-            buildProgress(info),
-          ],
-        );
+        return buildPortrait(info);
       },
     );
   }
 
-  Container buildProgress(VideoInfo info) {
+  Widget buildPortrait(VideoInfo info) {
+    return PortraitController(
+      controller: controller,
+      info: info,
+    );
+  }
+}
+
+String _getTimeText(double durationSecond) {
+  var duration = Duration(milliseconds: ((durationSecond ?? 0) * 1000).toInt());
+  var minute = (duration.inMinutes % 60).toString().padLeft(2, "0");
+  var second = (duration.inSeconds % 60).toString().padLeft(2, "0");
+  var text = "$minute:$second";
+//  print("$durationSecond = $text");
+  return text;
+}
+
+class PortraitController extends StatelessWidget {
+  final IjkMediaController controller;
+  final VideoInfo info;
+
+  const PortraitController({
+    Key key,
+    this.controller,
+    this.info,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (!info.hasData) {
+      return Container();
+    }
+    Widget bottomBar = buildBottomBar();
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Container(),
+        ),
+        bottomBar,
+      ],
+    );
+  }
+
+  Widget buildBottomBar() {
+    var currentTime = Text(
+      _getTimeText(info.currentPosition),
+    );
+    var maxTime = Text(
+      _getTimeText(info.duration),
+    );
+    var progress = buildProgress(info);
+    Widget widget = Row(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: currentTime,
+        ),
+        Expanded(child: progress),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: maxTime,
+        ),
+      ],
+    );
+    widget = DefaultTextStyle(
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+      child: widget,
+    );
+    widget = Container(
+      color: Colors.black.withOpacity(0.12),
+      child: widget,
+    );
+    return widget;
+  }
+
+  Widget buildProgress(VideoInfo info) {
     return Container(
       height: 5,
       child: ProgressBar(

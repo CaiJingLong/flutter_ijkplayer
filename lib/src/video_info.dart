@@ -13,6 +13,8 @@ class VideoInfo {
 
   double get progress => (currentPosition ?? 0) / (duration ?? 1);
 
+  bool get hasData => _map != null;
+
   VideoInfo.fromMap(Map<String, dynamic> map) {
     if (map == null) {
       return;

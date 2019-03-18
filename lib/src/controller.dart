@@ -144,7 +144,7 @@ class IjkMediaController {
   Future<void> refreshVideoInfo() async {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
-    _videoInfoController.add(info);
+    if (info.hasData) _videoInfoController.add(info);
   }
 
   void _autoPlay(bool autoPlay) {
