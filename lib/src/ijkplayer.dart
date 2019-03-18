@@ -57,7 +57,7 @@ class IjkPlayerState extends State<IjkPlayer> {
     var controllerWidget = widget.controllerWidgetBuilder?.call(controller);
     return Stack(
       children: <Widget>[
-        video,
+        IgnorePointer(child: video),
         controllerWidget,
       ],
     );

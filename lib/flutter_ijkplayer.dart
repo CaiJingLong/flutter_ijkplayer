@@ -1,4 +1,4 @@
-export 'src/ijkplayer.dart';
 export 'src/error.dart';
+export 'src/ijkplayer.dart';
 export 'src/video_info.dart';
-export 'src/controller_builder.dart' show DefaultControllerWidget;
+export 'src/widget/controller.dart';
