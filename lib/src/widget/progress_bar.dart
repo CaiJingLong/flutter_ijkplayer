@@ -49,6 +49,11 @@ class ProgressBar extends StatelessWidget {
   }
 
   Widget buildColorWidget(Color color, double flex) {
+    if (flex == double.nan ||
+        flex == double.infinity ||
+        flex == double.negativeInfinity) {
+      flex = 0;
+    }
     return Expanded(
       flex: (flex * 1000).toInt(),
       child: Container(

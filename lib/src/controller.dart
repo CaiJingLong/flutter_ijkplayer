@@ -39,6 +39,20 @@ class IjkMediaController {
 
   Stream<VideoInfo> get videoInfoStream => _videoInfoController.stream;
 
+  StreamController<int> _volumeController = StreamController.broadcast();
+
+  Stream<int> get volumeStream => _volumeController.stream;
+
+  int _volume = 100;
+
+  set volume(int value) {
+    this._volume = value;
+    _volumeController.add(volume);
+    _setVolume(value);
+  }
+
+  int get volume => _volume;
+
   Future<void> _initIjk() async {
     try {
       var id = await _createIjk();
@@ -46,6 +60,7 @@ class IjkMediaController {
       _plugin = _IjkPlugin(id);
       eventChannel = IJKEventChannel(this);
       await eventChannel.init();
+      volume = 100;
     } catch (e) {
       print(e);
       print("初始化失败");
@@ -57,9 +72,11 @@ class IjkMediaController {
     _playingController.close();
     _videoInfoController.close();
     _textureIdController.close();
+    _volumeController.close();
   }
 
   Future<void> reset() async {
+    volume = 100;
     this.textureId = null;
     _plugin?.dispose();
     _plugin = null;
@@ -153,7 +170,7 @@ class IjkMediaController {
     }
   }
 
-  Future<void> setVolume(int volume) async {
+  Future<void> _setVolume(int volume) async {
     await _plugin.setVolume(volume);
   }
 

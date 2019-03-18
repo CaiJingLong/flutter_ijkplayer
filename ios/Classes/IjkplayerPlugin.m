@@ -62,10 +62,20 @@ static IjkplayerPlugin *__sharedInstance;
             int id = [params[@"id"] intValue];
             [self->manager disposeWithId:id];
             result(@(YES));
+        } else if ([@"setSystemVolume" isEqualToString:call.method]) {
+            NSDictionary *params = [call arguments];
+            int volume = [params[@"setSystemVolume"] intValue];
+            [self setVolume:volume];
+            result(@YES);
         } else {
             result(FlutterMethodNotImplemented);
         }
     });
+}
+
+- (void)setVolume:(int)volume {
+    MPMusicPlayerController *mpc = [MPMusicPlayerController applicationMusicPlayer];
+    mpc.volume = volume / 100;
 }
 
 @end
@@ -83,5 +93,6 @@ static IjkplayerPlugin *__sharedInstance;
 - (NSString *)getStringParam:(NSString *)key {
     return [self arguments][key];
 }
-
 @end
+
+

@@ -21,6 +21,7 @@
     CVPixelBufferRef latestPixelBuffer;
     FlutterMethodChannel *channel;
     CoolIjkNotifyChannel *notifyChannel;
+    int degree;
 }
 
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
@@ -109,7 +110,7 @@
 }
 
 - (NSDictionary *)params:(FlutterMethodCall *)call {
-
+    return call.arguments;
 }
 
 + (instancetype)ijkWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
@@ -149,6 +150,11 @@
     controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:uri withOptions:options];
     [self prepare];
 }
+
+- (void)setDegree:(int)d {
+    degree = d;
+}
+
 
 - (void)prepare {
     [controller prepareToPlay];
@@ -221,8 +227,36 @@
     info.duration = duration;
     info.currentPosition = currentPlaybackTime;
     info.isPlaying = [controller isPlaying];
+    info.degree = degree;
 
     return info;
+}
+
+- (NSUInteger)degreeFromVideoFileWithURL:(NSURL *)url {
+    NSUInteger mDegree = 0;
+
+    AVAsset *asset = [AVAsset assetWithURL:url];
+    NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+    if ([tracks count] > 0) {
+        AVAssetTrack *videoTrack = tracks[0];
+        CGAffineTransform t = videoTrack.preferredTransform;
+
+        if (t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0) {
+            // Portrait
+            mDegree = 90;
+        } else if (t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0) {
+            // PortraitUpsideDown
+            mDegree = 270;
+        } else if (t.a == 1.0 && t.b == 0 && t.c == 0 && t.d == 1.0) {
+            // LandscapeRight
+            mDegree = 0;
+        } else if (t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0) {
+            // LandscapeLeft
+            mDegree = 180;
+        }
+    }
+
+    return mDegree;
 }
 
 @end

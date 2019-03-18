@@ -15,6 +15,8 @@
 
 @property(nonatomic, assign) BOOL isPlaying;
 
+@property(nonatomic, assign) int degree;
+
 - (NSDictionary *)toMap;
 
 @end

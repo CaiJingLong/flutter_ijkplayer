@@ -18,17 +18,37 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
     val id: Long
         get() = textureEntry.id()
 
-    val ijkPlayer: IjkMediaPlayer = IjkMediaPlayer()
-    private val mediaPlayer: TextureMediaPlayer
+    val mediaPlayer: IjkMediaPlayer = IjkMediaPlayer()
+    private val textureMediaPlayer: TextureMediaPlayer
 
     private val methodChannel: MethodChannel = MethodChannel(registry.messenger(), "top.kikt/ijkplayer/$id")
 
     private val notifyChannel: NotifyChannel = NotifyChannel(registry, id, this)
 
+    var degree = 0
+
     init {
-        mediaPlayer = TextureMediaPlayer(ijkPlayer)
-        mediaPlayer.surfaceTexture = textureEntry.surfaceTexture()
+        textureMediaPlayer = TextureMediaPlayer(mediaPlayer)
+        configOptions()
+        textureMediaPlayer.surfaceTexture = textureEntry.surfaceTexture()
         methodChannel.setMethodCallHandler(this)
+    }
+
+    private fun configOptions() {
+        // see https://www.jianshu.com/p/843c86a9e9ad
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "fastseek")
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzemaxduration", 100L)
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1)
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 1024 * 10)
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1L)
+//        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", if (isBufferCache) 1 else 0)
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "reconnect", 5)
+//        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", maxCacheSize)
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5)
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1)
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "fastseek")
+
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1) // 开硬解
     }
 
     override fun onMethodCall(call: MethodCall?, result: MethodChannel.Result?) {
@@ -97,16 +117,18 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
     }
 
     fun getInfo(): Info {
-        val duration = ijkPlayer.duration
-        val currentPosition = ijkPlayer.currentPosition
-        val width = ijkPlayer.videoWidth
-        val height = ijkPlayer.videoHeight
+        val duration = mediaPlayer.duration
+        val currentPosition = mediaPlayer.currentPosition
+        val width = mediaPlayer.videoWidth
+        val height = mediaPlayer.videoHeight
+//        ijkPlayer.mediaInfo.mMeta.mVideoStream.
         return Info(
                 duration = duration.toDouble() / 1000,
                 currentPosition = currentPosition.toDouble() / 1000,
                 width = width,
                 height = height,
-                isPlaying = mediaPlayer.isPlaying
+                isPlaying = textureMediaPlayer.isPlaying,
+                degree = degree
         )
     }
 
@@ -121,8 +143,8 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
     private fun setUri(uri: String, callback: (Throwable?) -> Unit) {
         try {
-            ijkPlayer.dataSource = uri
-            ijkPlayer.prepareAsync()
+            mediaPlayer.dataSource = uri
+            mediaPlayer.prepareAsync()
             callback(null)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -132,7 +154,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
     private fun setAssetUri(name: String, `package`: String?, callback: (Throwable?) -> Unit) {
         try {
-            ijkPlayer.setOnPreparedListener {
+            mediaPlayer.setOnPreparedListener {
                 callback(null)
             }
             val asset =
@@ -148,9 +170,9 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
             val fileName = Base64.encodeToString(asset.toByteArray(), Base64.DEFAULT)
             val file = File(cacheDir, fileName)
             fd.createInputStream().copyTo(file.outputStream())
-            ijkPlayer.dataSource = file.path
+            mediaPlayer.dataSource = file.path
 //            ijkPlayer.setDataSource(fd.fileDescriptor) // can't use,
-            ijkPlayer.prepareAsync()
+            mediaPlayer.prepareAsync()
         } catch (e: Exception) {
             e.printStackTrace()
             callback(e)
@@ -160,29 +182,29 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
     fun dispose() {
         notifyChannel.dispose()
         methodChannel.setMethodCallHandler(null)
-        mediaPlayer.stop()
-        mediaPlayer.release()
+        textureMediaPlayer.stop()
+        textureMediaPlayer.release()
         textureEntry.release()
     }
 
     private fun play() {
         try {
-            ijkPlayer.start()
+            mediaPlayer.start()
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     private fun pause() {
-        mediaPlayer.pause()
+        textureMediaPlayer.pause()
     }
 
     private fun stop() {
-        mediaPlayer.stop()
+        textureMediaPlayer.stop()
     }
 
     private fun seekTo(msec: Long) {
-        mediaPlayer.seekTo(msec)
+        textureMediaPlayer.seekTo(msec)
     }
 
     private fun setVolume(volume: Int?) {
@@ -190,7 +212,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
             return
         }
         val v = volume.toFloat() / 100
-        ijkPlayer.setVolume(v, v)
+        mediaPlayer.setVolume(v, v)
     }
 
 }

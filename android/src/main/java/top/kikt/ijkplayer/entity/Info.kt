@@ -6,7 +6,8 @@ data class Info(
         val currentPosition: Double,
         val width: Int,
         val height: Int,
-        val isPlaying: Boolean
+        val isPlaying: Boolean,
+        val degree: Int = 0
 ) {
 
     fun toMap(): Map<String, Any> {
@@ -16,6 +17,7 @@ data class Info(
         map["width"] = width
         map["height"] = height
         map["isPlaying"] = isPlaying
+        map["degree"] = degree
         return map
     }
 

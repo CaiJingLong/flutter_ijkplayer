@@ -9,6 +9,16 @@
 
 }
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.degree = 0;
+    }
+
+    return self;
+}
+
+
 - (NSDictionary *)toMap {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     dict[@"width"] = @((int) self.size.width);
@@ -16,6 +26,7 @@
     dict[@"duration"] = @(self.duration);
     dict[@"currentPosition"] = @(self.currentPosition);
     dict[@"isPlaying"] = @(self.isPlaying);
+    dict[@"degree"] = @(self.degree);
     return dict;
 }
 

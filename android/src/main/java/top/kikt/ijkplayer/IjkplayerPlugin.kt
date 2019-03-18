@@ -1,10 +1,13 @@
 package top.kikt.ijkplayer
 
+import android.content.Context
+import android.media.AudioManager
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+
 
 /**
  * IjkplayerPlugin
@@ -32,7 +35,25 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
                 manager.dispose(id)
                 result.success(true)
             }
+            "setSystemVolume" -> {
+                val volume = call.argument<Int>("volume")
+                if (volume != null) {
+                    setVolume(volume)
+                }
+                result.success(true)
+            }
             else -> result.notImplemented()
+        }
+    }
+
+    private fun setVolume(volume: Int) {
+        val am = registrar.activity().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+        am?.apply {
+            val max = getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+            val min = getStreamMinVolume(AudioManager.STREAM_MUSIC)
+            val diff: Float = (max - min).toFloat()
+            val target: Int = ((min + diff) * volume).toInt()
+            setStreamVolume(AudioManager.STREAM_MUSIC, target, 0)
         }
     }
 

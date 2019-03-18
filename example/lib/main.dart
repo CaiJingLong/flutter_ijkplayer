@@ -194,20 +194,23 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  int volume = 100;
-
   _buildVolumeBar() {
-    return Slider(
-      value: volume / 100,
-      label: (volume * 100).toInt().toString(),
-      onChanged: (double value) {
-        var targetVolume = (value * 100).toInt();
-        print("target volume = $targetVolume");
-        controller.setVolume(targetVolume);
-        setState(() {
-          this.volume = targetVolume;
+    return StreamBuilder<int>(
+        stream: controller?.volumeStream,
+        initialData: controller?.volume,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+          var volume = snapshot.data;
+          print("volume = $volume  ${volume / 100}");
+          return Slider(
+            value: volume / 100,
+            onChanged: (double value) {
+              var targetVolume = (value * 100).toInt();
+              controller.volume = targetVolume;
+            },
+          );
         });
-      },
-    );
   }
 }

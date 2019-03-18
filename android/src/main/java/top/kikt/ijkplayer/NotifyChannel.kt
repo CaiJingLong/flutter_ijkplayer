@@ -7,7 +7,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer
 class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long, val ijk: Ijk) {
 
     private val player
-        get() = ijk.ijkPlayer
+        get() = ijk.mediaPlayer
 
     private val channel = MethodChannel(
             registry.messenger(),
@@ -44,6 +44,9 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
                 IMediaPlayer.MEDIA_INFO_AUDIO_DECODED_START, IMediaPlayer.MEDIA_INFO_VIDEO_DECODED_START -> {
                     channel.invokeMethod("playStateChange", info)
                 }
+                IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED -> {
+                    ijk.degree = extra
+                }
             }
             false
         }
@@ -55,6 +58,7 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
             logi("onController message $it, isPlaying = ${player.isPlaying}")
             ""
         }
+
     }
 
     fun dispose() {

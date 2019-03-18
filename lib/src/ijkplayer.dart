@@ -10,6 +10,7 @@ import './error.dart';
 import './controller_builder.dart';
 
 part './controller.dart';
+part './manager.dart';
 
 typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
 
