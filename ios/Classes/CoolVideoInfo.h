@@ -5,7 +5,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface KKVideoInfo : NSObject
+@interface CoolVideoInfo : NSObject
 
 @property(nonatomic, assign) NSTimeInterval duration;
 

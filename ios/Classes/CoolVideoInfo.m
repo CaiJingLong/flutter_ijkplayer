@@ -2,10 +2,10 @@
 // Created by Caijinglong on 2019-03-15.
 //
 
-#import "KKVideoInfo.h"
+#import "CoolVideoInfo.h"
 
 
-@implementation KKVideoInfo {
+@implementation CoolVideoInfo {
 
 }
 

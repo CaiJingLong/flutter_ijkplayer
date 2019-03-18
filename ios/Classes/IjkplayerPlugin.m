@@ -1,6 +1,6 @@
 #import "IjkplayerPlugin.h"
-#import "FlutterIjkManager.h"
-#import "FlutterIJK.h"
+#import "CoolFlutterIjkManager.h"
+#import "CoolFlutterIJK.h"
 
 @interface FlutterMethodCall (Ijk)
 - (int64_t)getId;
@@ -13,7 +13,7 @@
 static IjkplayerPlugin *__sharedInstance;
 
 @implementation IjkplayerPlugin {
-    FlutterIjkManager *manager;
+    CoolFlutterIjkManager *manager;
 
 }
 
@@ -26,7 +26,7 @@ static IjkplayerPlugin *__sharedInstance;
     self = [super init];
     if (self) {
         self.registrar = registrar;
-        manager = [FlutterIjkManager managerWithRegistrar:registrar];
+        manager = [CoolFlutterIjkManager managerWithRegistrar:registrar];
     }
 
     return self;

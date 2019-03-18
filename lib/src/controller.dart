@@ -153,6 +153,10 @@ class IjkMediaController {
     }
   }
 
+  Future<void> setVolume(int volume) async {
+    await _plugin.setVolume(volume);
+  }
+
   Future<void> stop() async {
 //    await _plugin?.stop();
 //    refreshVideoInfo();
@@ -232,6 +236,12 @@ class _IjkPlugin {
   Future<void> seekTo(double target) async {
     await channel.invokeMethod("seekTo", <String, dynamic>{
       "target": target,
+    });
+  }
+
+  Future<void> setVolume(int volume) async {
+    await channel.invokeMethod("setVolume", <String, dynamic>{
+      "volume": volume,
     });
   }
 }

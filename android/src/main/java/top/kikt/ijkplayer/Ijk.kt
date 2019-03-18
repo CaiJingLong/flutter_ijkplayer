@@ -85,6 +85,11 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
                 }
                 result?.success(true)
             }
+            "setVolume" -> {
+                val volume = call.argument<Int>("volume")
+                setVolume(volume)
+                result?.success(true)
+            }
             else -> {
                 result?.notImplemented()
             }
@@ -176,8 +181,16 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
         mediaPlayer.stop()
     }
 
-    fun seekTo(msec: Long) {
+    private fun seekTo(msec: Long) {
         mediaPlayer.seekTo(msec)
+    }
+
+    private fun setVolume(volume: Int?) {
+        if (volume == null) {
+            return
+        }
+        val v = volume.toFloat() / 100
+        ijkPlayer.setVolume(v, v)
     }
 
 }

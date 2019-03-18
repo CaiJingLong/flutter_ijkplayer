@@ -2,25 +2,25 @@
 // Created by Caijinglong on 2019-03-08.
 //
 
-#import "FlutterIJK.h"
-#import "KKVideoInfo.h"
-#import "KKIjkNotifyChannel.h"
+#import "CoolFlutterIJK.h"
+#import "CoolVideoInfo.h"
+#import "CoolIjkNotifyChannel.h"
 #import <IJKMediaFramework/IJKMediaFramework.h>
 #import <IJKMediaFramework/IJKMediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 #import <libkern/OSAtomic.h>
 
-@interface FlutterIJK () <FlutterTexture, KKIjkNotifyDelegate>
+@interface CoolFlutterIJK () <FlutterTexture, KKIjkNotifyDelegate>
 @end
 
-@implementation FlutterIJK {
+@implementation CoolFlutterIJK {
     int64_t textureId;
     CADisplayLink *displayLink;
     NSObject <FlutterTextureRegistry> *textures;
     IJKFFMoviePlayerController *controller;
     CVPixelBufferRef latestPixelBuffer;
     FlutterMethodChannel *channel;
-    KKIjkNotifyChannel *notifyChannel;
+    CoolIjkNotifyChannel *notifyChannel;
 }
 
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
@@ -96,13 +96,21 @@
         [self seekTo:target];
         result(@(YES));
     } else if ([@"getInfo" isEqualToString:call.method]) {
-        KKVideoInfo *info = [self getInfo];
+        CoolVideoInfo *info = [self getInfo];
         result([info toMap]);
+    } else if ([@"setVolume" isEqualToString:call.method]) {
+        NSDictionary *params = [self params:call];
+        float v = [params[@"volume"] floatValue] / 100;
+        controller.playbackVolume = v;
+        result(@(YES));
     } else {
         result(FlutterMethodNotImplemented);
     }
 }
 
+- (NSDictionary *)params:(FlutterMethodCall *)call {
+
+}
 
 + (instancetype)ijkWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     return [[self alloc] initWithRegistrar:registrar];
@@ -154,7 +162,7 @@
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     displayLink.paused = YES;
 
-    notifyChannel = [KKIjkNotifyChannel channelWithController:controller textureId:textureId registrar:self.registrar];
+    notifyChannel = [CoolIjkNotifyChannel channelWithController:controller textureId:textureId registrar:self.registrar];
     notifyChannel.infoDelegate = self;
 }
 
@@ -202,8 +210,8 @@
     return NULL;
 }
 
-- (KKVideoInfo *)getInfo {
-    KKVideoInfo *info = [KKVideoInfo new];
+- (CoolVideoInfo *)getInfo {
+    CoolVideoInfo *info = [CoolVideoInfo new];
 
     CGSize size = [controller naturalSize];
     NSTimeInterval duration = [controller duration];

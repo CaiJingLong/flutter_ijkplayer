@@ -6,13 +6,13 @@
 #import <Flutter/Flutter.h>
 #import <IJKMediaFramework/IJKMediaFramework.h>
 
-@class KKVideoInfo;
+@class CoolVideoInfo;
 
 @protocol KKIjkNotifyDelegate
-- (KKVideoInfo *)getInfo;
+- (CoolVideoInfo *)getInfo;
 @end
 
-@interface KKIjkNotifyChannel : NSObject
+@interface CoolIjkNotifyChannel : NSObject
 
 @property(nonatomic, strong) IJKFFMoviePlayerController *controller;
 

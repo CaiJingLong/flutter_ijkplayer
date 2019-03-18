@@ -2,11 +2,11 @@
 // Created by Caijinglong on 2019-03-15.
 //
 
-#import "KKIjkNotifyChannel.h"
-#import "KKVideoInfo.h"
+#import "CoolIjkNotifyChannel.h"
+#import "CoolVideoInfo.h"
 
 
-@implementation KKIjkNotifyChannel {
+@implementation CoolIjkNotifyChannel {
     FlutterMethodChannel *channel;
 }
 

@@ -4,20 +4,20 @@
 
 #import <Foundation/Foundation.h>
 #import <Flutter/Flutter.h>
+#import "CoolIjkNotifyChannel.h"
 
-@class FlutterIJK;
-
-@interface FlutterIjkManager : NSObject
+@interface CoolFlutterIJK : NSObject
 
 @property(nonatomic, strong) NSObject <FlutterPluginRegistrar> *registrar;
 
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar;
 
-+ (instancetype)managerWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar;
++ (instancetype)ijkWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar;
 
-- (int64_t)create;
+- (int64_t)id;
 
-- (FlutterIJK *)findIJKWithId:(int64_t)id1;
+- (void)dispose;
 
-- (void)disposeWithId:(int64_t)id;
+- (void)setDataSourceWithUri:(NSString *)uri;
+
 @end
