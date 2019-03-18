@@ -7,7 +7,7 @@ import 'package:flutter_ijkplayer/src/ijk_event_channel.dart';
 import 'package:flutter_ijkplayer/src/video_info.dart';
 import './error.dart';
 
-import './controller_builder_delegate.dart';
+import './controller_builder.dart';
 
 part './controller.dart';
 

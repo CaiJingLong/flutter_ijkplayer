@@ -173,9 +173,9 @@ class HomePageState extends State<HomePage> {
         FlatButton(
           child: StreamBuilder<bool>(
             stream: controller.playingStream,
-            initialData: controller.isPlaying,
+            initialData: controller?.isPlaying ?? false,
             builder: (context, snapshot) {
-              var isPlaying = snapshot.data;
+              var isPlaying = snapshot.hasData && snapshot.data;
               return Text(isPlaying ? "暂停" : "播放");
             },
           ),

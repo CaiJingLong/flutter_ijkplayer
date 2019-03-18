@@ -111,8 +111,6 @@ class IjkMediaController {
 
   Future<void> playOrPause() async {
     var videoInfo = await getVideoInfo();
-    print(videoInfo);
-
     var playing = videoInfo.isPlaying;
     if (playing) {
       await _plugin?.pause();
