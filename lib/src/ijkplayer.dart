@@ -30,26 +30,14 @@ class IjkPlayer extends StatefulWidget {
 class IjkPlayerState extends State<IjkPlayer> {
   IjkMediaController controller;
 
-  StreamController<int> _streamController = StreamController.broadcast();
-
-  Stream<int> get stream => _streamController.stream;
-
   @override
   void initState() {
     super.initState();
     controller = widget.mediaController ?? IjkMediaController();
-    controller?.addListener(updateTextureId);
-  }
-
-  void updateTextureId() {
-    print("update id = ${controller.textureId}");
-    _streamController.add(controller.textureId);
   }
 
   @override
   void dispose() {
-    controller?.removeListener(updateTextureId);
-    _streamController?.close();
     controller?.dispose();
     super.dispose();
   }
@@ -57,7 +45,8 @@ class IjkPlayerState extends State<IjkPlayer> {
   @override
   Widget build(BuildContext context) {
     var video = StreamBuilder<int>(
-      stream: stream,
+      stream: controller.textureIdStream,
+      initialData: controller.textureId,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container();

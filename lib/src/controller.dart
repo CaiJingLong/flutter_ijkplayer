@@ -1,9 +1,19 @@
 part of './ijkplayer.dart';
 
 /// Media Controller
-class IjkMediaController extends ChangeNotifier {
-  /// textureId
-  int textureId;
+class IjkMediaController {
+  int _textureId;
+
+  int get textureId => _textureId;
+
+  set textureId(int id) {
+    _textureId = id;
+    _textureIdController.add(id);
+  }
+
+  StreamController<int> _textureIdController = StreamController.broadcast();
+
+  Stream<int> get textureIdStream => _textureIdController.stream;
 
   _IjkPlugin _plugin;
 
@@ -24,7 +34,8 @@ class IjkMediaController extends ChangeNotifier {
 
   Stream<bool> get playingStream => _playingController.stream;
 
-  StreamController<VideoInfo> _videoInfoController = StreamController.broadcast();
+  StreamController<VideoInfo> _videoInfoController =
+      StreamController.broadcast();
 
   Stream<VideoInfo> get videoInfoStream => _videoInfoController.stream;
 
@@ -45,12 +56,11 @@ class IjkMediaController extends ChangeNotifier {
     await reset();
     _playingController.close();
     _videoInfoController.close();
-    super.dispose();
+    _textureIdController.close();
   }
 
   Future<void> reset() async {
     this.textureId = null;
-    this.notifyListeners();
     _plugin?.dispose();
     _plugin = null;
     eventChannel?.dispose();
@@ -97,7 +107,6 @@ class IjkMediaController extends ChangeNotifier {
     await _initIjk();
     _autoPlay(autoPlay);
     await setDataSource();
-    this.notifyListeners();
   }
 
   Future<void> playOrPause() async {
@@ -138,7 +147,6 @@ class IjkMediaController extends ChangeNotifier {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
     _videoInfoController.add(info);
-    this.notifyListeners();
   }
 
   void _autoPlay(bool autoPlay) {
