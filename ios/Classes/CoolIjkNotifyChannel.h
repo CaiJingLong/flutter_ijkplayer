@@ -10,6 +10,8 @@
 
 @protocol KKIjkNotifyDelegate
 - (CoolVideoInfo *)getInfo;
+
+- (void)setDegree:(int)newDegree;
 @end
 
 @interface CoolIjkNotifyChannel : NSObject

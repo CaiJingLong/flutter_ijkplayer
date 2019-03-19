@@ -60,6 +60,11 @@
                                              selector:@selector(moviePlayBackStateDidChange:)
                                                  name:IJKMPMoviePlayerPlaybackStateDidChangeNotification
                                                object:_controller];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(movieRotationChange:)
+                                                 name:IJKMPMoviePlayerVideoRotationNotification
+                                               object:_controller];
 }
 
 - (void)unregisterObservers {
@@ -75,6 +80,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:IJKMPMoviePlayerPlaybackStateDidChangeNotification
                                                   object:_controller];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:IJKMPMoviePlayerVideoRotationNotification
+                                                  object:_controller];
 }
 
 - (NSDictionary *)getInfo {
@@ -88,6 +96,7 @@
 - (void)mediaIsPreparedToPlayDidChange:(NSNotification *)notification {
     [channel invokeMethod:@"prepare" arguments:[self getInfo]];
 }
+
 
 - (void)moviePlayBackFinish:(NSNotification *)notification {
 //    int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
@@ -110,6 +119,12 @@
 
 - (void)loadStateDidChange:(NSNotification *)notification {
 //    [channel invokeMethod:@"loadStateChange" arguments:[self getInfo]];
+}
+
+- (void)movieRotationChange:(NSNotification *)notification {
+    int rotate = [[[notification userInfo] valueForKey:IJKMPMoviePlayerVideoRotationRotateUserInfoKey] intValue];
+    [_infoDelegate setDegree:rotate];
+    [channel invokeMethod:@"rotateChanged" arguments:[self getInfo]];
 }
 
 @end

@@ -36,20 +36,46 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
 
   Timer progressTimer;
 
+  StreamSubscription controllerSubscription;
+
   @override
   void initState() {
     super.initState();
     startTimer();
+    controllerSubscription = controller.textureIdStream.listen(_onTextIdChange);
+  }
+
+  void _onTextIdChange(int textId) {
+    if (textId != null) {
+      startTimer();
+    } else {
+      stopTimer();
+    }
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    controllerSubscription.cancel();
+    stopTimer();
   }
 
   @override
   void dispose() {
-    stopTimer();
     super.dispose();
   }
 
   void startTimer() {
+    if (controller.textureId == null) {
+      return;
+    }
+
     progressTimer?.cancel();
+    controller.videoInfoStream.listen((info) {
+      if (info == null || !info.hasData) {
+        stopTimer();
+      }
+    });
     progressTimer = Timer.periodic(Duration(milliseconds: 400), (timer) {
       controller.refreshVideoInfo();
     });

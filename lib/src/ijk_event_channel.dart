@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_ijkplayer/src/video_info.dart';
 
 import './ijkplayer.dart';
-import 'dart:async';
 
 class IJKEventChannel {
   int get textureId => controller?.textureId;
@@ -39,6 +40,9 @@ class IJKEventChannel {
         break;
       case "prepare":
         onPrepare(getInfo(call));
+        break;
+      case "rotateChanged":
+        onRotateChanged(call);
         break;
       default:
         return MissingPluginException(
@@ -79,6 +83,11 @@ class IJKEventChannel {
     } catch (e) {
       print(e);
     }
+  }
+
+  void onRotateChanged(MethodCall call) {
+    var info = getInfo(call);
+    print("onRotateChanged , info = $info");
   }
 }
 

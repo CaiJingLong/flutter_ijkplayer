@@ -18,7 +18,7 @@ A new flutter plugin project.
 
   s.ios.deployment_target = '8.0'
 
-  s.dependency 'FlutterIJK', '~> 0.0.3'
+  s.dependency 'FlutterIJK', '~> 0.0.6'
 
 end
 

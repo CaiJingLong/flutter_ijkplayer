@@ -232,6 +232,8 @@
     return info;
 }
 
+
+
 - (NSUInteger)degreeFromVideoFileWithURL:(NSURL *)url {
     NSUInteger mDegree = 0;
 

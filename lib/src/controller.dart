@@ -162,6 +162,7 @@ class IjkMediaController {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
     if (info.hasData) _videoInfoController.add(info);
+    print("info = $info");
   }
 
   void _autoPlay(bool autoPlay) {

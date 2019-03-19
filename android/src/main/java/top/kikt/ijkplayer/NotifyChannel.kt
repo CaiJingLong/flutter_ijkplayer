@@ -46,6 +46,7 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
                 }
                 IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED -> {
                     ijk.degree = extra
+                    channel.invokeMethod("rotateChanged", info)
                 }
             }
             false
