@@ -2,6 +2,7 @@ package top.kikt.ijkplayer
 
 import android.content.Context
 import android.media.AudioManager
+import android.os.Build
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -21,6 +22,10 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
 
     private fun handleMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
+            "init" -> {
+                manager.disposeAll()
+                result.success(true)
+            }
             "create" -> {
                 try {
                     val ijk = manager.create()
@@ -50,7 +55,11 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
         val am = registrar.activity().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
         am?.apply {
             val max = getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            val min = getStreamMinVolume(AudioManager.STREAM_MUSIC)
+            val min = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                getStreamMinVolume(AudioManager.STREAM_MUSIC)
+            } else {
+                0
+            }
             val diff: Float = (max - min).toFloat()
             val target: Int = ((min + diff) * volume).toInt()
             setStreamVolume(AudioManager.STREAM_MUSIC, target, 0)

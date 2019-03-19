@@ -6,7 +6,10 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:photo/photo.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  initIJKPlayer();
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override

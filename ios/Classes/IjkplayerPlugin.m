@@ -67,6 +67,9 @@ static IjkplayerPlugin *__sharedInstance;
             int volume = [params[@"setSystemVolume"] intValue];
             [self setVolume:volume];
             result(@YES);
+        } else if ([@"init" isEqualToString:call.method]) {
+            [self->manager disposeAll];
+            result(@YES);
         } else {
             result(FlutterMethodNotImplemented);
         }

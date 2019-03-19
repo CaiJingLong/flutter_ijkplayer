@@ -24,4 +24,11 @@ class IjkManager(private val registrar: PluginRegistry.Registrar) {
         ijkList.remove(ijk)
         ijk.dispose()
     }
+
+    fun disposeAll() {
+        for (ijk in ijkList.toList()) {
+            ijkList.remove(ijk)
+            ijk.dispose()
+        }
+    }
 }

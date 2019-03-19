@@ -185,12 +185,21 @@ class IjkMediaController {
 }
 
 /// about channel
-
-const MethodChannel _globalChannel = MethodChannel("top.kikt/ijkplayer");
+MethodChannel _globalChannel = MethodChannel("top.kikt/ijkplayer");
 
 Future<int> _createIjk() async {
   int id = await _globalChannel.invokeMethod("create");
   return id;
+}
+
+/// For the hot reload/ hot restart to release last texture resource. Release version does not have hot reload, so you can not call it.
+///
+/// release版本可不调用, 主要是为了释放hot restart/hot reload的资源,因为原生资源不参与热重载
+///
+///
+/// If this method is not invoked in the debug version, the sound before the hot reload will continue to play.
+Future<void> initIJKPlayer() async {
+  _globalChannel.invokeMethod("init");
 }
 
 class _IjkPlugin {

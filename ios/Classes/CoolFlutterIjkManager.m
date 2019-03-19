@@ -7,7 +7,7 @@
 #import <IJKMediaFramework/IJKMediaFramework.h>
 
 @implementation CoolFlutterIjkManager {
-    NSMutableDictionary<NSNumber *, CoolFlutterIJK * > *dict;
+    NSMutableDictionary<NSNumber *, CoolFlutterIJK *> *dict;
 }
 
 
@@ -44,4 +44,12 @@
     }
 }
 
+- (void)disposeAll {
+    NSArray<NSNumber *> *keys = dict.allKeys;
+    for (NSNumber *key in keys) {
+        CoolFlutterIJK *ijk = dict[key];
+        [dict removeObjectForKey:key];
+        [ijk dispose];
+    }
+}
 @end

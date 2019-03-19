@@ -46,6 +46,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
   }
 
   void _onTextIdChange(int textId) {
+    print("onTextChange");
     if (textId != null) {
       startTimer();
     } else {
@@ -56,12 +57,12 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
   @override
   void deactivate() {
     super.deactivate();
-    controllerSubscription.cancel();
-    stopTimer();
   }
 
   @override
   void dispose() {
+    controllerSubscription.cancel();
+    stopTimer();
     super.dispose();
   }
 
@@ -72,6 +73,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
 
     progressTimer?.cancel();
     progressTimer = Timer.periodic(Duration(milliseconds: 400), (timer) {
+      print("will refresh info");
       controller.refreshVideoInfo();
     });
   }
