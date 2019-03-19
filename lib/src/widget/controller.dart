@@ -71,11 +71,6 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
     }
 
     progressTimer?.cancel();
-    controller.videoInfoStream.listen((info) {
-      if (info == null || !info.hasData) {
-        stopTimer();
-      }
-    });
     progressTimer = Timer.periodic(Duration(milliseconds: 400), (timer) {
       controller.refreshVideoInfo();
     });
