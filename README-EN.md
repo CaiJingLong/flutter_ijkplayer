@@ -18,7 +18,7 @@ pubspec.yaml
 
 ```yaml
 dependencies:
-  flutter_ijkplayer: ^0.1.0
+  flutter_ijkplayer: ^0.1.1
 ```
 
 ## Build
