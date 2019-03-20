@@ -9,6 +9,7 @@ import 'package:flutter_ijkplayer/src/widget/ijkplayer_builder.dart';
 
 import './controller_builder.dart';
 import './error.dart';
+import 'logutil.dart';
 
 part './controller.dart';
 

@@ -7,6 +7,7 @@ import 'package:photo/photo.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 void main() {
+  IjkConfig.isLog = true;
   IjkManager.initIJKPlayer();
   runApp(MyApp());
 }
@@ -203,21 +204,21 @@ class HomePageState extends State<HomePage> {
 
   _buildVolumeBar() {
     return StreamBuilder<int>(
-        stream: controller?.volumeStream,
-        initialData: controller?.volume,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container();
-          }
-          var volume = snapshot.data;
-          print("volume = $volume  ${volume / 100}");
-          return Slider(
-            value: volume / 100,
-            onChanged: (double value) {
-              var targetVolume = (value * 100).toInt();
-              controller.volume = targetVolume;
-            },
-          );
-        });
+      stream: controller?.volumeStream,
+      initialData: controller?.volume,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container();
+        }
+        var volume = snapshot.data;
+        return Slider(
+          value: volume / 100,
+          onChanged: (double value) {
+            var targetVolume = (value * 100).toInt();
+            controller.volume = targetVolume;
+          },
+        );
+      },
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:flutter_ijkplayer/src/logutil.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
 class DefaultControllerWidget extends StatefulWidget {
@@ -45,7 +46,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
   }
 
   void _onTextIdChange(int textId) {
-    print("onTextChange");
+    LogUtils.log("onTextChange");
     if (textId != null) {
       startTimer();
     } else {
@@ -72,7 +73,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
 
     progressTimer?.cancel();
     progressTimer = Timer.periodic(Duration(milliseconds: 400), (timer) {
-      print("will refresh info");
+      LogUtils.log("will refresh info");
       controller.refreshVideoInfo();
     });
   }
@@ -102,7 +103,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
   Function onDoubleTap() {
     return widget.doubleTapPlay
         ? () {
-            print("ondouble tap");
+            LogUtils.log("ondouble tap");
             controller.playOrPause();
           }
         : null;
@@ -286,7 +287,7 @@ String _getTimeText(double durationSecond) {
   var minute = (duration.inMinutes % 60).toString().padLeft(2, "0");
   var second = (duration.inSeconds % 60).toString().padLeft(2, "0");
   var text = "$minute:$second";
-//  print("$durationSecond = $text");
+//  LogUtils.log("$durationSecond = $text");
   return text;
 }
 

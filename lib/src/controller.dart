@@ -75,8 +75,8 @@ class IjkMediaController {
       await eventChannel.init();
       volume = 100;
     } catch (e) {
-      print(e);
-      print("初始化失败");
+      LogUtils.log(e);
+      LogUtils.log("初始化失败");
     }
   }
 
@@ -175,7 +175,7 @@ class IjkMediaController {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
     if (info.hasData) _videoInfoController?.add(info);
-    print("info = $info");
+    LogUtils.log("info = $info");
   }
 
   void _autoPlay(bool autoPlay) {
@@ -237,12 +237,12 @@ class _IjkPlugin {
   }
 
   Future<void> setNetworkDataSource({String uri}) async {
-    print("id = $textureId net uri = $uri");
+    LogUtils.log("id = $textureId net uri = $uri");
     await channel.invokeMethod("setNetworkDataSource", {"uri": uri});
   }
 
   Future<void> setAssetDataSource(String name, String package) async {
-    print("id = $textureId asset name = $name package = $package");
+    LogUtils.log("id = $textureId asset name = $name package = $package");
     var params = <String, dynamic>{
       "name": name,
     };
@@ -259,7 +259,7 @@ class _IjkPlugin {
     await channel.invokeMethod("setFileDataSource", <String, dynamic>{
       "path": path,
     });
-    print("id = $textureId file path = $path");
+    LogUtils.log("id = $textureId file path = $path");
   }
 
   Future<Map<String, dynamic>> getInfo() async {

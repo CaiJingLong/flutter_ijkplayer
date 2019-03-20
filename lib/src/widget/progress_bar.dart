@@ -20,7 +20,7 @@ class ProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (max == null || current == null) return _buildEmpty();
+    if (max == null || current == null || max == 0) return _buildEmpty();
 
     var left = current / max;
     var mid = (buffered ?? 0) / max - left;
@@ -53,6 +53,9 @@ class ProgressBar extends StatelessWidget {
         flex == double.infinity ||
         flex == double.negativeInfinity) {
       flex = 0;
+    }
+    if (flex == 0) {
+      return Container();
     }
     return Expanded(
       flex: (flex * 1000).toInt(),

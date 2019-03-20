@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_ijkplayer/src/logutil.dart';
 import 'package:flutter_ijkplayer/src/video_info.dart';
 
 import './ijkplayer.dart';
@@ -81,13 +82,13 @@ class IJKEventChannel {
       await waitPrepare();
       ijkMediaController.play();
     } catch (e) {
-      print(e);
+      LogUtils.log(e);
     }
   }
 
   void onRotateChanged(MethodCall call) {
     var info = getInfo(call);
-    print("onRotateChanged , info = $info");
+    LogUtils.log("onRotateChanged , info = $info");
   }
 }
 
