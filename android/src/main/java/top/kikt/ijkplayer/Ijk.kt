@@ -110,6 +110,9 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
                 setVolume(volume)
                 result?.success(true)
             }
+            "getVolume"->{
+
+            }
             else -> {
                 result?.notImplemented()
             }

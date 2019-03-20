@@ -52,8 +52,13 @@ class IjkMediaController {
   int _volume = 100;
 
   set volume(int value) {
+    if (value > 100) {
+      value = 100;
+    } else if (value < 0) {
+      value = 0;
+    }
     this._volume = value;
-    _volumeController.add(volume);
+    _volumeController.add(value);
     _setVolume(value);
   }
 
@@ -188,6 +193,14 @@ class IjkMediaController {
     await _plugin?.seekTo(0);
     refreshVideoInfo();
   }
+
+  Future<int> getSystemVolume() async {
+    return IjkManager.getSystemVolume();
+  }
+
+  Future<void> setSystemVolume(int volume) async {
+    await IjkManager.setSystemVolume(volume);
+  }
 }
 
 /// about channel
@@ -196,16 +209,6 @@ MethodChannel _globalChannel = MethodChannel("top.kikt/ijkplayer");
 Future<int> _createIjk() async {
   int id = await _globalChannel.invokeMethod("create");
   return id;
-}
-
-/// For the hot reload/ hot restart to release last texture resource. Release version does not have hot reload, so you can not call it.
-///
-/// release版本可不调用, 主要是为了释放hot restart/hot reload的资源,因为原生资源不参与热重载
-///
-///
-/// If this method is not invoked in the debug version, the sound before the hot reload will continue to play.
-Future<void> initIJKPlayer() async {
-  _globalChannel.invokeMethod("init");
 }
 
 class _IjkPlugin {

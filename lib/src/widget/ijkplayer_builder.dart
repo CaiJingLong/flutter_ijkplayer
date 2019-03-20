@@ -12,10 +12,12 @@ Widget buildDefaultIjkPlayer(
   IjkMediaController controller,
   VideoInfo info,
 ) {
-  print("buildPlayer");
-
   int degree = info?.degree ?? 0;
   double ratio = info?.ratio ?? 1280 / 720;
+
+  if (ratio == 0) {
+    ratio = 1280 / 720;
+  }
 
   var id = controller.textureId;
 

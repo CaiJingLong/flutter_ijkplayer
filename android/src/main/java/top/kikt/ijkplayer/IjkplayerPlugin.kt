@@ -47,13 +47,20 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
                 }
                 result.success(true)
             }
+            "getSystemVolume" -> {
+                val volume = getSystemVolume()
+                result.success(volume)
+            }
             else -> result.notImplemented()
         }
     }
 
+    private fun getSystemVolume(): Int {
+        return audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+    }
+
     private fun setVolume(volume: Int) {
-        val am = registrar.activity().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
-        am?.apply {
+        audioManager.apply {
             val max = getStreamMaxVolume(AudioManager.STREAM_MUSIC)
             val min = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 getStreamMinVolume(AudioManager.STREAM_MUSIC)
@@ -65,6 +72,9 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
             setStreamVolume(AudioManager.STREAM_MUSIC, target, 0)
         }
     }
+
+    private val audioManager: AudioManager
+        get() = registrar.activity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
     fun MethodCall.getLongArg(key: String): Long {
         return this.argument<Int>(key)!!.toLong()

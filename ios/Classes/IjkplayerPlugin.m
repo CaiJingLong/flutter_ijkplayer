@@ -1,3 +1,4 @@
+#import <AVKit/AVKit.h>
 #import "IjkplayerPlugin.h"
 #import "CoolFlutterIjkManager.h"
 #import "CoolFlutterIJK.h"
@@ -62,23 +63,46 @@ static IjkplayerPlugin *__sharedInstance;
             int id = [params[@"id"] intValue];
             [self->manager disposeWithId:id];
             result(@(YES));
-        } else if ([@"setSystemVolume" isEqualToString:call.method]) {
-            NSDictionary *params = [call arguments];
-            int volume = [params[@"setSystemVolume"] intValue];
-            [self setVolume:volume];
-            result(@YES);
         } else if ([@"init" isEqualToString:call.method]) {
             [self->manager disposeAll];
             result(@YES);
+        } else if ([@"setSystemVolume" isEqualToString:call.method]) {
+            NSDictionary *params = [call arguments];
+            int volume = [params[@"volume"] intValue];
+            [self setSystemVolume:volume];
+            result(@YES);
+        } else if ([@"getSystemVolume" isEqualToString:call.method]) {
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            CGFloat currentVol = audioSession.outputVolume * 100;
+            result(@((int) currentVol));
         } else {
             result(FlutterMethodNotImplemented);
         }
     });
 }
 
-- (void)setVolume:(int)volume {
-    MPMusicPlayerController *mpc = [MPMusicPlayerController applicationMusicPlayer];
-    mpc.volume = volume / 100;
+- (void)setSystemVolume:(int)volume {
+    MPVolumeView *volumeView = [[MPVolumeView alloc] init];
+    UISlider *volumeViewSlider = nil;
+    for (UIView *view in [volumeView subviews]) {
+        if ([view.class.description isEqualToString:@"MPVolumeSlider"]) {
+            volumeViewSlider = (UISlider *) view;
+            break;
+        }
+    }
+
+    float targetVolume = ((float) volume) / 100;
+
+    volumeView.frame = CGRectMake(-1000, -1000, 100, 100);
+
+    UIWindow *window = UIApplication.sharedApplication.keyWindow;
+    [window addSubview:volumeView];
+
+    // change system volume, the value is between 0.0f and 1.0f
+    [volumeViewSlider setValue:targetVolume animated:NO];
+
+    // send UI control event to make the change effect right now. 立即生效
+    [volumeViewSlider sendActionsForControlEvents:UIControlEventTouchUpInside];
 }
 
 @end
