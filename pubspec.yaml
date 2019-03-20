@@ -1,8 +1,8 @@
 name: flutter_ijkplayer
-description: A new flutter plugin project.
-version: 0.0.1
-author:
-homepage:
+description: Flutter version of bilibilibili ijkplayer, supports common playback protocols, easy to use.
+version: 0.1.0
+author: caijinglong<cjl_spy@163.com>
+homepage: https://github.com/CaiJingLong/flutter_ijkplayer
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

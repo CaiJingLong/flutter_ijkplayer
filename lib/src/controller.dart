@@ -2,6 +2,8 @@ part of './ijkplayer.dart';
 
 /// Media Controller
 class IjkMediaController {
+
+  /// MediaController
   IjkMediaController({
     this.autoRotate = true,
   });

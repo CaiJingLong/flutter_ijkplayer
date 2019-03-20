@@ -13,12 +13,14 @@ class IjkManager {
     _globalChannel.invokeMethod("init");
   }
 
+  /// set system volume
   static Future<void> setSystemVolume(int volume) async {
     await _globalChannel.invokeMethod("setSystemVolume", {
       "volume": volume,
     });
   }
 
+  /// get system volume
   static Future<int> getSystemVolume() async {
     return _globalChannel.invokeMethod("getSystemVolume");
   }

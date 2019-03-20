@@ -14,13 +14,16 @@ part './controller.dart';
 
 part './manager.dart';
 
+/// Using mediaController to Construct a Controller UI
 typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
 
+/// Main Classes of Library
 class IjkPlayer extends StatefulWidget {
   final IjkMediaController mediaController;
   final ControllerWidgetBuilder controllerWidgetBuilder;
   final PlayerBuilder playerBuilder;
 
+  /// Main Classes of Library
   const IjkPlayer({
     Key key,
     this.mediaController,
@@ -32,7 +35,9 @@ class IjkPlayer extends StatefulWidget {
   IjkPlayerState createState() => IjkPlayerState();
 }
 
+/// state of ijkplayer
 class IjkPlayerState extends State<IjkPlayer> {
+  /// see [IjkMediaController]
   IjkMediaController controller;
 
   @override

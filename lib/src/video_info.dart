@@ -1,21 +1,33 @@
 import 'dart:convert';
 
 class VideoInfo {
+  /// Width of Video
   int width;
+
+  /// Height of Video
   int height;
+
+  /// Total length of video
   double duration;
+
+  /// Current playback progress
   double currentPosition;
+
+  /// In play
   bool isPlaying;
+
+  /// Degree of Video
   int degree;
 
   Map<String, dynamic> _map;
 
-  double get radio => width / height;
-
+  /// Percentage playback progress
   double get progress => (currentPosition ?? 0) / (duration ?? 1);
 
+  ///Is there any information?
   bool get hasData => _map != null;
 
+  /// Aspect ratio
   double get ratio {
     double r;
     if (width != null && height != null) {
@@ -27,6 +39,7 @@ class VideoInfo {
     return r;
   }
 
+  /// Constructing from the native method
   VideoInfo.fromMap(Map<String, dynamic> map) {
     if (map == null) {
       return;
