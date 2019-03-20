@@ -59,14 +59,9 @@ class HomePageState extends State<HomePage> {
       body: Container(
         // width: MediaQuery.of(context).size.width,
         // height: 400,
-        child: Column(
+        child: ListView(
           children: <Widget>[
-            AspectRatio(
-              aspectRatio: 1280 / 720,
-              child: IjkPlayer(
-                mediaController: controller,
-              ),
-            ),
+            buildIjkPlayer(),
             _buildPlayAssetButton(),
             _buildControllerButtons(),
             _buildVolumeBar(),
@@ -87,6 +82,15 @@ class HomePageState extends State<HomePage> {
           print("set data source success");
           // controller.playOrPause();
         },
+      ),
+    );
+  }
+
+  Widget buildIjkPlayer() {
+    return Container(
+      height: 400,
+      child: IjkPlayer(
+        mediaController: controller,
       ),
     );
   }

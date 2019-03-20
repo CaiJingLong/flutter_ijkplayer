@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ijkplayer/src/ijk_event_channel.dart';
 import 'package:flutter_ijkplayer/src/video_info.dart';
-import './error.dart';
+import 'package:flutter_ijkplayer/src/widget/ijkplayer_builder.dart';
 
 import './controller_builder.dart';
+import './error.dart';
 
 part './controller.dart';
+
 part './manager.dart';
 
 typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
@@ -17,11 +19,13 @@ typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
 class IjkPlayer extends StatefulWidget {
   final IjkMediaController mediaController;
   final ControllerWidgetBuilder controllerWidgetBuilder;
+  final PlayerBuilder playerBuilder;
 
   const IjkPlayer({
     Key key,
     this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
+    this.playerBuilder = buildDefaultIjkPlayer,
   }) : super(key: key);
 
   @override
@@ -35,6 +39,11 @@ class IjkPlayerState extends State<IjkPlayer> {
   void initState() {
     super.initState();
     controller = widget.mediaController ?? IjkMediaController();
+  }
+
+  @override
+  void didUpdateWidget(IjkPlayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -52,7 +61,12 @@ class IjkPlayerState extends State<IjkPlayer> {
         if (!snapshot.hasData) {
           return Container();
         }
-        return _buildVideoContent(snapshot.data);
+        var id = snapshot.data;
+        return StreamBuilder<VideoInfo>(
+            stream: controller.videoInfoStream,
+            builder: (context, videoInfoSnapShot) {
+              return _buildTexture(id, videoInfoSnapShot.data);
+            });
       },
     );
     var controllerWidget = widget.controllerWidgetBuilder?.call(controller);
@@ -64,7 +78,11 @@ class IjkPlayerState extends State<IjkPlayer> {
     );
   }
 
-  Widget _buildVideoContent(int id) {
+  Widget _buildTexture(int id, VideoInfo info) {
+    if (widget?.playerBuilder != null) {
+      return widget.playerBuilder.call(context, controller, info);
+    }
+
     if (id == null) {
       return Container(
         color: Colors.black,

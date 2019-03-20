@@ -2,7 +2,13 @@ part of './ijkplayer.dart';
 
 /// Media Controller
 class IjkMediaController {
+  IjkMediaController({
+    this.autoRotate = true,
+  });
+
   int _textureId;
+
+  bool autoRotate;
 
   int get textureId => _textureId;
 
@@ -161,25 +167,25 @@ class IjkMediaController {
   Future<void> refreshVideoInfo() async {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
-    if (info.hasData) _videoInfoController.add(info);
+    if (info.hasData) _videoInfoController?.add(info);
     print("info = $info");
   }
 
   void _autoPlay(bool autoPlay) {
     if (autoPlay) {
-      eventChannel.autoPlay(this);
+      eventChannel?.autoPlay(this);
     }
   }
 
   Future<void> _setVolume(int volume) async {
-    await _plugin.setVolume(volume);
+    await _plugin?.setVolume(volume);
   }
 
   Future<void> stop() async {
 //    await _plugin?.stop();
 //    refreshVideoInfo();
-    await _plugin.pause();
-    await _plugin.seekTo(0);
+    await _plugin?.pause();
+    await _plugin?.seekTo(0);
     refreshVideoInfo();
   }
 }
