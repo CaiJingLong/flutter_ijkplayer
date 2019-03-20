@@ -123,14 +123,23 @@
 
 - (void)play {
     [controller play];
+    if (displayLink) {
+        displayLink.paused = NO;
+    }
 }
 
 - (void)pause {
     [controller pause];
+    if (displayLink) {
+        displayLink.paused = YES;
+    }
 }
 
 - (void)stop {
     [controller stop];
+    if (displayLink) {
+        displayLink.paused = NO;
+    }
 }
 
 - (void)setDataSourceWithController:(IJKFFMoviePlayerController *)ctl {
@@ -231,7 +240,6 @@
 
     return info;
 }
-
 
 
 - (NSUInteger)degreeFromVideoFileWithURL:(NSURL *)url {

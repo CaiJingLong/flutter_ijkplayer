@@ -60,6 +60,7 @@ class IJKEventChannel {
 
   void onPlayFinish(VideoInfo info) {
     controller.isPlaying = info.isPlaying;
+    controller.pause();
   }
 
   void onPlayStateChange(VideoInfo info) {

@@ -1,5 +1,7 @@
 # ijkplayer
 
+[![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
+
 ijkplayer for bilibili/ijkplayer, use flutter Texture widget.
 Read this README and refer to example/lib/main.dart before using it.
 The question of Android might not be able to run will be explained in detail.
@@ -12,13 +14,13 @@ Before using library, you can star and download the code to try the example.
 
 ## Install
 
-[![pub package](https://img.shields.io/pub/v/oktoast.svg)](https://pub.dartlang.org/packages/oktoast)
+[![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
 
 pubspec.yaml
 
 ```yaml
 dependencies:
-  flutter_ijkplayer: ^0.1.1
+  flutter_ijkplayer: ${latest_version}
 ```
 
 ## Build

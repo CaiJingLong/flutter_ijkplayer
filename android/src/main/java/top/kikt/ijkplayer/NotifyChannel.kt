@@ -24,7 +24,7 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
         }
         player.setOnCompletionListener {
             logi("completion $info")
-            channel.invokeMethod("completion", info)
+            channel.invokeMethod("finish", info)
         }
         player.setOnBufferingUpdateListener { mp, percent ->
             /// 在线视频缓冲

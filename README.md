@@ -1,5 +1,7 @@
 # ijkplayer
 
+[![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
+
 ijkplayer,通过纹理的方式接入 bilibili/ijkplayer
 
 使用前请完整阅读本 README 并参阅 example/lib/main.dart
@@ -19,11 +21,15 @@ https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/README-EN.md
 
 ## Install
 
+[![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
+
+最新版本查看pub
+
 pubspec.yaml
 
 ```yaml
 dependencies:
-  flutter_ijkplayer: ^0.1.1
+  flutter_ijkplayer: ${lastes_version}
 ```
 
 ## Build
