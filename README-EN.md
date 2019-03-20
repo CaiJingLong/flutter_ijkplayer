@@ -108,7 +108,7 @@ class HomePageState extends State<HomePage> {
 
   Widget buildIjkPlayer() {
     return Container(
-      // height: 400, // 这里随意
+      // height: 400,
       child: IjkPlayer(
         mediaController: controller,
       ),
