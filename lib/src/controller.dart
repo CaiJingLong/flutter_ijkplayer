@@ -2,57 +2,76 @@ part of './ijkplayer.dart';
 
 /// Media Controller
 class IjkMediaController {
-
   /// MediaController
   IjkMediaController({
     this.autoRotate = true,
   });
 
+  /// texture id from native
   int _textureId;
 
+  /// It will automatically correct the direction of the video.
   bool autoRotate;
 
+  /// texture id from native
   int get textureId => _textureId;
 
+  /// set texture id, Normally the user does not call
   set textureId(int id) {
     _textureId = id;
     _textureIdController.add(id);
   }
 
+  /// on texture id change
   StreamController<int> _textureIdController = StreamController.broadcast();
 
+  /// on texture id change
   Stream<int> get textureIdStream => _textureIdController.stream;
 
+  /// Channel of flutter and native.
   _IjkPlugin _plugin;
 
+  /// Whether texture id is null
   bool get isInit => textureId == null;
 
+  /// channel of native to flutter
   IJKEventChannel eventChannel;
 
+  /// playing state
   bool _isPlaying = false;
 
+  /// playing state
   bool get isPlaying => _isPlaying == true;
 
+  /// playing state
   set isPlaying(bool value) {
     this._isPlaying = value;
     _playingController.add(value);
   }
 
+  /// playing state stream controller
   StreamController<bool> _playingController = StreamController.broadcast();
 
+  /// playing state stream
   Stream<bool> get playingStream => _playingController.stream;
 
+  /// video info stream controller
   StreamController<VideoInfo> _videoInfoController =
       StreamController.broadcast();
 
+  /// video info stream
   Stream<VideoInfo> get videoInfoStream => _videoInfoController.stream;
 
+  /// video volume stream controller
   StreamController<int> _volumeController = StreamController.broadcast();
 
+  /// video volume stream
   Stream<int> get volumeStream => _volumeController.stream;
 
+  /// video volume, not system volume
   int _volume = 100;
 
+  /// video volume, not system volume
   set volume(int value) {
     if (value > 100) {
       value = 100;
@@ -64,8 +83,10 @@ class IjkMediaController {
     _setVolume(value);
   }
 
+  /// video volume, not system volume
   int get volume => _volume;
 
+  /// create ijk texture id from native
   Future<void> _initIjk() async {
     try {
       var id = await _createIjk();
@@ -80,6 +101,7 @@ class IjkMediaController {
     }
   }
 
+  /// [reset] and close all controller
   void dispose() async {
     await reset();
     _playingController.close();
@@ -88,6 +110,7 @@ class IjkMediaController {
     _volumeController.close();
   }
 
+  /// dispose all resource
   Future<void> reset() async {
     volume = 100;
     this.textureId = null;
@@ -97,6 +120,7 @@ class IjkMediaController {
     eventChannel = null;
   }
 
+  /// set net DataSource
   Future<void> setNetworkDataSource(
     String url, {
     bool autoPlay = false,
@@ -106,6 +130,7 @@ class IjkMediaController {
     }, autoPlay);
   }
 
+  /// set asset DataSource
   Future<void> setAssetDataSource(
     String name, {
     String package,
@@ -116,6 +141,7 @@ class IjkMediaController {
     }, autoPlay);
   }
 
+  /// set file DataSource
   Future<void> setFileDataSource(
     File file, {
     bool autoPlay = false,
@@ -125,6 +151,7 @@ class IjkMediaController {
     }, autoPlay);
   }
 
+  /// dispose last textureId resource
   Future<void> _initDataSource(
     Future setDataSource(),
     bool autoPlay,
@@ -139,6 +166,7 @@ class IjkMediaController {
     await setDataSource();
   }
 
+  /// Play or pause according to your current status
   Future<void> playOrPause() async {
     var videoInfo = await getVideoInfo();
     var playing = videoInfo.isPlaying;
@@ -150,27 +178,34 @@ class IjkMediaController {
     refreshVideoInfo();
   }
 
+  /// play media
   Future<void> play() async {
     await _plugin?.play();
     refreshVideoInfo();
   }
 
+  /// pause media
   Future<void> pause() async {
     await _plugin?.pause();
     refreshVideoInfo();
   }
 
+  /// seek to second
+  ///
+  /// [target] unit is second
   Future<void> seekTo(double target) async {
     await _plugin?.seekTo(target);
     refreshVideoInfo();
   }
 
+  /// get video info from native
   Future<VideoInfo> getVideoInfo() async {
     Map<String, dynamic> result = await _plugin?.getInfo();
     var info = VideoInfo.fromMap(result);
     return info;
   }
 
+  /// request info and notify
   Future<void> refreshVideoInfo() async {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
@@ -178,16 +213,19 @@ class IjkMediaController {
     LogUtils.log("info = $info");
   }
 
+  /// AutoPlay use
   void _autoPlay(bool autoPlay) {
     if (autoPlay) {
       eventChannel?.autoPlay(this);
     }
   }
 
+  /// set video volume
   Future<void> _setVolume(int volume) async {
     await _plugin?.setVolume(volume);
   }
 
+  /// [pause] and [seekTo] 0
   Future<void> stop() async {
 //    await _plugin?.stop();
 //    refreshVideoInfo();
@@ -196,10 +234,12 @@ class IjkMediaController {
     refreshVideoInfo();
   }
 
+  /// get system volume
   Future<int> getSystemVolume() async {
     return IjkManager.getSystemVolume();
   }
 
+  /// set system volume
   Future<void> setSystemVolume(int volume) async {
     await IjkManager.setSystemVolume(volume);
   }
@@ -216,6 +256,7 @@ Future<int> _createIjk() async {
 class _IjkPlugin {
   MethodChannel get channel => MethodChannel("top.kikt/ijkplayer/$textureId");
 
+  ///
   int textureId;
 
   _IjkPlugin(this.textureId);
