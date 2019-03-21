@@ -41,11 +41,7 @@ On this basis, rotation notification is added.
 
 ### Android
 
-Unlike iOS, this is not modified, but rather a so library compiled with BiliBili version 0.8.8 + OpenSSL
-Errors may be reported or flipped out during construction, because of problems with so Libraries
-Vscode: You need to modify. vscode / launch. JSON
-Add `"args": ["--target-platform", "android-arm"]`
-Android studio: main.dart => Edit Configurations => Additional Arguments => `--target-platform android-arm`
+Now, use [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer) `.so` library.
 
 ## Simple Example
 

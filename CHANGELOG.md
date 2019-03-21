@@ -1,3 +1,7 @@
+## 0.1.3
+
+Use [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer) android \*.so
+
 ## 0.1.2
 
 fix ios fps problem.

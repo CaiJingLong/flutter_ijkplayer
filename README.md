@@ -23,7 +23,7 @@ https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/README-EN.md
 
 [![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
 
-最新版本查看pub
+最新版本查看 pub
 
 pubspec.yaml
 
@@ -50,16 +50,7 @@ iOS 的代码来自于 https://github.com/jadennn/flutter_ijk 中的 iOS 代码
 
 ### Android
 
-和 iOS 不同,这个没有修改,而是使用 bilibili 的 0.8.8 版+openssl 编译的 so 库
-
-构建时可能会报错,或者闪退,这个是因为 so 库的问题
-
-vscode: 你需要修改.vscode/launch.json
-添加 `"args": ["--target-platform", "android-arm"]`
-
-android studio: 你需要点击 run 左边那个 main.dart=>Edit Configurations,然后在 Additional Arguments 中添加 `--target-platform android-arm`
-
-打包时同理,尽量只保留 armv7 就可以了
+现在使用 [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)中的 so 库
 
 ## Simple Example
 

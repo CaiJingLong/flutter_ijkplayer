@@ -41,7 +41,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters "armeabi-v7a"
+//            abiFilters "armeabi-v7a"
+            abiFilters "armeabi-v7a", "arm64-v8a"
         }
     }
 
@@ -53,7 +54,8 @@ android {
         }
         debug {
             ndk {
-                abiFilters "armeabi-v7a","x86"
+//                abiFilters "armeabi-v7a", "x86"
+                abiFilters "armeabi-v7a", "x86", "arm64-v8a"
             }
         }
     }
