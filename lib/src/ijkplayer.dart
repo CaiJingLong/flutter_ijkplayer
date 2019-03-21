@@ -52,7 +52,6 @@ class IjkPlayerState extends State<IjkPlayer> {
 
   @override
   void dispose() {
-    controller?.dispose();
     super.dispose();
   }
 

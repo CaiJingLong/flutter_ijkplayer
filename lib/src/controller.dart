@@ -26,7 +26,7 @@ class IjkMediaController {
   StreamController<int> _textureIdController = StreamController.broadcast();
 
   /// on texture id change
-  Stream<int> get textureIdStream => _textureIdController.stream;
+  Stream<int> get textureIdStream => _textureIdController?.stream;
 
   /// Channel of flutter and native.
   _IjkPlugin _plugin;
@@ -46,27 +46,27 @@ class IjkMediaController {
   /// playing state
   set isPlaying(bool value) {
     this._isPlaying = value;
-    _playingController.add(value);
+    _playingController?.add(value);
   }
 
   /// playing state stream controller
   StreamController<bool> _playingController = StreamController.broadcast();
 
   /// playing state stream
-  Stream<bool> get playingStream => _playingController.stream;
+  Stream<bool> get playingStream => _playingController?.stream;
 
   /// video info stream controller
   StreamController<VideoInfo> _videoInfoController =
       StreamController.broadcast();
 
   /// video info stream
-  Stream<VideoInfo> get videoInfoStream => _videoInfoController.stream;
+  Stream<VideoInfo> get videoInfoStream => _videoInfoController?.stream;
 
   /// video volume stream controller
   StreamController<int> _volumeController = StreamController.broadcast();
 
   /// video volume stream
-  Stream<int> get volumeStream => _volumeController.stream;
+  Stream<int> get volumeStream => _volumeController?.stream;
 
   /// video volume, not system volume
   int _volume = 100;
@@ -79,7 +79,7 @@ class IjkMediaController {
       value = 0;
     }
     this._volume = value;
-    _volumeController.add(value);
+    _volumeController?.add(value);
     _setVolume(value);
   }
 
@@ -104,10 +104,15 @@ class IjkMediaController {
   /// [reset] and close all controller
   void dispose() async {
     await reset();
-    _playingController.close();
-    _videoInfoController.close();
-    _textureIdController.close();
-    _volumeController.close();
+    _playingController?.close();
+    _videoInfoController?.close();
+    _textureIdController?.close();
+    _volumeController?.close();
+
+    _playingController = null;
+    _videoInfoController = null;
+    _textureIdController = null;
+    _volumeController = null;
   }
 
   /// dispose all resource

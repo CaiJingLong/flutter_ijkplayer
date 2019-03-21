@@ -28,6 +28,7 @@ Widget buildDefaultIjkPlayer(
   }
 
   Widget w = Container(
+    color: Colors.black,
     child: Texture(
       textureId: id,
     ),
