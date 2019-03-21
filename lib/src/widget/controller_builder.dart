@@ -5,6 +5,9 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/logutil.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
+/// Default Controller Widget
+///
+/// see [IjkPlayer] and []
 class DefaultControllerWidget extends StatefulWidget {
   final IjkMediaController controller;
   final bool doubleTapPlay;

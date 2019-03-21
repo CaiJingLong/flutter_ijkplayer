@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+/// about video info
 class VideoInfo {
   /// Width of Video
   int width;

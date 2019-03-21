@@ -1,7 +1,7 @@
 part of './ijkplayer.dart';
 
 /// create 2019/3/18 by cai
-
+///
 class IjkManager {
   /// For the hot reload/ hot restart to release last texture resource. Release version does not have hot reload, so you can not call it.
   ///
@@ -10,7 +10,7 @@ class IjkManager {
   ///
   /// If this method is not invoked in the debug version, the sound before the hot reload will continue to play.
   static Future<void> initIJKPlayer() async {
-    _globalChannel.invokeMethod("init");
+    await _globalChannel.invokeMethod("init");
   }
 
   /// set system volume

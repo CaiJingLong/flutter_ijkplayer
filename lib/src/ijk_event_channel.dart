@@ -1,17 +1,11 @@
-import 'dart:async';
+part of 'ijkplayer.dart';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_ijkplayer/src/logutil.dart';
-import 'package:flutter_ijkplayer/src/video_info.dart';
-
-import './ijkplayer.dart';
-
-class IJKEventChannel {
+class _IJKEventChannel {
   int get textureId => controller?.textureId;
 
   IjkMediaController controller;
 
-  IJKEventChannel(this.controller);
+  _IJKEventChannel(this.controller);
 
   MethodChannel channel;
 

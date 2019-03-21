@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_ijkplayer/src/ijk_event_channel.dart';
 import 'package:flutter_ijkplayer/src/video_info.dart';
 import 'package:flutter_ijkplayer/src/widget/ijkplayer_builder.dart';
 
@@ -12,11 +11,8 @@ import './error.dart';
 import 'logutil.dart';
 
 part './controller.dart';
-
 part './manager.dart';
-
-/// Using mediaController to Construct a Controller UI
-typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
+part 'ijk_event_channel.dart';
 
 /// Main Classes of Library
 class IjkPlayer extends StatefulWidget {

@@ -35,7 +35,7 @@ class IjkMediaController {
   bool get isInit => textureId == null;
 
   /// channel of native to flutter
-  IJKEventChannel eventChannel;
+  _IJKEventChannel eventChannel;
 
   /// playing state
   bool _isPlaying = false;
@@ -92,7 +92,7 @@ class IjkMediaController {
       var id = await _createIjk();
       this.textureId = id;
       _plugin = _IjkPlugin(id);
-      eventChannel = IJKEventChannel(this);
+      eventChannel = _IJKEventChannel(this);
       await eventChannel.init();
       volume = 100;
     } catch (e) {
