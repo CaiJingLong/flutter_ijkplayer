@@ -1,11 +1,6 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/page/index.dart';
-import 'package:photo/photo.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 void main() {
   IjkConfig.isLog = true;
