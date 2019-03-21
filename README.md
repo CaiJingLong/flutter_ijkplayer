@@ -50,7 +50,7 @@ iOS 的代码来自于 https://github.com/jadennn/flutter_ijk 中的 iOS 代码
 
 ### Android
 
-现在使用 [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)中的 so 库
+现在使用 [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)中的 ex-so
 
 ## Simple Example
 
