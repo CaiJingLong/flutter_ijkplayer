@@ -1,6 +1,6 @@
 name: flutter_ijkplayer
 description: Flutter version of bilibilibili ijkplayer, supports common playback protocols, easy to use.
-version: 0.1.3
+version: 0.1.4
 author: caijinglong<cjl_spy@163.com>
 homepage: https://github.com/CaiJingLong/flutter_ijkplayer
 
