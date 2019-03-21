@@ -34,7 +34,7 @@ class IjkPlayer extends StatefulWidget {
   IjkPlayerState createState() => IjkPlayerState();
 }
 
-/// state of ijkplayer
+/// State of [IjkPlayer]
 class IjkPlayerState extends State<IjkPlayer> {
   /// see [IjkMediaController]
   IjkMediaController controller;
