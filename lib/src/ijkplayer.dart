@@ -3,16 +3,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_ijkplayer/src/video_info.dart';
-import 'package:flutter_ijkplayer/src/widget/ijkplayer_builder.dart';
 
-import './controller_builder.dart';
-import './error.dart';
+import 'error.dart';
 import 'logutil.dart';
+import 'video_info.dart';
+import 'widget/controller_widget_builder.dart';
+import 'widget/ijkplayer_builder.dart';
 
-part './controller.dart';
-part './manager.dart';
+part 'controller.dart';
+
 part 'ijk_event_channel.dart';
+
+part 'manager.dart';
 
 /// Main Classes of Library
 class IjkPlayer extends StatefulWidget {
@@ -23,7 +25,7 @@ class IjkPlayer extends StatefulWidget {
   /// Main Classes of Library
   const IjkPlayer({
     Key key,
-    this.mediaController,
+    @required this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
     this.playerBuilder = buildDefaultIjkPlayer,
   }) : super(key: key);

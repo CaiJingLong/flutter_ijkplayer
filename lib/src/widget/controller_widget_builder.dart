@@ -5,16 +5,43 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/logutil.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
+/// Using mediaController to Construct a Controller UI
+typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
+
+/// default create IJK Controller UI
+Widget defaultBuildIjkControllerWidget(IjkMediaController controller) {
+  return DefaultControllerWidget(
+    controller: controller,
+//    verticalGesture: false,
+//    horizontalGesture: false,
+  );
+}
+
 /// Default Controller Widget
 ///
-/// see [IjkPlayer] and []
+/// see [IjkPlayer] and [ControllerWidgetBuilder]
 class DefaultControllerWidget extends StatefulWidget {
   final IjkMediaController controller;
+
+  /// If [doubleTapPlay] is true, can double tap to play or pause media.
   final bool doubleTapPlay;
 
+  /// If [verticalGesture] is false, vertical gesture will be ignored.
+  final bool verticalGesture;
+
+  /// If [horizontalGesture] is false, horizontal gesture will be ignored.
+  final bool horizontalGesture;
+
+  /// Controlling [verticalGesture] is controlling system volume or media volume.
+  final VolumeType volumeType;
+
+  /// The UI of the controller.
   const DefaultControllerWidget({
-    this.controller,
+    @required this.controller,
     this.doubleTapPlay = false,
+    this.verticalGesture = true,
+    this.horizontalGesture = true,
+    this.volumeType = VolumeType.system,
   });
 
   @override
@@ -91,25 +118,14 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
       behavior: HitTestBehavior.opaque,
       child: buildContent(),
       onDoubleTap: onDoubleTap(),
-      onHorizontalDragStart: _onHorizontalDragStart,
-      onHorizontalDragUpdate: _onHorizontalDragUpdate,
-      onHorizontalDragEnd: _onHorizontalDragEnd,
-      onVerticalDragStart: _onVerticalDragStart,
-      onVerticalDragUpdate: _onVerticalDragUpdate,
-      onVerticalDragEnd: _onVerticalDragEnd,
+      onHorizontalDragStart: wrapHorizontalGesture(_onHorizontalDragStart),
+      onHorizontalDragUpdate: wrapHorizontalGesture(_onHorizontalDragUpdate),
+      onHorizontalDragEnd: wrapHorizontalGesture(_onHorizontalDragEnd),
+      onVerticalDragStart: wrapVerticalGesture(_onVerticalDragStart),
+      onVerticalDragUpdate: wrapVerticalGesture(_onVerticalDragUpdate),
+      onVerticalDragEnd: wrapVerticalGesture(_onVerticalDragEnd),
       onTap: onTap,
     );
-  }
-
-  onTap() => isShow = !isShow;
-
-  Function onDoubleTap() {
-    return widget.doubleTapPlay
-        ? () {
-            LogUtils.log("ondouble tap");
-            controller.playOrPause();
-          }
-        : null;
   }
 
   Widget buildContent() {
@@ -181,6 +197,23 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
 
   _ProgressCalculator _calculator;
 
+  onTap() => isShow = !isShow;
+
+  Function onDoubleTap() {
+    return widget.doubleTapPlay
+        ? () {
+            LogUtils.log("ondouble tap");
+            controller.playOrPause();
+          }
+        : null;
+  }
+
+  Function wrapHorizontalGesture(Function function) =>
+      widget.horizontalGesture == true ? function : null;
+
+  Function wrapVerticalGesture(Function function) =>
+      widget.verticalGesture == true ? function : null;
+
   void _onHorizontalDragStart(DragStartDetails details) async {
     var videoInfo = await controller.getVideoInfo();
     _calculator = _ProgressCalculator(details, videoInfo);
@@ -227,10 +260,12 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
 
   void _onVerticalDragUpdate(DragUpdateDetails details) async {
     if (details.delta.dy > 0) {
-      controller.volume--;
+      volumeDown();
     } else if (details.delta.dy < 0) {
-      controller.volume++;
+      volumeUp();
     }
+
+    var currentVolume = await getVolume();
 
     var column = Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -242,7 +277,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: Text(controller.volume.toString()),
+          child: Text(currentVolume.toString()),
         ),
       ],
     );
@@ -252,6 +287,42 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
 
   void _onVerticalDragEnd(DragEndDetails details) {
     hideTipWidget();
+  }
+
+  Future<int> getVolume() async {
+    switch (widget.volumeType) {
+      case VolumeType.media:
+        return controller.volume;
+      case VolumeType.system:
+        return controller.getSystemVolume();
+    }
+    return 0;
+  }
+
+  Future<void> volumeUp() async {
+    var volume = await getVolume();
+    volume++;
+    switch (widget.volumeType) {
+      case VolumeType.media:
+        controller.volume = volume;
+        break;
+      case VolumeType.system:
+        await IjkManager.systemVolumeUp();
+        break;
+    }
+  }
+
+  Future<void> volumeDown() async {
+    var volume = await getVolume();
+    volume--;
+    switch (widget.volumeType) {
+      case VolumeType.media:
+        controller.volume = volume;
+        break;
+      case VolumeType.system:
+        await IjkManager.systemVolumeDown();
+        break;
+    }
   }
 }
 
@@ -378,4 +449,9 @@ class PortraitController extends StatelessWidget {
       iconSize: 25.0,
     );
   }
+}
+
+enum VolumeType {
+  system,
+  media,
 }

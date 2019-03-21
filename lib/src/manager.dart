@@ -24,4 +24,12 @@ class IjkManager {
   static Future<int> getSystemVolume() async {
     return _globalChannel.invokeMethod("getSystemVolume");
   }
+
+  static Future<int> systemVolumeUp() async {
+    return _globalChannel.invokeMethod("volumeUp");
+  }
+
+  static Future<int> systemVolumeDown() async {
+    return _globalChannel.invokeMethod("volumeDown");
+  }
 }

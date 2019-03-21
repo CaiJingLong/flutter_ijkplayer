@@ -66,6 +66,7 @@ class HomePageState extends State<HomePage> {
             _buildPlayAssetButton(),
             _buildControllerButtons(),
             _buildVolumeBar(),
+            _buildSystemVolumeButton(),
           ],
         ),
       ),
@@ -219,6 +220,16 @@ class HomePageState extends State<HomePage> {
             controller.volume = targetVolume;
           },
         );
+      },
+    );
+  }
+
+  _buildSystemVolumeButton() {
+    return FlatButton(
+      child: Text("显示系统音量"),
+      onPressed: () async {
+        var systemVolume = await IjkManager.getSystemVolume();
+        print(systemVolume);
       },
     );
   }

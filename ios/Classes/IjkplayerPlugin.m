@@ -72,13 +72,28 @@ static IjkplayerPlugin *__sharedInstance;
             [self setSystemVolume:volume];
             result(@YES);
         } else if ([@"getSystemVolume" isEqualToString:call.method]) {
-            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-            CGFloat currentVol = audioSession.outputVolume * 100;
-            result(@((int) currentVol));
+            int currentVol = [self getSystemVolume];
+            result(@(currentVol));
+        } else if ([@"volumeUp" isEqualToString:call.method]) {
+            int currentVol = [self getSystemVolume];
+            [self setSystemVolume: currentVol - 10];
+            currentVol = [self getSystemVolume];
+            result(@(currentVol));
+        } else if ([@"volumeDown" isEqualToString:call.method]) {
+            int currentVol = [self getSystemVolume];
+            [self setSystemVolume: currentVol + 10];
+            currentVol = [self getSystemVolume];
+            result(@(currentVol));
         } else {
             result(FlutterMethodNotImplemented);
         }
     });
+}
+
+- (int) getSystemVolume{
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    CGFloat currentVol = audioSession.outputVolume * 100;
+    return (int)currentVol;
 }
 
 - (void)setSystemVolume:(int)volume {
@@ -98,11 +113,19 @@ static IjkplayerPlugin *__sharedInstance;
     UIWindow *window = UIApplication.sharedApplication.keyWindow;
     [window addSubview:volumeView];
 
+    if (targetVolume > 1){
+        targetVolume = 1;
+    } else if(targetVolume < 0){
+        targetVolume = 0;
+    }
+    
     // change system volume, the value is between 0.0f and 1.0f
     [volumeViewSlider setValue:targetVolume animated:NO];
 
     // send UI control event to make the change effect right now. 立即生效
     [volumeViewSlider sendActionsForControlEvents:UIControlEventTouchUpInside];
+    
+    [volumeView removeFromSuperview];
 }
 
 @end

@@ -2,7 +2,6 @@ package top.kikt.ijkplayer
 
 import android.content.Context
 import android.media.AudioManager
-import android.os.Build
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -51,26 +50,49 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
                 val volume = getSystemVolume()
                 result.success(volume)
             }
+            "volumeUp" -> {
+                this.volumeUp()
+                val volume = getSystemVolume()
+                result.success(volume)
+            }
+            "volumeDown" -> {
+                this.volumeDown()
+                val volume = getSystemVolume()
+                result.success(volume)
+            }
             else -> result.notImplemented()
         }
     }
 
     private fun getSystemVolume(): Int {
-        return audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
+        return (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat() / max * 100).toInt()
     }
 
     private fun setVolume(volume: Int) {
         audioManager.apply {
             val max = getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            val min = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                getStreamMinVolume(AudioManager.STREAM_MUSIC)
-            } else {
-                0
+
+            val step = 100.toFloat() / max.toFloat()
+
+            val current = getSystemVolume()
+
+            val progress = current * step
+
+            if (volume > progress) {
+                volumeDown()
+            } else if (volume < progress) {
+                volumeUp()
             }
-            val diff: Float = (max - min).toFloat()
-            val target: Int = ((min + diff) * volume).toInt()
-            setStreamVolume(AudioManager.STREAM_MUSIC, target, 0)
         }
+    }
+
+    private fun volumeUp() {
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND)
+    }
+
+    private fun volumeDown() {
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
     }
 
     private val audioManager: AudioManager

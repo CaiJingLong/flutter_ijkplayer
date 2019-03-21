@@ -256,7 +256,7 @@ Future<int> _createIjk() async {
 class _IjkPlugin {
   MethodChannel get channel => MethodChannel("top.kikt/ijkplayer/$textureId");
 
-  ///
+  /// texture id
   int textureId;
 
   _IjkPlugin(this.textureId);
