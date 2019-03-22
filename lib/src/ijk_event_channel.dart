@@ -72,10 +72,19 @@ class _IJKEventChannel {
     return _prepareCompleter.future;
   }
 
-  void autoPlay(IjkMediaController ijkMediaController) async {
+  autoPlay(IjkMediaController ijkMediaController) async {
     try {
       await waitPrepare();
       ijkMediaController.play();
+    } catch (e) {
+      LogUtils.log(e);
+    }
+  }
+
+  disableAutoPlay(IjkMediaController ijkMediaController) async {
+    try {
+      await waitPrepare();
+      ijkMediaController.pause();
     } catch (e) {
       LogUtils.log(e);
     }

@@ -427,7 +427,7 @@ class PortraitController extends StatelessWidget {
   }
 
   Widget buildProgress(VideoInfo info) {
-    if (info.duration == 0) {
+    if (!info.hasData || info.duration == 0) {
       return Container();
     }
     return Container(

@@ -5,7 +5,9 @@ class IjkMediaController {
   /// MediaController
   IjkMediaController({
     this.autoRotate = true,
-  });
+  }) {
+    IjkMediaPlayerManager().add(this);
+  }
 
   /// texture id from native
   int _textureId;
@@ -113,6 +115,8 @@ class IjkMediaController {
     _videoInfoController = null;
     _textureIdController = null;
     _volumeController = null;
+
+    IjkMediaPlayerManager().remove(this);
   }
 
   /// dispose all resource
@@ -163,7 +167,7 @@ class IjkMediaController {
         await setFileDataSource(source._file, autoPlay: autoPlay);
         break;
       case DataSourceType.network:
-        await setNetworkDataSource(source._netWorkUrl);
+        await setNetworkDataSource(source._netWorkUrl, autoPlay: autoPlay);
         break;
       default:
     }
@@ -195,13 +199,15 @@ class IjkMediaController {
   }
 
   /// Play or pause according to your current status
-  Future<void> playOrPause() async {
+  Future<void> playOrPause({
+    pauseOther = false,
+  }) async {
     var videoInfo = await getVideoInfo();
     var playing = videoInfo.isPlaying;
     if (playing) {
       await _plugin?.pause();
     } else {
-      await _plugin?.play();
+      await _plugin?.play(pauseOther: pauseOther);
     }
     refreshVideoInfo();
   }
@@ -252,6 +258,8 @@ class IjkMediaController {
   void _autoPlay(bool autoPlay) {
     if (autoPlay) {
       eventChannel?.autoPlay(this);
+    } else {
+      eventChannel?.disableAutoPlay(this);
     }
   }
 
@@ -278,6 +286,10 @@ class IjkMediaController {
   Future<void> setSystemVolume(int volume) async {
     await IjkManager.setSystemVolume(volume);
   }
+
+  Future<void> pauseOtherIjkMedia() async {
+    await IjkMediaPlayerManager().pauseOther(this);
+  }
 }
 
 /// about channel
@@ -300,7 +312,7 @@ class _IjkPlugin {
     await _globalChannel.invokeMethod("dispose", {"id": textureId});
   }
 
-  Future<void> play() async {
+  Future<void> play({bool pauseOther = false}) async {
     await channel.invokeMethod("play");
   }
 
