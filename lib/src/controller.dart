@@ -146,6 +146,29 @@ class IjkMediaController {
     }, autoPlay);
   }
 
+  /// Set datasource with [DataSource]
+  Future<void> setDataSource(
+    DataSource source, {
+    bool autoPlay = false,
+  }) async {
+    switch (source.type) {
+      case DataSourceType.asset:
+        await setAssetDataSource(
+          source._assetName,
+          package: source._assetPackage,
+          autoPlay: autoPlay,
+        );
+        break;
+      case DataSourceType.file:
+        await setFileDataSource(source._file, autoPlay: autoPlay);
+        break;
+      case DataSourceType.network:
+        await setNetworkDataSource(source._netWorkUrl);
+        break;
+      default:
+    }
+  }
+
   /// set file DataSource
   Future<void> setFileDataSource(
     File file, {
@@ -335,4 +358,51 @@ class _IjkPlugin {
       "volume": volume,
     });
   }
+}
+
+/// Entity classe for data sources.
+class DataSource {
+  /// See [DataSourceType]
+  DataSourceType type;
+
+  File _file;
+
+  String _assetName;
+
+  String _assetPackage;
+
+  String _netWorkUrl;
+
+  DataSource._();
+
+  /// Create file datasource
+  factory DataSource.file(File file) {
+    var ds = DataSource._();
+    ds._file = file;
+    ds.type = DataSourceType.file;
+    return ds;
+  }
+
+  /// Create network datasource
+  factory DataSource.network(String url) {
+    var ds = DataSource._();
+    ds._netWorkUrl = url;
+    ds.type = DataSourceType.file;
+    return ds;
+  }
+
+  /// Create asset datasource
+  factory DataSource.asset(String assetName, {String package}) {
+    var ds = DataSource._();
+    ds._assetName = assetName;
+    ds._assetPackage = package;
+    ds.type = DataSourceType.asset;
+    return ds;
+  }
+}
+
+enum DataSourceType {
+  network,
+  file,
+  asset,
 }

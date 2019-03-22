@@ -127,6 +127,16 @@ IjkMediaController controller = IjkMediaController();
   );
 ```
 
+### about dispose
+
+Users need to call `dispose` method to release resources when they decide that they will no longer use controllers. If they do not call `dispose` method, the resources will not be released.
+
+Since a `controller` may be attached by multiple `IjkPlayers`, leading to a `controller` controlling multiple `IjkPlayers`, it is not in principle possible to agree with `dispose`of `IjkPlayer`, so the caller needs to dispose of itself here.
+
+```dart
+controller.dispose();
+```
+
 ### Usage of controller
 
 #### DataSource
@@ -140,6 +150,13 @@ await controller.setAssetDataSource("assets/test.mp4");
 
 // file
 await controller.setFileDataSource(File("/sdcard/1.mp4"));
+
+// dataSource
+var dataSource = DataSource.file(File("/sdcard/1.mp4"));
+var dataSource = DataSource.network("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4");
+var dataSource = DataSource.asset("assets/test.mp4");
+await controller.setDataSource(dataSource);
+
 
 // autoplay param
 await controller.setNetworkDataSource("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4",autoPlay : true);
