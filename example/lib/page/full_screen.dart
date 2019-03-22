@@ -10,14 +10,14 @@ class _FullScreenState extends State<FullScreen> {
   var controller = IjkMediaController();
 
   Orientation get orientation => MediaQuery.of(context).orientation;
+  DataSource source = DataSource.network(
+    "https://www.sample-videos.com/video123/mp4/360/big_buck_bunny_360p_30mb.mp4",
+  );
 
   @override
   void initState() {
     super.initState();
-    controller.setNetworkDataSource(
-      "https://www.sample-videos.com/video123/mp4/360/big_buck_bunny_360p_30mb.mp4",
-      autoPlay: true,
-    );
+    controller.setDataSource(source, autoPlay: true);
   }
 
   @override

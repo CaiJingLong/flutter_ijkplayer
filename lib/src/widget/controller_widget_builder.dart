@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/logutil.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
@@ -49,7 +51,8 @@ class DefaultControllerWidget extends StatefulWidget {
       _DefaultControllerWidgetState();
 }
 
-class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
+class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
+    implements TooltipDelegate {
   IjkMediaController get controller => widget.controller;
 
   bool _isShow = true;
@@ -148,12 +151,13 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
     return PortraitController(
       controller: controller,
       info: info,
+      tooltipDelegate: this,
     );
   }
 
   OverlayEntry _tipOverlay;
 
-  Widget createTipWidgetWrapper(Widget widget) {
+  Widget createTooltipWidgetWrapper(Widget widget) {
     var typography = Typography(platform: TargetPlatform.android);
     var theme = typography.white;
     const style = const TextStyle(
@@ -176,8 +180,8 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
     );
   }
 
-  void showTipWidget(Widget widget) {
-    hideTipWidget();
+  void showTooltip(Widget widget) {
+    hideTooltip();
     _tipOverlay = OverlayEntry(
       builder: (BuildContext context) {
         return IgnorePointer(
@@ -190,7 +194,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
     Overlay.of(context).insert(_tipOverlay);
   }
 
-  void hideTipWidget() {
+  void hideTooltip() {
     _tipOverlay?.remove();
     _tipOverlay = null;
   }
@@ -244,11 +248,11 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
       ],
     );
 
-    showTipWidget(createTipWidgetWrapper(w));
+    showTooltip(createTooltipWidgetWrapper(w));
   }
 
   void _onHorizontalDragEnd(DragEndDetails details) async {
-    hideTipWidget();
+    hideTooltip();
     var targetSeek = _calculator.getTargetSeek(details);
     _calculator = null;
     await controller.seekTo(targetSeek);
@@ -282,11 +286,11 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget> {
       ],
     );
 
-    showTipWidget(createTipWidgetWrapper(column));
+    showTooltip(createTooltipWidgetWrapper(column));
   }
 
   void _onVerticalDragEnd(DragEndDetails details) {
-    hideTipWidget();
+    hideTooltip();
   }
 
   Future<int> getVolume() async {
@@ -356,31 +360,28 @@ class _ProgressCalculator {
   }
 }
 
-String _getTimeText(double durationSecond) {
-  var duration = Duration(milliseconds: ((durationSecond ?? 0) * 1000).toInt());
-  var minute = (duration.inMinutes % 60).toString().padLeft(2, "0");
-  var second = (duration.inSeconds % 60).toString().padLeft(2, "0");
-  var text = "$minute:$second";
-//  LogUtils.log("$durationSecond = $text");
-  return text;
-}
-
 class PortraitController extends StatelessWidget {
   final IjkMediaController controller;
   final VideoInfo info;
+  final TooltipDelegate tooltipDelegate;
 
   const PortraitController({
     Key key,
     this.controller,
     this.info,
+    this.tooltipDelegate,
   }) : super(key: key);
+
+  bool get haveTime {
+    return info.hasData && info.duration > 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     if (!info.hasData) {
       return Container();
     }
-    Widget bottomBar = buildBottomBar();
+    Widget bottomBar = buildBottomBar(context);
     return Column(
       children: <Widget>[
         Expanded(
@@ -391,16 +392,12 @@ class PortraitController extends StatelessWidget {
     );
   }
 
-  Widget buildBottomBar() {
-    var currentTime = Text(
-      _getTimeText(info.currentPosition),
-    );
-    var maxTime = Text(
-      _getTimeText(info.duration),
-    );
+  Widget buildBottomBar(BuildContext context) {
+    var currentTime = buildCurrentText();
+    var maxTime = buildMaxTimeText();
     var progress = buildProgress(info);
 
-    var playButton = buildPlayButton();
+    var playButton = buildPlayButton(context);
 
     Widget widget = Row(
       children: <Widget>[
@@ -440,13 +437,32 @@ class PortraitController extends StatelessWidget {
         max: info.duration,
         changeProgressHandler: (progress) async {
           await controller.seekToProgress(progress);
+          tooltipDelegate?.hideTooltip();
         },
-        tapProgressHandler: (progress) {},
+        tapProgressHandler: (progress) {
+          showProgressTooltip(info, progress);
+        },
       ),
     );
   }
 
-  buildPlayButton() {
+  buildCurrentText() {
+    return haveTime
+        ? Text(
+            TimeHelper.getTimeText(info.currentPosition),
+          )
+        : Container();
+  }
+
+  buildMaxTimeText() {
+    return haveTime
+        ? Text(
+            TimeHelper.getTimeText(info.duration),
+          )
+        : Container();
+  }
+
+  buildPlayButton(BuildContext context) {
     return IconButton(
       onPressed: () {
         controller.playOrPause();
@@ -456,6 +472,51 @@ class PortraitController extends StatelessWidget {
       iconSize: 25.0,
     );
   }
+
+  void showProgressTooltip(VideoInfo info, double progress) {
+    var target = info.duration * progress;
+
+    var diff = info.currentPosition - target;
+
+    String diffString;
+    if (diff < 1 && diff > -1) {
+      diffString = "0s";
+    } else if (diff < 0) {
+      diffString = "+${TimeHelper.getTimeText(diff.abs())}";
+    } else if (diff > 0) {
+      diffString = "-${TimeHelper.getTimeText(diff.abs())}";
+    } else {
+      diffString = "0s";
+    }
+
+    Widget text = Container(
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            TimeHelper.getTimeText(target),
+            style: TextStyle(fontSize: 20),
+          ),
+          Container(
+            height: 10,
+          ),
+          Text(diffString),
+        ],
+      ),
+    );
+
+    var tooltip = tooltipDelegate?.createTooltipWidgetWrapper(text);
+    tooltipDelegate?.showTooltip(tooltip);
+  }
+}
+
+abstract class TooltipDelegate {
+  void showTooltip(Widget widget);
+
+  Widget createTooltipWidgetWrapper(Widget widget);
+
+  void hideTooltip();
 }
 
 enum VolumeType {

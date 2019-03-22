@@ -36,12 +36,21 @@ class ProgressBar extends StatefulWidget {
 class _ProgressBarState extends State<ProgressBar> {
   GlobalKey _progressKey = GlobalKey();
 
+  double tempLeft;
+
+  double get left {
+    var l = widget.current / widget.max;
+    if (tempLeft != null) {
+      return tempLeft;
+    }
+    return l;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.max == null || widget.current == null || widget.max == 0)
       return _buildEmpty();
 
-    var left = widget.current / widget.max;
     var mid = (widget.buffered ?? 0) / widget.max - left;
     if (mid < 0) {
       mid = 0;
@@ -58,6 +67,7 @@ class _ProgressBarState extends State<ProgressBar> {
         behavior: HitTestBehavior.translucent,
         onPanUpdate: _onPanUpdate,
         onHorizontalDragUpdate: _onHorizontalDragUpdate,
+        onHorizontalDragEnd: _onHorizontalDragEnd,
         onTapDown: _onTapDown,
         onTapUp: _onTapUp,
       );
@@ -126,6 +136,9 @@ class _ProgressBarState extends State<ProgressBar> {
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
     var progress = getProgress(details.globalPosition);
+    setState(() {
+      tempLeft = progress;
+    });
     widget.tapProgressHandler(progress);
   }
 
@@ -146,5 +159,12 @@ class _ProgressBarState extends State<ProgressBar> {
       _progressKey,
       globalPosition,
     );
+  }
+
+  void _onHorizontalDragEnd(DragEndDetails details) {
+    if (tempLeft != null) {
+      widget.changeProgressHandler(tempLeft);
+      tempLeft = null;
+    }
   }
 }

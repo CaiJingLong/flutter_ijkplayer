@@ -79,7 +79,11 @@ class IjkPlayerState extends State<IjkPlayer> {
         controllerWidget,
       ],
     );
-    return stack;
+//    return stack;
+    return Material(
+      child: stack,
+      color: Colors.black,
+    );
   }
 
   Widget _buildTexture(int id, VideoInfo info) {

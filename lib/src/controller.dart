@@ -375,7 +375,7 @@ class DataSource {
 
   DataSource._();
 
-  /// Create file datasource
+  /// Create file data source
   factory DataSource.file(File file) {
     var ds = DataSource._();
     ds._file = file;
@@ -383,15 +383,15 @@ class DataSource {
     return ds;
   }
 
-  /// Create network datasource
+  /// Create network data source
   factory DataSource.network(String url) {
     var ds = DataSource._();
     ds._netWorkUrl = url;
-    ds.type = DataSourceType.file;
+    ds.type = DataSourceType.network;
     return ds;
   }
 
-  /// Create asset datasource
+  /// Create asset data source
   factory DataSource.asset(String assetName, {String package}) {
     var ds = DataSource._();
     ds._assetName = assetName;
