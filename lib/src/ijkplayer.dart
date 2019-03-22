@@ -9,6 +9,7 @@ import 'logutil.dart';
 import 'video_info.dart';
 import 'widget/controller_widget_builder.dart';
 import 'widget/ijkplayer_builder.dart';
+import 'engine/ijk_controller_manager.dart';
 
 part 'controller.dart';
 
@@ -19,7 +20,11 @@ part 'manager.dart';
 /// Main Classes of Library
 class IjkPlayer extends StatefulWidget {
   final IjkMediaController mediaController;
+
+  /// See [DefaultControllerWidget]
   final ControllerWidgetBuilder controllerWidgetBuilder;
+
+  /// See [buildDefaultIjkPlayer]
   final PlayerBuilder playerBuilder;
 
   /// Main Classes of Library
@@ -79,7 +84,11 @@ class IjkPlayerState extends State<IjkPlayer> {
         controllerWidget,
       ],
     );
-    return stack;
+//    return stack;
+    return Material(
+      child: stack,
+      color: Colors.black,
+    );
   }
 
   Widget _buildTexture(int id, VideoInfo info) {

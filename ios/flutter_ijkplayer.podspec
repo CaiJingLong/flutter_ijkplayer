@@ -18,7 +18,10 @@ A new flutter plugin project.
 
   s.ios.deployment_target = '8.0'
 
-  s.dependency 'FlutterIJK', '~> 0.0.6'
+  # s.ios.vendored_frameworks = 'IJKMediaFramework.framework'
+  # s.frameworks  = "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "CoreVideo", "MobileCoreServices", "OpenGLES", "QuartzCore", "VideoToolbox", "Foundation", "UIKit", "MediaPlayer"
+  # s.libraries   = "bz2", "z", "stdc++"
+  s.dependency 'FlutterIJK', '~> 0.0.7'
 
 end
 

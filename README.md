@@ -140,6 +140,16 @@ IjkMediaController controller = IjkMediaController();
   );
 ```
 
+### 关于销毁
+
+用户在确定不再使用 controller 时,需要自己调用 dispose 方法以释放资源,如果不调用,则会造成资源无法释放
+
+因为一个`controller`可能被多个`IjkPlayer`附着, 导致一个`controller`同时控制多个`IjkPlayer`,所以原则上不能与`IjkPlayer`的`dispose`达成一致,所以这里需要调用者自行 dispose
+
+```dart
+controller.dispose();
+```
+
 ### 控制器的使用
 
 #### 设置资源
@@ -155,6 +165,12 @@ await controller.setAssetDataSource("assets/test.mp4");
 
 // 文件
 await controller.setFileDataSource(File("/sdcard/1.mp4"));
+
+// 通过数据源的方式
+var dataSource = DataSource.file(File("/sdcard/1.mp4"));
+var dataSource = DataSource.network("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4");
+var dataSource = DataSource.asset("assets/test.mp4");
+await controller.setDataSource(dataSource);
 
 // 还可以添加autoplay参数,这样会在资源准备完成后自动播放
 await controller.setNetworkDataSource("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4",autoPlay : true);
