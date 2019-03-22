@@ -207,13 +207,21 @@ class IjkMediaController {
     if (playing) {
       await _plugin?.pause();
     } else {
-      await _plugin?.play(pauseOther: pauseOther);
+      if (pauseOther) {
+        await pauseOtherController();
+      }
+      await _plugin?.play();
     }
     refreshVideoInfo();
   }
 
   /// play media
-  Future<void> play() async {
+  Future<void> play({
+    pauseOther = false,
+  }) async {
+    if (pauseOther) {
+      await pauseOtherController();
+    }
     await _plugin?.play();
     refreshVideoInfo();
   }
@@ -287,7 +295,7 @@ class IjkMediaController {
     await IjkManager.setSystemVolume(volume);
   }
 
-  Future<void> pauseOtherIjkMedia() async {
+  Future<void> pauseOtherController() async {
     await IjkMediaPlayerManager().pauseOther(this);
   }
 }
@@ -312,7 +320,7 @@ class _IjkPlugin {
     await _globalChannel.invokeMethod("dispose", {"id": textureId});
   }
 
-  Future<void> play({bool pauseOther = false}) async {
+  Future<void> play() async {
     await channel.invokeMethod("play");
   }
 

@@ -37,6 +37,8 @@ class DefaultControllerWidget extends StatefulWidget {
   /// Controlling [verticalGesture] is controlling system volume or media volume.
   final VolumeType volumeType;
 
+  final bool playWillPauseOther;
+
   /// The UI of the controller.
   const DefaultControllerWidget({
     @required this.controller,
@@ -44,6 +46,7 @@ class DefaultControllerWidget extends StatefulWidget {
     this.verticalGesture = true,
     this.horizontalGesture = true,
     this.volumeType = VolumeType.system,
+    this.playWillPauseOther = true,
   });
 
   @override
@@ -152,6 +155,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
       controller: controller,
       info: info,
       tooltipDelegate: this,
+      playWillPauseOther: widget.playWillPauseOther,
     );
   }
 
@@ -364,12 +368,14 @@ class PortraitController extends StatelessWidget {
   final IjkMediaController controller;
   final VideoInfo info;
   final TooltipDelegate tooltipDelegate;
+  final bool playWillPauseOther;
 
   const PortraitController({
     Key key,
     this.controller,
     this.info,
     this.tooltipDelegate,
+    this.playWillPauseOther = true,
   }) : super(key: key);
 
   bool get haveTime {
@@ -465,7 +471,7 @@ class PortraitController extends StatelessWidget {
   buildPlayButton(BuildContext context) {
     return IconButton(
       onPressed: () {
-        controller.playOrPause();
+        controller.playOrPause(pauseOther: playWillPauseOther);
       },
       color: Colors.white,
       icon: Icon(info.isPlaying ? Icons.pause : Icons.play_arrow),

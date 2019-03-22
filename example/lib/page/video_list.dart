@@ -55,9 +55,9 @@ class _VideoListState extends State<VideoList> {
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    return Container(
+    return AspectRatio(
       child: VideoItem(list[index]),
-      height: 150,
+      aspectRatio: 1280 / 500,
     );
   }
 }
@@ -132,7 +132,7 @@ class _VideoItemState extends State<VideoItem> {
       isLoading = true;
     });
     await controller.setDataSource(widget.dataSource, autoPlay: true);
-    await controller.pauseOtherIjkMedia();
+    await controller.pauseOtherController();
     setState(() {
       isLoading = false;
       isInit = true;

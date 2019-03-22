@@ -21,18 +21,10 @@ class IjkMediaPlayerManager {
   }
 
   Future<void> pauseOther(IjkMediaController ijkMediaController) async {
-    await todoOther(ijkMediaController, (ctl) {
-      ctl.pause();
-    });
-  }
-
-  Future<void> todoOther(
-    IjkMediaController ijkMediaController,
-    Future<void> todo(IjkMediaController ijkMediaController),
-  ) async {
-    for (var item in ijkPlayerList) {
-      if (item != ijkMediaController) {
-        await todo(item);
+    for (var ctl in this.ijkPlayerList) {
+      if (ctl != ijkMediaController) {
+        print("ctl ${ctl.textureId} will pause");
+        ctl.pause();
       }
     }
   }
