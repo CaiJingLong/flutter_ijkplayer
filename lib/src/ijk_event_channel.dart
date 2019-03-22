@@ -77,7 +77,7 @@ class _IJKEventChannel {
       await waitPrepare();
       ijkMediaController.play();
     } catch (e) {
-      LogUtils.log(e);
+      LogUtils.verbose(e);
     }
   }
 
@@ -86,13 +86,13 @@ class _IJKEventChannel {
       await waitPrepare();
       ijkMediaController.pause();
     } catch (e) {
-      LogUtils.log(e);
+      LogUtils.verbose(e);
     }
   }
 
   void onRotateChanged(MethodCall call) {
     var info = getInfo(call);
-    LogUtils.log("onRotateChanged , info = $info");
+    LogUtils.verbose("onRotateChanged , info = $info");
   }
 }
 

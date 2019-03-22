@@ -82,7 +82,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
   }
 
   void _onTextIdChange(int textId) {
-    LogUtils.log("onTextChange");
+    LogUtils.verbose("onTextChange");
     if (textId != null) {
       startTimer();
     } else {
@@ -109,7 +109,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
 
     progressTimer?.cancel();
     progressTimer = Timer.periodic(Duration(milliseconds: 400), (timer) {
-      LogUtils.log("will refresh info");
+      LogUtils.verbose("will refresh info");
       controller.refreshVideoInfo();
     });
   }
@@ -210,7 +210,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
   Function onDoubleTap() {
     return widget.doubleTapPlay
         ? () {
-            LogUtils.log("ondouble tap");
+            LogUtils.verbose("ondouble tap");
             controller.playOrPause();
           }
         : null;
@@ -290,7 +290,9 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
       ],
     );
 
-    showTooltip(createTooltipWidgetWrapper(column));
+    if (widget.volumeType != VolumeType.system) {
+      showTooltip(createTooltipWidgetWrapper(column));
+    }
   }
 
   void _onVerticalDragEnd(DragEndDetails details) {

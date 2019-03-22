@@ -1,4 +1,5 @@
 import 'package:flutter_ijkplayer/src/ijkplayer.dart';
+import 'package:flutter_ijkplayer/src/logutil.dart';
 
 class IjkMediaPlayerManager {
   final ijkPlayerList = <IjkMediaController>[];
@@ -23,7 +24,7 @@ class IjkMediaPlayerManager {
   Future<void> pauseOther(IjkMediaController ijkMediaController) async {
     for (var ctl in this.ijkPlayerList) {
       if (ctl != ijkMediaController) {
-        print("ctl ${ctl.textureId} will pause");
+        LogUtils.verbose("ctl ${ctl.textureId} will pause");
         ctl.pause();
       }
     }

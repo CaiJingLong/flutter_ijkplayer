@@ -98,8 +98,8 @@ class IjkMediaController {
       await eventChannel.init();
       volume = 100;
     } catch (e) {
-      LogUtils.log(e);
-      LogUtils.log("初始化失败");
+      LogUtils.verbose(e);
+      LogUtils.verbose("初始化失败");
     }
   }
 
@@ -259,7 +259,7 @@ class IjkMediaController {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
     if (info.hasData) _videoInfoController?.add(info);
-    LogUtils.log("info = $info");
+    LogUtils.verbose("info = $info");
   }
 
   /// AutoPlay use
@@ -333,12 +333,12 @@ class _IjkPlugin {
   }
 
   Future<void> setNetworkDataSource({String uri}) async {
-    LogUtils.log("id = $textureId net uri = $uri");
+    LogUtils.verbose("id = $textureId net uri = $uri");
     await channel.invokeMethod("setNetworkDataSource", {"uri": uri});
   }
 
   Future<void> setAssetDataSource(String name, String package) async {
-    LogUtils.log("id = $textureId asset name = $name package = $package");
+    LogUtils.verbose("id = $textureId asset name = $name package = $package");
     var params = <String, dynamic>{
       "name": name,
     };
@@ -355,7 +355,7 @@ class _IjkPlugin {
     await channel.invokeMethod("setFileDataSource", <String, dynamic>{
       "path": path,
     });
-    LogUtils.log("id = $textureId file path = $path");
+    LogUtils.verbose("id = $textureId file path = $path");
   }
 
   Future<Map<String, dynamic>> getInfo() async {
