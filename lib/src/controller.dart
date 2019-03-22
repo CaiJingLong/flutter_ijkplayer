@@ -203,6 +203,13 @@ class IjkMediaController {
     refreshVideoInfo();
   }
 
+  Future<void> seekToProgress(double progress) async {
+    var videoInfo = await getVideoInfo();
+    var target = videoInfo.duration * progress;
+    await this.seekTo(target);
+    refreshVideoInfo();
+  }
+
   /// get video info from native
   Future<VideoInfo> getVideoInfo() async {
     Map<String, dynamic> result = await _plugin?.getInfo();

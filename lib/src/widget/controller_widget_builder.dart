@@ -430,11 +430,18 @@ class PortraitController extends StatelessWidget {
   }
 
   Widget buildProgress(VideoInfo info) {
+    if (info.duration == 0) {
+      return Container();
+    }
     return Container(
-      height: 5,
+      height: 22,
       child: ProgressBar(
         current: info.currentPosition,
         max: info.duration,
+        changeProgressHandler: (progress) async {
+          await controller.seekToProgress(progress);
+        },
+        tapProgressHandler: (progress) {},
       ),
     );
   }

@@ -77,6 +77,9 @@ class _PlayGalleryPageState extends State<PlayGalleryPage> {
 
   void _playVideo() async {
     if (this.file != null && this.file.existsSync())
-      await mediaController.setFileDataSource(file, autoPlay: true);
+      await mediaController.setFileDataSource(
+        file,
+        autoPlay: true,
+      );
   }
 }
