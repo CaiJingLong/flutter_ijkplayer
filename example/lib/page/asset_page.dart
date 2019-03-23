@@ -28,10 +28,19 @@ class _AssetPageState extends State<AssetPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.play_arrow),
         onPressed: () async {
-          await controller.setAssetDataSource("assets/sample1.mp4");
-          await controller.play();
+          await controller.setAssetDataSource(
+            "assets/sample1.mp4",
+            autoPlay: true,
+          );
+          await controller.pause();
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 }

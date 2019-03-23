@@ -72,27 +72,27 @@ class _IJKEventChannel {
     return _prepareCompleter.future;
   }
 
-  autoPlay(IjkMediaController ijkMediaController) async {
+  Future<void> autoPlay(IjkMediaController ijkMediaController) async {
     try {
       await waitPrepare();
-      ijkMediaController.play();
+      await ijkMediaController.play();
     } catch (e) {
-      LogUtils.verbose(e);
+      LogUtils.info(e);
     }
   }
 
-  disableAutoPlay(IjkMediaController ijkMediaController) async {
+  Future<void> disableAutoPlay(IjkMediaController ijkMediaController) async {
     try {
       await waitPrepare();
-      ijkMediaController.pause();
+      await ijkMediaController.pause();
     } catch (e) {
-      LogUtils.verbose(e);
+      LogUtils.info(e);
     }
   }
 
   void onRotateChanged(MethodCall call) {
     var info = getInfo(call);
-    LogUtils.verbose("onRotateChanged , info = $info");
+    LogUtils.debug("onRotateChanged , info = $info");
   }
 }
 

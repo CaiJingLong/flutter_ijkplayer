@@ -6,8 +6,12 @@ class IjkMediaController {
   IjkMediaController({
     this.autoRotate = true,
   }) {
-    IjkMediaPlayerManager().add(this);
+    index = IjkMediaPlayerManager().add(this);
   }
+
+  int index;
+
+  String get debugLabel => index.toString();
 
   /// texture id from native
   int _textureId;
@@ -98,8 +102,8 @@ class IjkMediaController {
       await eventChannel.init();
       volume = 100;
     } catch (e) {
-      LogUtils.verbose(e);
-      LogUtils.verbose("初始化失败");
+      LogUtils.warning(e);
+      LogUtils.warning("初始化失败");
     }
   }
 
@@ -132,10 +136,14 @@ class IjkMediaController {
   /// set net DataSource
   Future<void> setNetworkDataSource(
     String url, {
+    Map<String, String> headers = const {},
     bool autoPlay = false,
   }) async {
     await _initDataSource(() async {
-      await _plugin?.setNetworkDataSource(uri: url);
+      await _plugin?.setNetworkDataSource(
+        uri: url,
+        headers: headers,
+      );
     }, autoPlay);
   }
 
@@ -155,7 +163,7 @@ class IjkMediaController {
     DataSource source, {
     bool autoPlay = false,
   }) async {
-    switch (source.type) {
+    switch (source._type) {
       case DataSourceType.asset:
         await setAssetDataSource(
           source._assetName,
@@ -164,10 +172,17 @@ class IjkMediaController {
         );
         break;
       case DataSourceType.file:
-        await setFileDataSource(source._file, autoPlay: autoPlay);
+        await setFileDataSource(
+          source._file,
+          autoPlay: autoPlay,
+        );
         break;
       case DataSourceType.network:
-        await setNetworkDataSource(source._netWorkUrl, autoPlay: autoPlay);
+        await setNetworkDataSource(
+          source._netWorkUrl,
+          headers: source._headers,
+          autoPlay: autoPlay,
+        );
         break;
       default:
     }
@@ -194,8 +209,9 @@ class IjkMediaController {
       await _plugin?.dispose();
     }
     await _initIjk();
-    _autoPlay(autoPlay);
+    Future playFuture = _autoPlay(autoPlay);
     await setDataSource();
+    return playFuture;
   }
 
   /// Play or pause according to your current status
@@ -205,14 +221,10 @@ class IjkMediaController {
     var videoInfo = await getVideoInfo();
     var playing = videoInfo.isPlaying;
     if (playing) {
-      await _plugin?.pause();
+      await pause();
     } else {
-      if (pauseOther) {
-        await pauseOtherController();
-      }
-      await _plugin?.play();
+      await play(pauseOther: pauseOther);
     }
-    refreshVideoInfo();
   }
 
   /// play media
@@ -222,12 +234,14 @@ class IjkMediaController {
     if (pauseOther) {
       await pauseOtherController();
     }
+    LogUtils.info("$this play");
     await _plugin?.play();
     refreshVideoInfo();
   }
 
   /// pause media
   Future<void> pause() async {
+    LogUtils.info("$this pause");
     await _plugin?.pause();
     refreshVideoInfo();
   }
@@ -240,6 +254,7 @@ class IjkMediaController {
     refreshVideoInfo();
   }
 
+  /// seek to progress
   Future<void> seekToProgress(double progress) async {
     var videoInfo = await getVideoInfo();
     var target = videoInfo.duration * progress;
@@ -258,16 +273,18 @@ class IjkMediaController {
   Future<void> refreshVideoInfo() async {
     var info = await getVideoInfo();
     isPlaying = info.isPlaying;
-    if (info.hasData) _videoInfoController?.add(info);
-    LogUtils.verbose("info = $info");
+    if (info.hasData) {
+      _videoInfoController?.add(info);
+      LogUtils.verbose("onrefreshInfo = $info");
+    }
   }
 
   /// AutoPlay use
-  void _autoPlay(bool autoPlay) {
+  Future<void> _autoPlay(bool autoPlay) async {
     if (autoPlay) {
-      eventChannel?.autoPlay(this);
+      await eventChannel?.autoPlay(this);
     } else {
-      eventChannel?.disableAutoPlay(this);
+      await eventChannel?.disableAutoPlay(this);
     }
   }
 
@@ -297,6 +314,11 @@ class IjkMediaController {
 
   Future<void> pauseOtherController() async {
     await IjkMediaPlayerManager().pauseOther(this);
+  }
+
+  @override
+  String toString() {
+    return "IJKController[$index]";
   }
 }
 
@@ -332,13 +354,17 @@ class _IjkPlugin {
     await channel.invokeMethod("stop");
   }
 
-  Future<void> setNetworkDataSource({String uri}) async {
-    LogUtils.verbose("id = $textureId net uri = $uri");
-    await channel.invokeMethod("setNetworkDataSource", {"uri": uri});
+  Future<void> setNetworkDataSource(
+      {String uri, Map<String, String> headers = const {}}) async {
+    LogUtils.debug("id = $textureId net uri = $uri ,headers = $headers");
+    await channel.invokeMethod("setNetworkDataSource", <String, dynamic>{
+      "uri": uri,
+      "headers": headers,
+    });
   }
 
   Future<void> setAssetDataSource(String name, String package) async {
-    LogUtils.verbose("id = $textureId asset name = $name package = $package");
+    LogUtils.debug("id = $textureId asset name = $name package = $package");
     var params = <String, dynamic>{
       "name": name,
     };
@@ -355,7 +381,7 @@ class _IjkPlugin {
     await channel.invokeMethod("setFileDataSource", <String, dynamic>{
       "path": path,
     });
-    LogUtils.verbose("id = $textureId file path = $path");
+    LogUtils.debug("id = $textureId file path = $path");
   }
 
   Future<Map<String, dynamic>> getInfo() async {
@@ -383,7 +409,7 @@ class _IjkPlugin {
 /// Entity classe for data sources.
 class DataSource {
   /// See [DataSourceType]
-  DataSourceType type;
+  DataSourceType _type;
 
   File _file;
 
@@ -393,21 +419,25 @@ class DataSource {
 
   String _netWorkUrl;
 
+  Map<String, String> _headers;
+
   DataSource._();
 
   /// Create file data source
   factory DataSource.file(File file) {
     var ds = DataSource._();
     ds._file = file;
-    ds.type = DataSourceType.file;
+    ds._type = DataSourceType.file;
     return ds;
   }
 
   /// Create network data source
-  factory DataSource.network(String url) {
+  factory DataSource.network(String url,
+      {Map<String, String> headers = const {}}) {
     var ds = DataSource._();
     ds._netWorkUrl = url;
-    ds.type = DataSourceType.network;
+    ds._headers = headers;
+    ds._type = DataSourceType.network;
     return ds;
   }
 
@@ -416,7 +446,7 @@ class DataSource {
     var ds = DataSource._();
     ds._assetName = assetName;
     ds._assetPackage = package;
-    ds.type = DataSourceType.asset;
+    ds._type = DataSourceType.asset;
     return ds;
   }
 }

@@ -18,8 +18,6 @@
 
 - (void)dispose;
 
-- (void)setDataSourceWithUri:(NSString *)uri;
-
 - (void)setDegree:(int)degree;
 
 @end

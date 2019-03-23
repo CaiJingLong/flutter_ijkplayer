@@ -41,25 +41,25 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 1024 * 10)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1L)
-//        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", if (isBufferCache) 1 else 0)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "reconnect", 5)
-//        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", maxCacheSize)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1)
-        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "fastseek")
-
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1) // 开硬解
+
+        //        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", maxCacheSize)
+        //        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", if (isBufferCache) 1 else 0)
     }
 
     override fun onMethodCall(call: MethodCall?, result: MethodChannel.Result?) {
         when (call?.method) {
             "setNetworkDataSource" -> {
                 val uri = call.argument<String>("uri")
+                val params = call.argument<Map<String, String>>("headers")
                 if (uri == null) {
                     handleSetUriResult(Exception("uri是必传参数"), result)
                     return
                 }
-                setUri(uri) { throwable ->
+                setUri(uri, params) { throwable ->
                     handleSetUriResult(throwable, result)
                 }
             }
@@ -77,7 +77,7 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
             "setFileDataSource" -> {
                 val path = call.argument<String>("path")
                 if (path != null) {
-                    setUri("file://$path") { throwable ->
+                    setUri("file://$path", hashMapOf()) { throwable ->
                         handleSetUriResult(throwable, result)
                     }
                 }
@@ -110,8 +110,9 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
                 setVolume(volume)
                 result?.success(true)
             }
-            "getVolume"->{
+            "getVolume" -> {
 
+//                result?.success(this.mediaPlayer.setVolume())
             }
             else -> {
                 result?.notImplemented()
@@ -124,14 +125,19 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
         val currentPosition = mediaPlayer.currentPosition
         val width = mediaPlayer.videoWidth
         val height = mediaPlayer.videoHeight
-//        ijkPlayer.mediaInfo.mMeta.mVideoStream.
+        val outputFps = mediaPlayer.videoOutputFramesPerSecond
+//        mediaPlayer.mediaInfo.mAudioDecoder
+//        mediaPlayer.mediaInfo.mVideoDecoder
         return Info(
                 duration = duration.toDouble() / 1000,
                 currentPosition = currentPosition.toDouble() / 1000,
                 width = width,
                 height = height,
                 isPlaying = textureMediaPlayer.isPlaying,
-                degree = degree
+                degree = degree,
+                tcpSpeed = mediaPlayer.tcpSpeed,
+                outputFps = outputFps
+//                decodeFps = mediaPlayer.videoDecodeFramesPerSecond
         )
     }
 
@@ -144,9 +150,10 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
         }
     }
 
-    private fun setUri(uri: String, callback: (Throwable?) -> Unit) {
+    private fun setUri(uri: String, headers: Map<String, String>?, callback: (Throwable?) -> Unit) {
         try {
-            mediaPlayer.dataSource = uri
+//            mediaPlayer.dataSource = uri
+            mediaPlayer.setDataSource(uri, headers)
             mediaPlayer.prepareAsync()
             callback(null)
         } catch (e: Exception) {

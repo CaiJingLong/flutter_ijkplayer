@@ -4,6 +4,7 @@ import 'package:ijkplayer_example/page/index.dart';
 
 void main() {
   IjkConfig.isLog = true;
+  // IjkConfig.level = LogLevel.verbose;
   IjkManager.initIJKPlayer();
   runApp(MyApp());
 }

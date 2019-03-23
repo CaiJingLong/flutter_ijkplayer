@@ -27,6 +27,8 @@
     dict[@"currentPosition"] = @(self.currentPosition);
     dict[@"isPlaying"] = @(self.isPlaying);
     dict[@"degree"] = @(self.degree);
+    dict[@"tcpSpeed"] = @(self.tcpSpeed);
+    dict[@"outputFps"] = @(self.outputFps);
     return dict;
 }
 

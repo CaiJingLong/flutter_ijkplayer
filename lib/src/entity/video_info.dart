@@ -20,6 +20,9 @@ class VideoInfo {
   /// Degree of Video
   int degree;
 
+  /// The media tcp speed, unit is byte
+  int tcpSpeed;
+
   Map<String, dynamic> _map;
 
   /// Percentage playback progress
@@ -56,6 +59,7 @@ class VideoInfo {
     this.currentPosition = map["currentPosition"];
     this.isPlaying = map["isPlaying"];
     this.degree = map["degree"];
+    this.tcpSpeed = map["tcpSpeed"];
   }
 
   @override

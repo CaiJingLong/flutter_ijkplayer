@@ -2,8 +2,8 @@ PODS:
   - Flutter (1.0.0)
   - flutter_ijkplayer (0.0.1):
     - Flutter
-    - FlutterIJK (~> 0.0.7)
-  - FlutterIJK (0.0.7)
+    - FlutterIJK (~> 0.0.8)
+  - FlutterIJK (0.0.8)
   - photo_manager (0.0.1):
     - Flutter
 
@@ -26,8 +26,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  flutter_ijkplayer: 7973985ab7087e6716f1ac753387e9694bbb6609
-  FlutterIJK: 70be1c85cbf7eeefc849702ac2f794f4e631d526
+  flutter_ijkplayer: 319c057084d453fd81310129f75f5e6770c6d306
+  FlutterIJK: bdcc10a74e25fe5f82ec2331a20ac9cd8c0c7a4b
   photo_manager: d47ddf6cb25cbfa837dc334540eb9a99b208e191
 
 PODFILE CHECKSUM: a14c63eb48a9d676ed6d876506b3258fd9c85235

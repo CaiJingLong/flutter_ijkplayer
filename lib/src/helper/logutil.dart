@@ -36,7 +36,7 @@ class LogUtils {
       return;
     }
 
-    String levelString = level.toString()[0];
+    String levelString = level.toString().split(".")[1][0];
 
     print("($levelString)${IjkConfig.logTag}:${msg.toString()}");
   }
