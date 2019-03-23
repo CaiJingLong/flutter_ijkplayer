@@ -17,6 +17,13 @@
 
 @property(nonatomic, assign) int degree;
 
+/**
+ * Unit is KB.
+ */
+@property(nonatomic, assign) int64_t tcpSpeed;
+
+@property(nonatomic, assign) CGFloat outputFps;
+
 - (NSDictionary *)toMap;
 
 @end

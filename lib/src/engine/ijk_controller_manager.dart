@@ -2,7 +2,9 @@ import 'package:flutter_ijkplayer/src/ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
 
 class IjkMediaPlayerManager {
+  var _currentIndex = 1;
   final ijkPlayerList = <IjkMediaController>[];
+  final ijkPlayerMap = <int, IjkMediaController>{};
 
   static IjkMediaPlayerManager _instance;
 
@@ -13,18 +15,23 @@ class IjkMediaPlayerManager {
 
   IjkMediaPlayerManager._();
 
-  void add(IjkMediaController ijkMediaController) {
+  int add(IjkMediaController ijkMediaController) {
     ijkPlayerList.add(ijkMediaController);
+    var result = _currentIndex;
+    _currentIndex++;
+    ijkPlayerMap[result] = ijkMediaController;
+    return result;
   }
 
   void remove(IjkMediaController ijkMediaController) {
     ijkPlayerList.remove(ijkMediaController);
+    ijkPlayerMap.remove(ijkMediaController.index);
   }
 
   Future<void> pauseOther(IjkMediaController ijkMediaController) async {
     for (var ctl in this.ijkPlayerList) {
-      if (ctl != ijkMediaController) {
-        LogUtils.verbose("ctl ${ctl.textureId} will pause");
+      if (ctl.index != ijkMediaController.index) {
+        LogUtils.verbose("${ctl.textureId} controller will pause");
         ctl.pause();
       }
     }

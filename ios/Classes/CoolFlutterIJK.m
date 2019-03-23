@@ -65,7 +65,8 @@
         @try {
             NSDictionary *params = call.arguments;
             NSString *uri = params[@"uri"];
-            [self setDataSourceWithUri:uri];
+            NSDictionary *headers = params[@"headers"];
+            [self setDataSourceWithUri:uri headers:headers];
             result(@(YES));
         }
         @catch (NSException *exception) {
@@ -151,12 +152,34 @@
 
 - (IJKFFOptions *)createOption {
     IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+
+    // see https://www.jianshu.com/p/843c86a9e9ad
+//    [options setFormatOptionValue:@"fflags" forKey:@"fflags"];
+//    [options setFormatOptionIntValue:100 forKey:@"analyzemaxduration"];
+//    [options setFormatOptionIntValue:1 forKey:@"analyzeduration"];
+//    [options setFormatOptionIntValue:10240 forKey:@"probesize"];
+//    [options setFormatOptionIntValue:1 forKey:@"flush_packets"];
+//    [options setFormatOptionIntValue:5 forKey:@"reconnect"];
+//    [options setFormatOptionIntValue:5 forKey:@"framedrop"];
+//    [options setFormatOptionIntValue:1 forKey:@"enable-accurate-seek"];
+//    [options setFormatOptionIntValue:1 forKey:@"mediacodec"]; //硬解
+
     return options;
 }
 
-- (void)setDataSourceWithUri:(NSString *)uri {
+- (void)setDataSourceWithUri:(NSString *)uri headers:(NSDictionary *)headers {
     IJKFFOptions *options = [self createOption];
+    if (headers) {
+        NSMutableString *headerString = [NSMutableString new];
+        for (NSString *key in headers.allKeys) {
+            NSString *value = headers[key];
+            [headerString appendFormat:@"%@:%@", key, value];
+            [headerString appendString:@"\r\n"];
+        }
+        [options setFormatOptionValue:headerString forKey:@"headers"];
+    }
     controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:uri withOptions:options];
+
     [self prepare];
 }
 
@@ -237,6 +260,8 @@
     info.currentPosition = currentPlaybackTime;
     info.isPlaying = [controller isPlaying];
     info.degree = degree;
+    info.tcpSpeed = [controller tcpSpeed];
+    info.outputFps = [controller fpsAtOutput];
 
     return info;
 }

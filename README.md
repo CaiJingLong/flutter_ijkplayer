@@ -10,8 +10,8 @@ ijkplayer,通过纹理的方式接入 bilibili/ijkplayer
 
 模拟器用不了,所以调试请使用真机
 
-- android: 我加入了 x86 的 so 库,但是我这里声音解码异常
-- iOS: 库中包含了真机和模拟器的库文件,但是有声音,无图像,疑似是因为 flutter native 端触发刷新纹理的方法没有回调的问题
+- android: 我这里sdk自带的模拟器可用(音视频均正常)
+- iOS: 库中包含了真机和模拟器的库文件,但是模拟器有声音,无图像
 
 在正式使用前,可以先 star 一下仓库, download 代码跑一下 example 尝试 (clone 也可以)
 

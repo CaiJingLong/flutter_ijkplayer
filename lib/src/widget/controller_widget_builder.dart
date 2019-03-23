@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,12 +79,13 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
   void initState() {
     super.initState();
     startTimer();
-    controllerSubscription = controller.textureIdStream.listen(_onTextIdChange);
+    controllerSubscription =
+        controller.textureIdStream.listen(_onTextureIdChange);
   }
 
-  void _onTextIdChange(int textId) {
-    LogUtils.verbose("onTextChange");
-    if (textId != null) {
+  void _onTextureIdChange(int textureId) {
+    LogUtils.debug("onTextureChange $textureId");
+    if (textureId != null) {
       startTimer();
     } else {
       stopTimer();
@@ -109,7 +111,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
 
     progressTimer?.cancel();
     progressTimer = Timer.periodic(Duration(milliseconds: 400), (timer) {
-      LogUtils.verbose("will refresh info");
+      LogUtils.verbose("timer will call refresh info");
       controller.refreshVideoInfo();
     });
   }
@@ -210,7 +212,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
   Function onDoubleTap() {
     return widget.doubleTapPlay
         ? () {
-            LogUtils.verbose("ondouble tap");
+            LogUtils.debug("ondouble tap");
             controller.playOrPause();
           }
         : null;
@@ -273,6 +275,10 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
       volumeUp();
     }
 
+    if (widget.volumeType == VolumeType.system && !Platform.isAndroid) {
+      return;
+    }
+
     var currentVolume = await getVolume();
 
     var column = Column(
@@ -290,13 +296,15 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
       ],
     );
 
-    if (widget.volumeType != VolumeType.system) {
-      showTooltip(createTooltipWidgetWrapper(column));
-    }
+    showTooltip(createTooltipWidgetWrapper(column));
   }
 
   void _onVerticalDragEnd(DragEndDetails details) {
     hideTooltip();
+
+    Future.delayed(Duration(seconds: 2), () {
+      hideTooltip();
+    });
   }
 
   Future<int> getVolume() async {

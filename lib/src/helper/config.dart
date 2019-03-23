@@ -5,7 +5,7 @@ class IjkConfig {
 
   static LogLevel level = LogLevel.debug;
 
-  static String logTag = "IjkPlayer";
+  static String logTag = "Ijk";
 }
 
 enum LogLevel {

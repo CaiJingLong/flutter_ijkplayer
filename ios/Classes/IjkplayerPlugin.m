@@ -76,12 +76,12 @@ static IjkplayerPlugin *__sharedInstance;
             result(@(currentVol));
         } else if ([@"volumeUp" isEqualToString:call.method]) {
             int currentVol = [self getSystemVolume];
-            [self setSystemVolume: currentVol - 10];
+            [self setSystemVolume: currentVol + 10];
             currentVol = [self getSystemVolume];
             result(@(currentVol));
         } else if ([@"volumeDown" isEqualToString:call.method]) {
             int currentVol = [self getSystemVolume];
-            [self setSystemVolume: currentVol + 10];
+            [self setSystemVolume: currentVol - 10];
             currentVol = [self getSystemVolume];
             result(@(currentVol));
         } else {

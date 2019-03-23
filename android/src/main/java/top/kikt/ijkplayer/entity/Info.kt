@@ -7,7 +7,10 @@ data class Info(
         val width: Int,
         val height: Int,
         val isPlaying: Boolean,
-        val degree: Int = 0
+        val degree: Int = 0,
+        val tcpSpeed: Long = 0,
+        val outputFps: Float = 0f
+//        val decodeFps: Float = 0f
 ) {
 
     fun toMap(): Map<String, Any> {
@@ -18,6 +21,9 @@ data class Info(
         map["height"] = height
         map["isPlaying"] = isPlaying
         map["degree"] = degree
+        map["tcpSpeed"] = tcpSpeed
+        map["outputFps"] = outputFps
+//        map["decodeFps"] = decodeFps
         return map
     }
 
