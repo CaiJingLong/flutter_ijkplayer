@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
-import 'package:flutter_ijkplayer/src/logutil.dart';
+import 'package:flutter_ijkplayer/src/helper/logutil.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
 /// Using mediaController to Construct a Controller UI

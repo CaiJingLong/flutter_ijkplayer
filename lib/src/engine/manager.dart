@@ -1,4 +1,4 @@
-part of './ijkplayer.dart';
+part of '../ijkplayer.dart';
 
 /// create 2019/3/18 by cai
 ///

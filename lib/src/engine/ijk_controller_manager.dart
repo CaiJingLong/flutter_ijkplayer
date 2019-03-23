@@ -1,5 +1,5 @@
 import 'package:flutter_ijkplayer/src/ijkplayer.dart';
-import 'package:flutter_ijkplayer/src/logutil.dart';
+import 'package:flutter_ijkplayer/src/helper/logutil.dart';
 
 class IjkMediaPlayerManager {
   final ijkPlayerList = <IjkMediaController>[];
