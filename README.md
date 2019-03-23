@@ -8,9 +8,10 @@ ijkplayer,通过纹理的方式接入 bilibili/ijkplayer
 
 有关 android 可能跑不起来的问题会详细解释
 
-模拟器用不了,所以调试请使用真机
+iOS模拟器不显示图像,所以调试请使用真机(iOS10 iOS 12.1.4亲测可用,其他版本有问题可反馈)
+android模拟器mac android sdk自带的emulator(API28 android9)可用,其他类型的没有亲测不保证
 
-- android: 我这里sdk自带的模拟器可用(音视频均正常)
+- android: 我这里 sdk 自带的模拟器可用(音视频均正常)
 - iOS: 库中包含了真机和模拟器的库文件,但是模拟器有声音,无图像
 
 在正式使用前,可以先 star 一下仓库, download 代码跑一下 example 尝试 (clone 也可以)
@@ -23,7 +24,7 @@ https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/README-EN.md
 
 [![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
 
-最新版本查看 pub
+最新版本请查看 pub
 
 pubspec.yaml
 
@@ -142,9 +143,9 @@ IjkMediaController controller = IjkMediaController();
 
 ### 关于销毁
 
-用户在确定不再使用 controller 时,需要自己调用 dispose 方法以释放资源,如果不调用,则会造成资源无法释放
+用户在确定不再使用 controller 时,必须自己调用 dispose 方法以释放资源,如果不调用,则会造成资源无法释放(后台有音乐等情况),一般情况下,在 ijkplayer 所属的页面销毁时同步销毁
 
-因为一个`controller`可能被多个`IjkPlayer`附着, 导致一个`controller`同时控制多个`IjkPlayer`,所以原则上不能与`IjkPlayer`的`dispose`达成一致,所以这里需要调用者自行 dispose
+因为一个`controller`可能被多个`IjkPlayer`附着, 导致一个`controller`同时控制多个`IjkPlayer`,所以原则上不能与`IjkPlayer`的`dispose`达成一致,所以这里需要调用者自行 dispose,
 
 ```dart
 controller.dispose();
@@ -180,7 +181,7 @@ await controller.setNetworkDataSource("https://www.sample-videos.com/video123/mp
 await controller.play();
 ```
 
-#### 播放的控制
+#### 播放器的控制
 
 ```dart
 // 播放或暂停
@@ -197,7 +198,19 @@ await controller.pause();
 await controller.stop();
 
 // 进度跳转
-await controller.seekTo(0); //这里是一个double值, 单位是秒, 如1秒100毫秒=1.1s 1分钟=60.0
+await controller.seekTo(0.0); //这里是一个double值, 单位是秒, 如1秒100毫秒=1.1s 1分钟10秒=70.0
+
+// 进度跳转百分比
+await controller.seekToProgress(0.0); //0.0~1.0
+
+// 暂停其他所有的播放器(适用于ListView滚出屏幕或界面上有多个播放器的情况)
+await controller.pauseOtherController();
+
+// 设置媒体音量,这个可以用于做视频静音而不影响系统音量
+controller.volume = 100; //范围0~100
+
+// 设置系统音量
+await controller.setSystemVolume(100); // 范围0~100
 ```
 
 #### 获取播放信息

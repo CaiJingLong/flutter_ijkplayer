@@ -254,6 +254,7 @@ class IjkMediaController {
     refreshVideoInfo();
   }
 
+  /// seek to progress
   Future<void> seekToProgress(double progress) async {
     var videoInfo = await getVideoInfo();
     var target = videoInfo.duration * progress;

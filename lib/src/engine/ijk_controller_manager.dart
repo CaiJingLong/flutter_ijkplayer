@@ -28,6 +28,10 @@ class IjkMediaPlayerManager {
     ijkPlayerMap.remove(ijkMediaController.index);
   }
 
+  IjkMediaController findControllerWithIndex(int ijkPlayerIndex) {
+    return ijkPlayerMap[ijkPlayerIndex];
+  }
+
   Future<void> pauseOther(IjkMediaController ijkMediaController) async {
     for (var ctl in this.ijkPlayerList) {
       if (ctl.index != ijkMediaController.index) {
