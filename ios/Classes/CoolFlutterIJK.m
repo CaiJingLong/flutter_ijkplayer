@@ -154,7 +154,7 @@
     IJKFFOptions *options = [IJKFFOptions optionsByDefault];
 
     // see https://www.jianshu.com/p/843c86a9e9ad
-//    [options setFormatOptionValue:@"fflags" forKey:@"fflags"];
+//    [options setFormatOptionValue:@"fastseek" forKey:@"fflags"];
 //    [options setFormatOptionIntValue:100 forKey:@"analyzemaxduration"];
 //    [options setFormatOptionIntValue:1 forKey:@"analyzeduration"];
 //    [options setFormatOptionIntValue:10240 forKey:@"probesize"];
