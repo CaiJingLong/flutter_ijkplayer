@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
+import 'package:flutter_ijkplayer/src/helper/ui_helper.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
 /// Using mediaController to Construct a Controller UI
@@ -47,7 +48,8 @@ class DefaultControllerWidget extends StatefulWidget {
     this.horizontalGesture = true,
     this.volumeType = VolumeType.system,
     this.playWillPauseOther = true,
-  });
+    Key key,
+  }) : super(key: key);
 
   @override
   _DefaultControllerWidgetState createState() =>
@@ -57,6 +59,8 @@ class DefaultControllerWidget extends StatefulWidget {
 class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
     implements TooltipDelegate {
   IjkMediaController get controller => widget.controller;
+
+  GlobalKey currentKey = GlobalKey();
 
   bool _isShow = true;
 
@@ -132,6 +136,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
       onVerticalDragUpdate: wrapVerticalGesture(_onVerticalDragUpdate),
       onVerticalDragEnd: wrapVerticalGesture(_onVerticalDragEnd),
       onTap: onTap,
+      key: currentKey,
     );
   }
 
@@ -266,34 +271,64 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
   }
 
   bool verticalDraging = false;
+  bool leftVerticalDrag;
 
   void _onVerticalDragStart(DragStartDetails details) {
-    print("drag start dx = ${details.globalPosition.dx}");
     verticalDraging = true;
+    var width = UIHelper.findGlobalRect(currentKey).width;
+    var dx =
+        UIHelper.globalOffsetToLocal(currentKey, details.globalPosition).dx;
+    leftVerticalDrag = dx / width <= 0.5;
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) async {
     if (verticalDraging == false) return;
 
-    if (details.delta.dy > 0) {
-      await volumeDown();
-    } else if (details.delta.dy < 0) {
-      await volumeUp();
+    String text = "";
+    IconData iconData = Icons.volume_up;
+
+    if (leftVerticalDrag == false) {
+      if (details.delta.dy > 0) {
+        await volumeDown();
+      } else if (details.delta.dy < 0) {
+        await volumeUp();
+      }
+
+      var currentVolume = await getVolume();
+      text = currentVolume.toString();
+    } else if (leftVerticalDrag == true) {
+      var currentBright = await IjkManager.getSystemBrightness();
+      double target;
+      if (details.delta.dy > 0) {
+        target = currentBright - 0.05;
+      } else {
+        target = currentBright + 0.05;
+      }
+
+      if (target > 1) {
+        target = 1;
+      } else if (target < 0) {
+        target = 0;
+      }
+
+      await IjkManager.setSystemBrightness(target);
+
+      iconData = Icons.brightness_high;
+      text = (target * 100).toStringAsFixed(0);
+    } else {
+      return;
     }
-
-    var currentVolume = await getVolume();
-
     var column = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(
-          Icons.volume_up,
+          iconData,
           color: Colors.white,
           size: 25.0,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: Text(currentVolume.toString()),
+          child: Text(text),
         ),
       ],
     );
@@ -303,11 +338,11 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
 
   void _onVerticalDragEnd(DragEndDetails details) async {
     verticalDraging = false;
+    leftVerticalDrag = null;
     hideTooltip();
 
     Future.delayed(const Duration(milliseconds: 2000), () {
       hideTooltip();
-      controller.hideSystemVolumeBar();
     });
   }
 
