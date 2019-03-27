@@ -15,7 +15,8 @@ static IjkplayerPlugin *__sharedInstance;
 
 @implementation IjkplayerPlugin {
     CoolFlutterIjkManager *manager;
-
+    MPVolumeView *volumeView;
+    UISlider *volumeViewSlider;
 }
 
 + (instancetype)sharedInstance {
@@ -48,7 +49,9 @@ static IjkplayerPlugin *__sharedInstance;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
+    
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    
     dispatch_async(mainQueue, ^{
         if ([@"create" isEqualToString:call.method]) {
             @try {
@@ -76,14 +79,17 @@ static IjkplayerPlugin *__sharedInstance;
             result(@(currentVol));
         } else if ([@"volumeUp" isEqualToString:call.method]) {
             int currentVol = [self getSystemVolume];
-            [self setSystemVolume: currentVol + 10];
+            [self setSystemVolume: currentVol + 3];
             currentVol = [self getSystemVolume];
             result(@(currentVol));
         } else if ([@"volumeDown" isEqualToString:call.method]) {
             int currentVol = [self getSystemVolume];
-            [self setSystemVolume: currentVol - 10];
+            [self setSystemVolume: currentVol - 3];
             currentVol = [self getSystemVolume];
             result(@(currentVol));
+        } else if ([@"hideSystemVolumeBar" isEqualToString:call.method]) {
+            [self hideSystemVolumeBar];
+            result(@YES);
         } else {
             result(FlutterMethodNotImplemented);
         }
@@ -91,27 +97,47 @@ static IjkplayerPlugin *__sharedInstance;
 }
 
 - (int) getSystemVolume{
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    CGFloat currentVol = audioSession.outputVolume * 100;
-    return (int)currentVol;
+//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    CGFloat currentVol = audioSession.outputVolume * 100;
+//    NSLog(@"system volume = %.0f",currentVol);
+//    return (int)currentVol;
+    return (int)([self getVolumeWithVolumeView] * 100);
+}
+
+- (float) getVolumeWithVolumeView{
+    [self initVolumeView];
+    if(!volumeViewSlider){
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        CGFloat currentVol = audioSession.outputVolume * 100;
+        NSLog(@"system volume = %.0f",currentVol);
+        return (int)currentVol;
+    }
+    return volumeViewSlider.value;
+}
+
+-(void)initVolumeView{
+    if(!volumeView){
+        volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(-100, 0, 10, 10)];
+    }
+    if(!volumeViewSlider){
+        for (UIView *view in [volumeView subviews]) {
+            if ([view.class.description isEqualToString:@"MPVolumeSlider"]) {
+                volumeViewSlider = (UISlider *) view;
+                break;
+            }
+        }
+    }
 }
 
 - (void)setSystemVolume:(int)volume {
-    MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    UISlider *volumeViewSlider = nil;
-    for (UIView *view in [volumeView subviews]) {
-        if ([view.class.description isEqualToString:@"MPVolumeSlider"]) {
-            volumeViewSlider = (UISlider *) view;
-            break;
-        }
-    }
+    [self initVolumeView];
 
     float targetVolume = ((float) volume) / 100;
 
-    volumeView.frame = CGRectMake(-1000, -1000, 100, 100);
-
-    UIWindow *window = UIApplication.sharedApplication.keyWindow;
-    [window addSubview:volumeView];
+    if(volumeView && !volumeView.superview){
+        UIWindow *window = UIApplication.sharedApplication.keyWindow;
+        [window addSubview:volumeView];
+    }
 
     if (targetVolume > 1){
         targetVolume = 1;
@@ -125,7 +151,14 @@ static IjkplayerPlugin *__sharedInstance;
     // send UI control event to make the change effect right now. 立即生效
     [volumeViewSlider sendActionsForControlEvents:UIControlEventTouchUpInside];
     
-    [volumeView removeFromSuperview];
+//    [volumeView removeFromSuperview];
+}
+
+-(void) hideSystemVolumeBar {
+    if(volumeView && volumeView.superview) {
+        [volumeView removeFromSuperview];
+        volumeView = nil;
+    }
 }
 
 @end

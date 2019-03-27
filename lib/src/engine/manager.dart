@@ -32,4 +32,10 @@ class IjkManager {
   static Future<int> systemVolumeDown() async {
     return _globalChannel.invokeMethod("volumeDown");
   }
+
+  static Future<void> hideSystemVolumeBar() async {
+    if (Platform.isIOS) {
+      return _globalChannel.invokeMethod("hideSystemVolumeBar");
+    }
+  }
 }

@@ -320,6 +320,10 @@ class IjkMediaController {
   String toString() {
     return "IJKController[$index]";
   }
+
+  Future<void> hideSystemVolumeBar() async {
+    await IjkManager.hideSystemVolumeBar();
+  }
 }
 
 /// about channel

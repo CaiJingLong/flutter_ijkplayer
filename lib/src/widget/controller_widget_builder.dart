@@ -275,10 +275,6 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
       volumeUp();
     }
 
-    if (widget.volumeType == VolumeType.system && !Platform.isAndroid) {
-      return;
-    }
-
     var currentVolume = await getVolume();
 
     var column = Column(
@@ -301,6 +297,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
 
   void _onVerticalDragEnd(DragEndDetails details) {
     hideTooltip();
+    controller.hideSystemVolumeBar();
 
     Future.delayed(Duration(seconds: 2), () {
       hideTooltip();
