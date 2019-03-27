@@ -38,4 +38,18 @@ class IjkManager {
       return _globalChannel.invokeMethod("hideSystemVolumeBar");
     }
   }
+
+  static Future<void> setSystemBrightness(double brightness) async {
+    await _globalChannel.invokeMethod("setSystemBrightness", <String, dynamic>{
+      "brightness": brightness,
+    });
+  }
+
+  static Future<double> getSystemBrightness() async {
+    return _globalChannel.invokeMethod("getSystemBrightness");
+  }
+
+  static Future<void> resetBrightness() async {
+    await _globalChannel.invokeMethod("resetBrightness");
+  }
 }

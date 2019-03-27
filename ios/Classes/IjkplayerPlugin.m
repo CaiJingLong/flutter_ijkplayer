@@ -90,6 +90,17 @@ static IjkplayerPlugin *__sharedInstance;
         } else if ([@"hideSystemVolumeBar" isEqualToString:call.method]) {
             [self hideSystemVolumeBar];
             result(@YES);
+        } else if ([@"setSystemBrightness" isEqualToString:call.method]) {
+            NSDictionary *params = [call arguments];
+            CGFloat target = [params[@"brightness"] floatValue];
+            [[UIScreen mainScreen] setBrightness:target];
+            result(@YES);
+        } else if ([@"getSystemBrightness" isEqualToString:call.method]) {
+            CGFloat brightness = [UIScreen mainScreen].brightness;
+            result(@(brightness));
+        } else if ([@"resetBrightness" isEqualToString:call.method]) {
+//            CGFloat brightness = [UIScreen mainScreen].brightness;
+            result(@YES);
         } else {
             result(FlutterMethodNotImplemented);
         }

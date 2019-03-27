@@ -2,6 +2,7 @@ package top.kikt.ijkplayer
 
 import android.content.Context
 import android.media.AudioManager
+import android.view.WindowManager
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -60,6 +61,18 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
                 val volume = getSystemVolume()
                 result.success(volume)
             }
+            "setSystemBrightness" -> {
+                val target = call.argument<Float>("brightness")
+                if (target != null) setBrightness(target)
+                result.success(true)
+            }
+            "getSystemBrightness" -> {
+                result.success(getBrightness())
+            }
+            "resetBrightness" -> {
+                setBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE)
+                result.success(true)
+            }
             else -> result.notImplemented()
         }
     }
@@ -97,6 +110,19 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
 
     private val audioManager: AudioManager
         get() = registrar.activity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+    private fun setBrightness(brightness: Float) {
+        val window = registrar.activity().window
+        val lp = window.attributes
+        lp.screenBrightness = brightness
+        window.attributes = lp
+    }
+
+    private fun getBrightness(): Float {
+        val window = registrar.activity().window
+        val lp = window.attributes
+        return lp.screenBrightness
+    }
 
     fun MethodCall.getLongArg(key: String): Long {
         return this.argument<Int>(key)!!.toLong()
