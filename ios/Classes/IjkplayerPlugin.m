@@ -23,7 +23,6 @@ static IjkplayerPlugin *__sharedInstance;
     return __sharedInstance;
 }
 
-
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     self = [super init];
     if (self) {
@@ -61,13 +60,16 @@ static IjkplayerPlugin *__sharedInstance;
             @catch (NSException *exception) {
                 result([FlutterError errorWithCode:@"1" message:@"创建失败" details:exception]);
             }
+            [self checkVolumeViewShouldShow];
         } else if ([@"dispose" isEqualToString:call.method]) {
             NSDictionary *params = [call arguments];
             int id = [params[@"id"] intValue];
             [self->manager disposeWithId:id];
+            [self checkVolumeViewShouldShow];
             result(@(YES));
         } else if ([@"init" isEqualToString:call.method]) {
             [self->manager disposeAll];
+            [self checkVolumeViewShouldShow];
             result(@YES);
         } else if ([@"setSystemVolume" isEqualToString:call.method]) {
             NSDictionary *params = [call arguments];
@@ -138,17 +140,25 @@ static IjkplayerPlugin *__sharedInstance;
             }
         }
     }
+    
+    UIWindow *window = UIApplication.sharedApplication.keyWindow;
+    [window addSubview:volumeView];
+}
+
+- (void) checkVolumeViewShouldShow{
+    int count = [manager ijkCount];
+    if (count>0){
+        [self initVolumeView];
+    }else{
+        [volumeView removeFromSuperview];
+        volumeView = nil;
+    }
 }
 
 - (void)setSystemVolume:(int)volume {
     [self initVolumeView];
 
     float targetVolume = ((float) volume) / 100;
-
-    if(volumeView && !volumeView.superview){
-        UIWindow *window = UIApplication.sharedApplication.keyWindow;
-        [window addSubview:volumeView];
-    }
 
     if (targetVolume > 1){
         targetVolume = 1;
@@ -166,10 +176,7 @@ static IjkplayerPlugin *__sharedInstance;
 }
 
 -(void) hideSystemVolumeBar {
-    if(volumeView && volumeView.superview) {
-        [volumeView removeFromSuperview];
-        volumeView = nil;
-    }
+    
 }
 
 @end

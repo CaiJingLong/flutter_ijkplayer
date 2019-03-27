@@ -36,6 +36,13 @@
     return dict[@(id)];
 }
 
+- (int)ijkCount{
+    if(!dict){
+        return 0;
+    }
+    return [dict count];
+}
+
 - (void)disposeWithId:(int64_t)id {
     CoolFlutterIJK *ijk = dict[@(id)];
     if (ijk) {

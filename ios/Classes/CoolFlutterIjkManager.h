@@ -19,6 +19,8 @@
 
 - (CoolFlutterIJK *)findIJKWithId:(int64_t)id1;
 
+- (int) ijkCount;
+
 - (void)disposeWithId:(int64_t)id;
 
 - (void)disposeAll;

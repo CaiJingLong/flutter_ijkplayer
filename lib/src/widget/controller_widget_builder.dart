@@ -265,13 +265,20 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
     if (targetSeek < videoInfo.duration) await controller.play();
   }
 
-  void _onVerticalDragStart(DragStartDetails details) {}
+  bool verticalDraging = false;
+
+  void _onVerticalDragStart(DragStartDetails details) {
+    print("drag start dx = ${details.globalPosition.dx}");
+    verticalDraging = true;
+  }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) async {
+    if (verticalDraging == false) return;
+
     if (details.delta.dy > 0) {
-      volumeDown();
+      await volumeDown();
     } else if (details.delta.dy < 0) {
-      volumeUp();
+      await volumeUp();
     }
 
     var currentVolume = await getVolume();
@@ -294,12 +301,13 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
     showTooltip(createTooltipWidgetWrapper(column));
   }
 
-  void _onVerticalDragEnd(DragEndDetails details) {
+  void _onVerticalDragEnd(DragEndDetails details) async {
+    verticalDraging = false;
     hideTooltip();
-    controller.hideSystemVolumeBar();
 
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       hideTooltip();
+      controller.hideSystemVolumeBar();
     });
   }
 
