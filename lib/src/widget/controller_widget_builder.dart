@@ -114,7 +114,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
     }
 
     progressTimer?.cancel();
-    progressTimer = Timer.periodic(Duration(milliseconds: 400), (timer) {
+    progressTimer = Timer.periodic(Duration(milliseconds: 350), (timer) {
       LogUtils.verbose("timer will call refresh info");
       controller.refreshVideoInfo();
     });
@@ -271,11 +271,11 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
     if (targetSeek < videoInfo.duration) await controller.play();
   }
 
-  bool verticalDraging = false;
+  bool verticalDragging = false;
   bool leftVerticalDrag;
 
   void _onVerticalDragStart(DragStartDetails details) {
-    verticalDraging = true;
+    verticalDragging = true;
     var width = UIHelper.findGlobalRect(currentKey).width;
     var dx =
         UIHelper.globalOffsetToLocal(currentKey, details.globalPosition).dx;
@@ -283,7 +283,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) async {
-    if (verticalDraging == false) return;
+    if (verticalDragging == false) return;
 
     String text = "";
     IconData iconData = Icons.volume_up;
@@ -338,7 +338,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
   }
 
   void _onVerticalDragEnd(DragEndDetails details) async {
-    verticalDraging = false;
+    verticalDragging = false;
     leftVerticalDrag = null;
     hideTooltip();
 
