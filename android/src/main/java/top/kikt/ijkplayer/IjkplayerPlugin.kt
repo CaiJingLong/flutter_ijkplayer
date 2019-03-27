@@ -62,12 +62,12 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
                 result.success(volume)
             }
             "setSystemBrightness" -> {
-                val target = call.argument<Float>("brightness")
-                if (target != null) setBrightness(target)
+                val target = call.argument<Double>("brightness")
+                if (target != null) setBrightness(target.toFloat())
                 result.success(true)
             }
             "getSystemBrightness" -> {
-                result.success(getBrightness())
+                result.success(getBrightness().toDouble())
             }
             "resetBrightness" -> {
                 setBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE)

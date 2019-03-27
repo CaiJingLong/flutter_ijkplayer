@@ -104,6 +104,7 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
   void dispose() {
     controllerSubscription.cancel();
     stopTimer();
+    IjkManager.resetBrightness();
     super.dispose();
   }
 
