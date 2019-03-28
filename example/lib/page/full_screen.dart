@@ -104,8 +104,22 @@ class _FullScreen2State extends State<FullScreen2> {
   Widget buildLandscape() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return WillPopScope(
-      child: IjkPlayer(
-        mediaController: controller,
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            IjkPlayer(
+              mediaController: controller,
+            ),
+            Container(
+              height: 44.0,
+              width: 44.0,
+              child: IconButton(
+                icon: Icon(Icons.fullscreen_exit),
+                onPressed: portraitUp,
+              ),
+            ),
+          ],
+        ),
       ),
       onWillPop: () async {
         if (orientation == Orientation.landscape) {
