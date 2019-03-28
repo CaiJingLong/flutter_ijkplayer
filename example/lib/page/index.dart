@@ -23,7 +23,8 @@ class _IndexPageState extends State<IndexPage> {
           buildButton("播放相册视频", PlayGalleryPage()),
           buildButton("播放应用asset", AssetPage()),
           buildButton("ListView中插入视频(未完成)", VideoList()),
-          buildButton("全屏切换示例", FullScreen()),
+          buildButton("全屏切换示例(自动)", FullScreen()),
+          buildButton("全屏切换示例(手动)", FullScreen2()),
         ],
       ),
     );

@@ -19,6 +19,8 @@ class _NetworkPageState extends State<NetworkPage> {
         "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4";
     editingController.text =
         "http://172.16.100.245:5000/05-2%20ffmpeg%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8Log%E7%B3%BB%E7%BB%9F.mp4";
+    editingController.text =
+        "http://172.16.100.245:5000/09-01%20%E7%AC%AC%E4%B8%80%E4%B8%AAJNI%E7%A8%8B%E5%BA%8F.mp4";
   }
 
   @override
