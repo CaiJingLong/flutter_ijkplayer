@@ -25,12 +25,18 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    signingConfigs {
+        config1 {
+            keyAlias 'run'
+            keyPassword '123456'
+            storeFile file("${project.rootDir}/example-key.jks")
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 28
-
     lintOptions {
         disable 'InvalidPackage'
     }
-
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.ijkplayer_example"
@@ -40,23 +46,15 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        ndk {
-//            abiFilters "armeabi-v7a"
-            abiFilters "armeabi-v7a", "arm64-v8a"
-        }
     }
-
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.config1
         }
         debug {
-            ndk {
-//                abiFilters "armeabi-v7a", "x86"
-                abiFilters "armeabi-v7a", "x86", "arm64-v8a"
-            }
+            signingConfig signingConfigs.config1
         }
     }
 }
@@ -66,7 +64,7 @@ flutter {
 }
 
 dependencies {
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //    testImplementation 'junit:junit:4.12'
+    //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
