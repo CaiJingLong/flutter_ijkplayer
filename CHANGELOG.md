@@ -1,3 +1,9 @@
+## 0.1.6
+
+- add problem left vertical gesture to control brightness.
+
+- fix some problem.
+
 ## 0.1.5
 
 update iOS framework
