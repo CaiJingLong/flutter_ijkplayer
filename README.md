@@ -39,6 +39,8 @@ dependencies:
 
 https://github.com/CaiJingLong/flutter_ijkplayer_pod/blob/master/config/module.sh
 
+当前使用的库在bilibili/ijiplayer官方0.8.8版本的基础上有所修改,源码可查询 https://gitee.com/kikt/ijkplayer_thrid_party
+
 ### iOS
 
 因为 iOS 部分代码的库文件比较大,所以创建了一个 pod 依赖托管 iOS 的 ijkplayer 库  
