@@ -52,4 +52,61 @@ class IjkManager {
   static Future<void> resetBrightness() async {
     await _globalChannel.invokeMethod("resetBrightness");
   }
+
+  static Future<void> _setOrientation(List<DeviceOrientation> list) async {
+    if (Platform.isAndroid) {
+      SystemChrome.setPreferredOrientations(list);
+    } else if (Platform.isIOS) {
+      var orientations = list.map((v) => v.index).toList();
+      if (list.isEmpty) {
+        _globalChannel.invokeMethod("unlockOrientation");
+      } else {
+        _globalChannel.invokeMethod(
+          "setOrientation",
+          {
+            "orientation": orientations,
+          },
+        );
+      }
+    }
+  }
+
+  static setLandScapeLeft() {
+    if (Platform.isAndroid) {
+      SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft],
+      );
+    } else if (Platform.isIOS) {
+      _setOrientation(
+        [DeviceOrientation.landscapeLeft],
+      );
+    }
+  }
+
+  static portraitUp() async {
+    if (Platform.isAndroid) {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+      await SystemChrome.restoreSystemUIOverlays();
+    } else {
+      _setOrientation(
+        [DeviceOrientation.portraitUp],
+      );
+    }
+  }
+
+  static unlockOrientation() async {
+    if (Platform.isAndroid) {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.portraitUp,
+      ]);
+      await SystemChrome.restoreSystemUIOverlays();
+    } else if (Platform.isIOS) {
+      await _setOrientation([]);
+      await SystemChrome.restoreSystemUIOverlays();
+    }
+  }
 }

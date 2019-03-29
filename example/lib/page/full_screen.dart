@@ -170,24 +170,15 @@ class _FullScreen2State extends State<FullScreen2> {
     );
   }
 
-  void setLandScapeLeft() async {
-    await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft],
-    );
+  setLandScapeLeft() async {
+    await IjkManager.setLandScapeLeft();
   }
 
-  void portraitUp() async {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-    await SystemChrome.restoreSystemUIOverlays();
+  portraitUp() async {
+    await IjkManager.portraitUp();
   }
 
-  void unlockOrientation() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.portraitUp,
-    ]);
+  unlockOrientation() async {
+    await IjkManager.unlockOrientation();
   }
 }

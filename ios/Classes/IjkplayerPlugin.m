@@ -3,6 +3,9 @@
 #import "CoolFlutterIjkManager.h"
 #import "CoolFlutterIJK.h"
 
+const char* const kOrientationUpdateNotificationName = "io.flutter.plugin.platform.SystemChromeOrientationNotificationName";
+const char* const kOrientationUpdateNotificationKey = "io.flutter.plugin.platform.SystemChromeOrientationNotificationKey";
+
 @interface FlutterMethodCall (Ijk)
 - (int64_t)getId;
 
@@ -103,11 +106,80 @@ static IjkplayerPlugin *__sharedInstance;
         } else if ([@"resetBrightness" isEqualToString:call.method]) {
 //            CGFloat brightness = [UIScreen mainScreen].brightness;
             result(@YES);
+        } else if([@"setOrientation" isEqualToString:call.method]){
+            [self setOrientationWithCall:call];
+            result(@YES);
+        } else if([@"unlockOrientation" isEqualToString:call.method]){
+            [self unlockOrientation];
+            result(@YES);
         } else {
             result(FlutterMethodNotImplemented);
         }
     });
 }
+
+- (UIDeviceOrientation) convertIntToOrientation:(int)orientation{
+    switch (orientation) {
+        case 0:
+            return UIDeviceOrientationPortrait;
+        case 1:
+            return UIDeviceOrientationLandscapeLeft;
+        case 2:
+            return UIDeviceOrientationPortraitUpsideDown;
+        case 3:
+            return UIDeviceOrientationLandscapeRight;
+        default:
+            return UIDeviceOrientationUnknown;
+    }
+}
+
+- (void) setOrientationWithCall:(FlutterMethodCall *)call{
+    NSDictionary *dict = [call arguments];
+    NSArray *orientations = dict[@"orientation"];
+    UIInterfaceOrientationMask mask = 0;
+    if (orientations.count == 0) {
+        mask |= UIInterfaceOrientationMaskAll;
+    }
+    for (id number in orientations) {
+        int value = [number intValue];
+        UIDeviceOrientation orientation = [self convertIntToOrientation:value];
+        NSLog(@"orientation = %ld",orientation);
+        if (value == UIDeviceOrientationPortrait){
+            mask |= UIInterfaceOrientationMaskPortrait;
+        }else if (value == UIDeviceOrientationLandscapeLeft) {
+            mask |= UIInterfaceOrientationMaskLandscapeLeft;
+        }else if (value == UIDeviceOrientationPortraitUpsideDown) {
+            mask |= UIInterfaceOrientationMaskPortraitUpsideDown;
+        }else if (value == UIDeviceOrientationLandscapeRight) {
+            mask |= UIInterfaceOrientationMaskLandscapeRight;
+        }
+    }
+    
+    if (!mask)
+        return;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@(kOrientationUpdateNotificationName)
+                                                        object:nil
+                                                      userInfo:@{@(kOrientationUpdateNotificationKey)
+                                                               :@(mask)}];
+}
+
+- (void) unlockOrientation {
+    if([[UIDevice currentDevice]respondsToSelector:@selector(setOrientation:)]){
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        int val = UIDeviceOrientationUnknown;
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@(kOrientationUpdateNotificationName)
+                                                        object:nil
+                                                      userInfo:@{@(kOrientationUpdateNotificationKey)
+                                                                 :@(UIInterfaceOrientationMaskAll)}];
+}
+
 
 - (int) getSystemVolume{
 //    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
