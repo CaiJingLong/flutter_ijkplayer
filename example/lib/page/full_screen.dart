@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 
 class FullScreen extends StatefulWidget {
@@ -102,7 +101,8 @@ class _FullScreen2State extends State<FullScreen2> {
   }
 
   Widget buildLandscape() {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    // SystemChrome.setEnabledSystemUIOverlays([]);
+    // OrientationPlugin.setEnabledSystemUIOverlays([]);
     return WillPopScope(
       child: Scaffold(
         body: Stack(
@@ -114,7 +114,10 @@ class _FullScreen2State extends State<FullScreen2> {
               height: 44.0,
               width: 44.0,
               child: IconButton(
-                icon: Icon(Icons.fullscreen_exit),
+                icon: Icon(
+                  Icons.fullscreen_exit,
+                  color: Colors.white,
+                ),
                 onPressed: portraitUp,
               ),
             ),
@@ -132,10 +135,14 @@ class _FullScreen2State extends State<FullScreen2> {
   }
 
   Widget buildNormal() {
-    SystemChrome.setEnabledSystemUIOverlays([
-      SystemUiOverlay.top,
-      SystemUiOverlay.bottom,
-    ]);
+    // SystemChrome.setEnabledSystemUIOverlays([
+    //   SystemUiOverlay.top,
+    //   SystemUiOverlay.bottom,
+    // ]);
+    // OrientationPlugin.setEnabledSystemUIOverlays([
+    //   SystemUiOverlay.top,
+    //   SystemUiOverlay.bottom,
+    // ]);
     return Scaffold(
       appBar: AppBar(
         title: Text("手动切换全屏(强制)"),
