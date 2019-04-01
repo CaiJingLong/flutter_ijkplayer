@@ -30,6 +30,10 @@ https://github.com/CaiJingLong/flutter_ijkplayer_pod/blob/master/config/module.s
 
 or see bilibili/ijkplayer or ffmepg
 
+The libraries currently in use are modified on the basis of the official 0.8.8 version of bilibili/ijkplayer.
+
+Modified source code can view [Gitee](https://gitee.com/kikt/ijkplayer_thrid_party).
+
 ### iOS
 
 Because the libraries of some iOS codes are large, a pod-dependent ijkplayer library for hosting iOS is created.
