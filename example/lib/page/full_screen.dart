@@ -178,11 +178,11 @@ class _FullScreen2State extends State<FullScreen2> {
   }
 
   setLandScapeLeft() async {
-    await IjkManager.setLandScapeLeft();
+    await IjkManager.setLandScape();
   }
 
   portraitUp() async {
-    await IjkManager.portraitUp();
+    await IjkManager.setPortrait();
   }
 
   unlockOrientation() async {
