@@ -1,3 +1,7 @@
+## 0.1.7
+
+Fixed some video decoding problems.
+
 ## 0.1.6
 
 - add problem left vertical gesture to control brightness.
