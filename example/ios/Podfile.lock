@@ -2,18 +2,15 @@ PODS:
   - Flutter (1.0.0)
   - flutter_ijkplayer (0.0.1):
     - Flutter
-    - FlutterIJK (~> 0.0.8)
-  - FlutterIJK (0.0.8)
-  - orientation (0.0.1):
-    - Flutter
+    - FlutterIJK (~> 0.0.9)
+  - FlutterIJK (0.0.9)
   - photo_manager (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
-  - flutter_ijkplayer (from `/Users/caijinglong/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec`)
-  - orientation (from `/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/orientation-1.0.4/ios/orientation.podspec`)
-  - photo_manager (from `/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.3/ios/photo_manager.podspec`)
+  - flutter_ijkplayer (from `/Users/cai/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec`)
+  - photo_manager (from `/Users/cai/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.3/ios/photo_manager.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -23,17 +20,14 @@ EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
   flutter_ijkplayer:
-    :path: "/Users/caijinglong/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec"
-  orientation:
-    :path: "/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/orientation-1.0.4/ios/orientation.podspec"
+    :path: "/Users/cai/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec"
   photo_manager:
-    :path: "/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.3/ios/photo_manager.podspec"
+    :path: "/Users/cai/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.3/ios/photo_manager.podspec"
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  flutter_ijkplayer: 319c057084d453fd81310129f75f5e6770c6d306
-  FlutterIJK: bdcc10a74e25fe5f82ec2331a20ac9cd8c0c7a4b
-  orientation: 46fe7528896a5c3e6215366bcb462c182ebfd4e9
+  flutter_ijkplayer: e7cd28f617bf87bad4a11aaaa13cfc59f18c6c49
+  FlutterIJK: 9e3ccb3d74cca7ebe77db65d30a19b630ea8648e
   photo_manager: d47ddf6cb25cbfa837dc334540eb9a99b208e191
 
 PODFILE CHECKSUM: a14c63eb48a9d676ed6d876506b3258fd9c85235

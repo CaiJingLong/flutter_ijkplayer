@@ -162,7 +162,9 @@
 //    [options setFormatOptionIntValue:5 forKey:@"reconnect"];
 //    [options setFormatOptionIntValue:5 forKey:@"framedrop"];
 //    [options setFormatOptionIntValue:1 forKey:@"enable-accurate-seek"];
-//    [options setFormatOptionIntValue:1 forKey:@"mediacodec"]; //硬解
+    
+//    [options setPlayerOptionIntValue:0      forKey:@"video-max-frame-width-default"];
+//    [options setPlayerOptionIntValue:1      forKey:@"videotoolbox"];
 
     return options;
 }
