@@ -28,11 +28,8 @@ dependencies:
 Compilation options for ijkplayer:
 https://github.com/CaiJingLong/flutter_ijkplayer_pod/blob/master/config/module.sh
 
-or see bilibili/ijkplayer or ffmepg
-
-The libraries currently in use are modified on the basis of the official 0.8.8 version of bilibili/ijkplayer.
-
-Modified source code can view [Gitee](https://gitee.com/kikt/ijkplayer_thrid_party).
+Custom compilation options:
+https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile.md
 
 ### iOS
 

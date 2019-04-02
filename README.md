@@ -8,8 +8,8 @@ ijkplayer,通过纹理的方式接入 bilibili/ijkplayer
 
 有关 android 可能跑不起来的问题会详细解释
 
-iOS模拟器不显示图像,所以调试请使用真机(iOS10 iOS 12.1.4亲测可用,其他版本有问题可反馈)
-android模拟器mac android sdk自带的emulator(API28 android9)可用,其他类型的没有亲测不保证
+iOS 模拟器不显示图像,所以调试请使用真机(iOS10 iOS 12.1.4 亲测可用,其他版本有问题可反馈)
+android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其他类型的没有亲测不保证
 
 - android: 我这里 sdk 自带的模拟器可用(音视频均正常)
 - iOS: 库中包含了真机和模拟器的库文件,但是模拟器有声音,无图像
@@ -37,9 +37,7 @@ dependencies:
 
 编译规则可以参考这个,如果你有自己的特定需求,可以修改编译选项,这个参考 bilibili/ijkplayer 或 ffmpeg
 
-https://github.com/CaiJingLong/flutter_ijkplayer_pod/blob/master/config/module.sh
-
-当前使用的库在bilibili/ijiplayer官方0.8.8版本的基础上有所修改,源码可查询 https://gitee.com/kikt/ijkplayer_thrid_party
+自定义编译选项可以看[这里](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md)
 
 ### iOS
 
