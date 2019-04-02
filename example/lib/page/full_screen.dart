@@ -154,7 +154,7 @@ class _FullScreen2State extends State<FullScreen2> {
             child: IjkPlayer(
               mediaController: controller,
               controllerWidgetBuilder: (ctl) {
-                return DefaultControllerWidget(
+                return DefaultIJKControllerWidget(
                   controller: ctl,
                   verticalGesture: false,
                 );

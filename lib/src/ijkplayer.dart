@@ -19,7 +19,7 @@ part 'engine/manager.dart';
 class IjkPlayer extends StatefulWidget {
   final IjkMediaController mediaController;
 
-  /// See [DefaultControllerWidget]
+  /// See [DefaultIJKControllerWidget]
   final ControllerWidgetBuilder controllerWidgetBuilder;
 
   /// See [buildDefaultIjkPlayer]
