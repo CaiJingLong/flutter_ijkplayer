@@ -14,54 +14,76 @@ Widget buildDefaultIjkPlayer(
   IjkMediaController controller,
   VideoInfo info,
 ) {
-  double ratio = info?.ratio ?? 1280 / 720;
+  return DefaultIJKPlayerWrapper(
+    controller: controller,
+    info: info,
+  );
+}
 
-  var id = controller.textureId;
+/// Default IJKPlayer Wrapper
+///
+/// This widget solves the aspect ratio problem in video direction.
+class DefaultIJKPlayerWrapper extends StatelessWidget {
+  final IjkMediaController controller;
+  final VideoInfo info;
 
-  if (id == null) {
-    return AspectRatio(
-      aspectRatio: ratio,
-      child: Container(
-        color: Colors.black,
+  const DefaultIJKPlayerWrapper({
+    Key key,
+    this.controller,
+    this.info,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double ratio = info?.ratio ?? 1280 / 720;
+
+    var id = controller.textureId;
+
+    if (id == null) {
+      return AspectRatio(
+        aspectRatio: ratio,
+        child: Container(
+          color: Colors.black,
+        ),
+      );
+    }
+
+    Widget w = Container(
+      color: Colors.black,
+      child: Texture(
+        textureId: id,
       ),
     );
-  }
 
-  Widget w = Container(
-    color: Colors.black,
-    child: Texture(
-      textureId: id,
-    ),
-  );
+    if (!controller.autoRotate) {
+      return AspectRatio(
+        aspectRatio: null,
+        child: w,
+      );
+    }
 
-  if (!controller.autoRotate) {
-    return AspectRatio(
-      aspectRatio: null,
+    int degree = info?.degree ?? 0;
+
+    if (ratio == 0) {
+      ratio = 1280 / 720;
+    }
+
+    w = AspectRatio(
+      aspectRatio: ratio,
       child: w,
     );
-  }
 
-  int degree = info?.degree ?? 0;
+    if (degree != 0) {
+      w = RotatedBox(
+        quarterTurns: degree ~/ 90,
+        child: w,
+      );
+    }
 
-  if (ratio == 0) {
-    ratio = 1280 / 720;
-  }
-
-  w = AspectRatio(
-    aspectRatio: ratio,
-    child: w,
-  );
-
-  if (degree != 0) {
-    w = RotatedBox(
-      quarterTurns: degree ~/ 90,
+    return Container(
       child: w,
+      alignment: Alignment.center,
+      color: Colors.black,
     );
   }
-
-  return Container(
-    child: w,
-    alignment: Alignment.center,
-    color: Colors.black,
-  );
 }
