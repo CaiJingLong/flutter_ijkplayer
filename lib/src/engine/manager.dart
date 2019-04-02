@@ -53,48 +53,73 @@ class IjkManager {
     await _globalChannel.invokeMethod("resetBrightness");
   }
 
-  static Future<void> _setOrientation(List<DeviceOrientation> list) async {
-    if (Platform.isAndroid) {
-      SystemChrome.setPreferredOrientations(list);
-    } else if (Platform.isIOS) {
-      // var orientations = list.map((v) => v.index).toList();
-      // if (list.isEmpty) {
-      //   _globalChannel.invokeMethod("unlockOrientation");
-      // } else {
-      //   _globalChannel.invokeMethod(
-      //     "setOrientation",
-      //     {
-      //       "orientation": orientations,
-      //     },
-      //   );
-      // }
-      
-    }
-  }
-
-  static setLandScapeLeft() {
+  static setLandScape() async {
     if (Platform.isAndroid) {
       SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft],
       );
+      SystemChrome.setEnabledSystemUIOverlays([]);
     } else if (Platform.isIOS) {
-      // OrientationPlugin.forceOrientation(DeviceOrientation.landscapeLeft);
-      _globalChannel.invokeMethod("setOrientation",{"orientation":[DeviceOrientation.landscapeLeft.index]});
+      await setSupportOrientation([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+
+      setCurrentOrientation(DeviceOrientation.landscapeLeft);
     }
   }
 
-  static portraitUp() async {
+  static setPortrait() async {
     if (Platform.isAndroid) {
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);
-      // await SystemChrome.restoreSystemUIOverlays();
-    } else if(Platform.isIOS){
-      // _setOrientation(
-      //   [DeviceOrientation.portraitUp],
-      // );
-      // OrientationPlugin.forceOrientation(null);
-      _globalChannel.invokeMethod("unlockOrientation");
+      SystemChrome.restoreSystemUIOverlays();
+      showSystemOverlay();
+    } else if (Platform.isIOS) {
+      await unlockOrientation();
+      setCurrentOrientation(DeviceOrientation.portraitUp);
+    }
+  }
+
+  static showSystemOverlay() {
+    SystemChrome.setEnabledSystemUIOverlays(const [
+      SystemUiOverlay.top,
+      SystemUiOverlay.bottom,
+    ]);
+  }
+
+  static setSupportOrientation(List<DeviceOrientation> orientations) async {
+    if (orientations.isEmpty) {
+      return;
+    }
+    if (Platform.isAndroid) {
+      await SystemChrome.setPreferredOrientations(orientations);
+      SystemChrome.restoreSystemUIOverlays();
+    } else if (Platform.isIOS) {
+      var orientationIndexList = orientations.map((o) => o.index).toList();
+
+      await _globalChannel.invokeMethod(
+        "setSupportOrientation",
+        <String, dynamic>{
+          "supportOrientation": orientationIndexList,
+        },
+      );
+    }
+  }
+
+  static setCurrentOrientation(DeviceOrientation orientation) async {
+    if (orientation == null) {
+      return;
+    }
+    if (Platform.isAndroid) {
+    } else if (Platform.isIOS) {
+      await _globalChannel.invokeMethod(
+        "setCurrentOrientation",
+        <String, dynamic>{
+          "target": orientation.index,
+        },
+      );
     }
   }
 
@@ -104,12 +129,11 @@ class IjkManager {
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
         DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
       ]);
       await SystemChrome.restoreSystemUIOverlays();
+      showSystemOverlay();
     } else if (Platform.isIOS) {
-      // await _setOrientation([]);
-      // await SystemChrome.restoreSystemUIOverlays();
-      // OrientationPlugin.setPreferredOrientations([]);
       _globalChannel.invokeMethod("unlockOrientation");
     }
   }

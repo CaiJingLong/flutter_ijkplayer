@@ -106,8 +106,11 @@ static IjkplayerPlugin *__sharedInstance;
         } else if ([@"resetBrightness" isEqualToString:call.method]) {
 //            CGFloat brightness = [UIScreen mainScreen].brightness;
             result(@YES);
-        } else if([@"setOrientation" isEqualToString:call.method]){
-            [self setOrientationWithCall:call];
+        } else if ([@"setSupportOrientation" isEqualToString:call.method]) {
+            [self setSupportOrientationWithCall:call];
+            result(@YES);
+        } else if([@"setCurrentOrientation" isEqualToString:call.method]){
+            [self setCurrentOrientationWithCall:call];
             result(@YES);
         } else if([@"unlockOrientation" isEqualToString:call.method]){
             [self unlockOrientation];
@@ -171,6 +174,51 @@ static IjkplayerPlugin *__sharedInstance;
         [invocation setArgument:&val atIndex:2];
         [invocation invoke];
     }
+}
+
+- (void) setCurrentOrientationWithCall:(FlutterMethodCall *)call {
+    if([[UIDevice currentDevice]respondsToSelector:@selector(setOrientation:)]){
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSDictionary *dict = [call arguments];
+        int target = [dict[@"target"] intValue];
+        UIDeviceOrientation orientation = [self convertIntToOrientation:target];
+        int val = orientation;
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+        
+        NSLog(@"target orientation = %d", val);
+    }
+}
+
+- (void) setSupportOrientationWithCall:(FlutterMethodCall *)call {
+    NSDictionary *dict = [call arguments];
+    NSArray *orientations = dict[@"supportOrientation"];
+    UIInterfaceOrientationMask mask = 0;
+    if (orientations.count == 0) {
+        mask |= UIInterfaceOrientationMaskAll;
+    }
+    for (id number in orientations) {
+        int value = [number intValue];
+        UIDeviceOrientation orientation = [self convertIntToOrientation:value];
+        NSLog(@"orientation = %ld",orientation);
+        if (orientation == UIDeviceOrientationPortrait){
+            mask |= UIInterfaceOrientationMaskPortrait;
+        }else if (orientation == UIDeviceOrientationLandscapeLeft) {
+            mask |= UIInterfaceOrientationMaskLandscapeLeft;
+        }else if (orientation == UIDeviceOrientationPortraitUpsideDown) {
+            mask |= UIInterfaceOrientationMaskPortraitUpsideDown;
+        }else if (orientation == UIDeviceOrientationLandscapeRight) {
+            mask |= UIInterfaceOrientationMaskLandscapeRight;
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:flutterOrientationNotifyName
+                                                        object:nil
+                                                      userInfo:@{flutterOrientationNotifyKey
+                                                                 :@(mask)}];
 }
 
 - (void) unlockOrientation {
