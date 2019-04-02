@@ -35,7 +35,7 @@ dependencies:
 
 ## Build
 
-编译规则可以参考这个,如果你有自己的特定需求,可以修改编译选项,这个参考 bilibili/ijkplayer 或 ffmpeg
+编译规则可以参考[这个](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),如果你有自己的特定需求,可以修改编译选项,这个参考 bilibili/ijkplayer 或 ffmpeg
 
 自定义编译选项可以看[这里](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md)
 

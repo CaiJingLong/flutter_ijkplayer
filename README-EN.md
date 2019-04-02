@@ -25,6 +25,8 @@ dependencies:
 
 ## Build
 
+Current config file see [url](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh).
+
 Compilation options for ijkplayer:
 https://github.com/CaiJingLong/flutter_ijkplayer_pod/blob/master/config/module.sh
 
