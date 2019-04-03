@@ -41,7 +41,11 @@ class DefaultIJKControllerWidget extends StatefulWidget {
 
   final bool playWillPauseOther;
 
-  final bool fullScreen;
+  /// Control whether there is a full-screen button.
+  final bool showFullScreenButton;
+
+  /// The current full-screen button style should not be changed by users.
+  final bool currentFullScreenState;
 
   /// The UI of the controller.
   const DefaultIJKControllerWidget({
@@ -51,7 +55,8 @@ class DefaultIJKControllerWidget extends StatefulWidget {
     this.horizontalGesture = true,
     this.volumeType = VolumeType.system,
     this.playWillPauseOther = true,
-    this.fullScreen = false,
+    this.currentFullScreenState = false,
+    this.showFullScreenButton = true,
     Key key,
   }) : super(key: key);
 
@@ -162,7 +167,10 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
   }
 
   Widget _buildFullScreenButton() {
-    var isFull = widget.fullScreen;
+    if (widget.showFullScreenButton != true) {
+      return Container();
+    }
+    var isFull = widget.currentFullScreenState;
     return IconButton(
       color: Colors.white,
       icon: Icon(isFull ? Icons.fullscreen_exit : Icons.fullscreen),
@@ -654,6 +662,6 @@ Widget _buildFullScreenMediaController(
     IjkMediaController controller, bool fullScreen) {
   return DefaultIJKControllerWidget(
     controller: controller,
-    fullScreen: true,
+    currentFullScreenState: true,
   );
 }
