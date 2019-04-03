@@ -92,6 +92,10 @@ class IjkMediaController {
   /// video volume, not system volume
   int get volume => _volume;
 
+  VideoInfo _info = VideoInfo.fromMap(null);
+
+  VideoInfo get info => _info;
+
   /// create ijk texture id from native
   Future<void> _initIjk() async {
     try {
@@ -272,6 +276,7 @@ class IjkMediaController {
   /// request info and notify
   Future<void> refreshVideoInfo() async {
     var info = await getVideoInfo();
+    _info = info;
     isPlaying = info.isPlaying;
     if (info.hasData) {
       _videoInfoController?.add(info);

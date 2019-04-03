@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
@@ -13,7 +14,7 @@ typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
 
 /// default create IJK Controller UI
 Widget defaultBuildIjkControllerWidget(IjkMediaController controller) {
-  return DefaultControllerWidget(
+  return DefaultIJKControllerWidget(
     controller: controller,
 //    verticalGesture: false,
 //    horizontalGesture: false,
@@ -23,7 +24,7 @@ Widget defaultBuildIjkControllerWidget(IjkMediaController controller) {
 /// Default Controller Widget
 ///
 /// see [IjkPlayer] and [ControllerWidgetBuilder]
-class DefaultControllerWidget extends StatefulWidget {
+class DefaultIJKControllerWidget extends StatefulWidget {
   final IjkMediaController controller;
 
   /// If [doubleTapPlay] is true, can double tap to play or pause media.
@@ -40,23 +41,31 @@ class DefaultControllerWidget extends StatefulWidget {
 
   final bool playWillPauseOther;
 
+  /// Control whether there is a full-screen button.
+  final bool showFullScreenButton;
+
+  /// The current full-screen button style should not be changed by users.
+  final bool currentFullScreenState;
+
   /// The UI of the controller.
-  const DefaultControllerWidget({
+  const DefaultIJKControllerWidget({
     @required this.controller,
     this.doubleTapPlay = false,
     this.verticalGesture = true,
     this.horizontalGesture = true,
     this.volumeType = VolumeType.system,
     this.playWillPauseOther = true,
+    this.currentFullScreenState = false,
+    this.showFullScreenButton = true,
     Key key,
   }) : super(key: key);
 
   @override
-  _DefaultControllerWidgetState createState() =>
-      _DefaultControllerWidgetState();
+  _DefaultIJKControllerWidgetState createState() =>
+      _DefaultIJKControllerWidgetState();
 }
 
-class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
+class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     implements TooltipDelegate {
   IjkMediaController get controller => widget.controller;
 
@@ -157,12 +166,32 @@ class _DefaultControllerWidgetState extends State<DefaultControllerWidget>
     );
   }
 
+  Widget _buildFullScreenButton() {
+    if (widget.showFullScreenButton != true) {
+      return Container();
+    }
+    var isFull = widget.currentFullScreenState;
+    return IconButton(
+      color: Colors.white,
+      icon: Icon(isFull ? Icons.fullscreen_exit : Icons.fullscreen),
+      onPressed: () {
+        // todo: 这里加入控制全屏和取消全屏的代码, 还需要根据视频宽高决定是竖向全屏还是横向全屏
+        if (isFull) {
+          Navigator.pop(context);
+        } else {
+          showFullScreenIJKPlayer(context, controller);
+        }
+      },
+    );
+  }
+
   Widget buildPortrait(VideoInfo info) {
     return PortraitController(
       controller: controller,
       info: info,
       tooltipDelegate: this,
       playWillPauseOther: widget.playWillPauseOther,
+      fullScreenWidget: _buildFullScreenButton(),
     );
   }
 
@@ -419,6 +448,7 @@ class PortraitController extends StatelessWidget {
   final VideoInfo info;
   final TooltipDelegate tooltipDelegate;
   final bool playWillPauseOther;
+  final Widget fullScreenWidget;
 
   const PortraitController({
     Key key,
@@ -426,6 +456,7 @@ class PortraitController extends StatelessWidget {
     this.info,
     this.tooltipDelegate,
     this.playWillPauseOther = true,
+    this.fullScreenWidget,
   }) : super(key: key);
 
   bool get haveTime {
@@ -455,6 +486,8 @@ class PortraitController extends StatelessWidget {
 
     var playButton = buildPlayButton(context);
 
+    var fullScreenButton = buildFullScreenButton();
+
     Widget widget = Row(
       children: <Widget>[
         playButton,
@@ -467,6 +500,7 @@ class PortraitController extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: maxTime,
         ),
+        fullScreenButton,
       ],
     );
     widget = DefaultTextStyle(
@@ -565,6 +599,10 @@ class PortraitController extends StatelessWidget {
     var tooltip = tooltipDelegate?.createTooltipWidgetWrapper(text);
     tooltipDelegate?.showTooltip(tooltip);
   }
+
+  Widget buildFullScreenButton() {
+    return fullScreenWidget ?? Container();
+  }
 }
 
 abstract class TooltipDelegate {
@@ -578,4 +616,52 @@ abstract class TooltipDelegate {
 enum VolumeType {
   system,
   media,
+}
+
+showFullScreenIJKPlayer(
+    BuildContext context, IjkMediaController controller) async {
+  showDialog(
+    context: context,
+    builder: (ctx) => IjkPlayer(
+          mediaController: controller,
+          controllerWidgetBuilder: (ctl) =>
+              _buildFullScreenMediaController(ctl, true),
+        ),
+  ).then((_) {
+    IjkManager.unlockOrientation();
+    IjkManager.setCurrentOrientation(DeviceOrientation.portraitUp);
+  });
+  var info = await controller.getVideoInfo();
+
+  Axis axis;
+
+  if (info.width == 0 || info.height == 0) {
+    axis = Axis.horizontal;
+  } else if (info.width > info.height) {
+    if (info.degree == 90 || info.degree == 270) {
+      axis = Axis.vertical;
+    } else {
+      axis = Axis.horizontal;
+    }
+  } else {
+    if (info.degree == 90 || info.degree == 270) {
+      axis = Axis.horizontal;
+    } else {
+      axis = Axis.vertical;
+    }
+  }
+
+  if (axis == Axis.horizontal) {
+    IjkManager.setLandScape();
+  } else {
+    IjkManager.setPortrait();
+  }
+}
+
+Widget _buildFullScreenMediaController(
+    IjkMediaController controller, bool fullScreen) {
+  return DefaultIJKControllerWidget(
+    controller: controller,
+    currentFullScreenState: true,
+  );
 }

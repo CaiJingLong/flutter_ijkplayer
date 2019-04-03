@@ -140,7 +140,7 @@ class _VideoItemState extends State<VideoItem> {
   }
 
   Widget _buildControllerWidget(IjkMediaController controller) {
-    return DefaultControllerWidget(
+    return DefaultIJKControllerWidget(
       controller: controller,
       verticalGesture: false,
     );
