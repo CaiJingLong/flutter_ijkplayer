@@ -28,7 +28,7 @@ class _IJKEventChannel {
       case "finish": // 播放完毕
         // var index = call.arguments["type"];
         // var type = FinishType.values[index];
-        onPlayFinish(getInfo(call));
+        _onPlayFinish(getInfo(call));
         break;
       case "playStateChange":
         onPlayStateChange(getInfo(call));
@@ -52,9 +52,8 @@ class _IJKEventChannel {
     return VideoInfo.fromMap(map);
   }
 
-  void onPlayFinish(VideoInfo info) {
-    controller.isPlaying = info.isPlaying;
-    controller.pause();
+  void _onPlayFinish(VideoInfo info) {
+    controller?._onPlayFinish();
   }
 
   void onPlayStateChange(VideoInfo info) {

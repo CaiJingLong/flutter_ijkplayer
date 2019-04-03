@@ -68,6 +68,11 @@ class IjkMediaController {
   /// video info stream
   Stream<VideoInfo> get videoInfoStream => _videoInfoController?.stream;
 
+  VideoInfo _info = VideoInfo.fromMap(null);
+
+  /// last update video info.
+  VideoInfo get info => _info;
+
   /// video volume stream controller
   StreamController<int> _volumeController = StreamController.broadcast();
 
@@ -92,9 +97,13 @@ class IjkMediaController {
   /// video volume, not system volume
   int get volume => _volume;
 
-  VideoInfo _info = VideoInfo.fromMap(null);
+  /// playFinish
+  StreamController<IjkMediaController> _playFinishController =
+      StreamController.broadcast();
 
-  VideoInfo get info => _info;
+  /// On play finish
+  Stream<IjkMediaController> get playFinishStream =>
+      _playFinishController.stream;
 
   /// create ijk texture id from native
   Future<void> _initIjk() async {
@@ -118,11 +127,13 @@ class IjkMediaController {
     _videoInfoController?.close();
     _textureIdController?.close();
     _volumeController?.close();
+    _playFinishController?.close();
 
     _playingController = null;
     _videoInfoController = null;
     _textureIdController = null;
     _volumeController = null;
+    _playFinishController = null;
 
     IjkMediaPlayerManager().remove(this);
   }
@@ -328,6 +339,12 @@ class IjkMediaController {
 
   Future<void> hideSystemVolumeBar() async {
     await IjkManager.hideSystemVolumeBar();
+  }
+
+  void _onPlayFinish() {
+    isPlaying = info.isPlaying;
+    refreshVideoInfo();
+    _playFinishController?.add(this);
   }
 }
 
