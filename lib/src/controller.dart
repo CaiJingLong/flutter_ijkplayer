@@ -68,10 +68,10 @@ class IjkMediaController {
   /// video info stream
   Stream<VideoInfo> get videoInfoStream => _videoInfoController?.stream;
 
-  VideoInfo _info = VideoInfo.fromMap(null);
+  VideoInfo _videoInfo = VideoInfo.fromMap(null);
 
   /// last update video info.
-  VideoInfo get info => _info;
+  VideoInfo get videoInfo => _videoInfo;
 
   /// video volume stream controller
   StreamController<int> _volumeController = StreamController.broadcast();
@@ -287,7 +287,7 @@ class IjkMediaController {
   /// request info and notify
   Future<void> refreshVideoInfo() async {
     var info = await getVideoInfo();
-    _info = info;
+    _videoInfo = info;
     isPlaying = info.isPlaying;
     if (info.hasData) {
       _videoInfoController?.add(info);
@@ -342,7 +342,7 @@ class IjkMediaController {
   }
 
   void _onPlayFinish() {
-    isPlaying = info.isPlaying;
+    isPlaying = videoInfo.isPlaying;
     refreshVideoInfo();
     _playFinishController?.add(this);
   }

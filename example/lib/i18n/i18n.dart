@@ -36,6 +36,10 @@ abstract class I18n {
   String get pick;
 
   String get noPickTip;
+
+  String get useStreamUsage;
+
+  String get playFinishToast;
 }
 
 I18n get currentI18n => I18n(window.locale);

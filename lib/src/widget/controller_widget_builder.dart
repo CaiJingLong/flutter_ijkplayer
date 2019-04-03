@@ -175,7 +175,6 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       color: Colors.white,
       icon: Icon(isFull ? Icons.fullscreen_exit : Icons.fullscreen),
       onPressed: () {
-        // todo: 这里加入控制全屏和取消全屏的代码, 还需要根据视频宽高决定是竖向全屏还是横向全屏
         if (isFull) {
           Navigator.pop(context);
         } else {
