@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/page/index.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   IjkConfig.isLog = true;
