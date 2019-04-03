@@ -27,11 +27,6 @@ class _MyAppState extends State<MyApp> {
     return OKToast(
       child: MaterialApp(
         home: IndexPage(),
-        supportedLocales: [
-          Locale("cn"),
-          Locale("en"),
-        ],
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
       ),
     );
   }
