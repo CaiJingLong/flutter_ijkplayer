@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
@@ -161,12 +162,13 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
   }
 
   Widget _buildFullScreenButton() {
+    var isFull = widget.fullScreen;
     return IconButton(
       color: Colors.white,
-      icon: Icon(widget.fullScreen ? Icons.fullscreen_exit : Icons.fullscreen),
+      icon: Icon(isFull ? Icons.fullscreen_exit : Icons.fullscreen),
       onPressed: () {
         // todo: 这里加入控制全屏和取消全屏的代码, 还需要根据视频宽高决定是竖向全屏还是横向全屏
-        if (widget.fullScreen) {
+        if (isFull) {
           Navigator.pop(context);
         } else {
           showFullScreenIJKPlayer(context, controller);
@@ -608,7 +610,8 @@ enum VolumeType {
   media,
 }
 
-showFullScreenIJKPlayer(BuildContext context, IjkMediaController controller) {
+showFullScreenIJKPlayer(
+    BuildContext context, IjkMediaController controller) async {
   showDialog(
     context: context,
     builder: (ctx) => IjkPlayer(
@@ -616,7 +619,27 @@ showFullScreenIJKPlayer(BuildContext context, IjkMediaController controller) {
           controllerWidgetBuilder: (ctl) =>
               _buildFullScreenMediaController(ctl, true),
         ),
-  );
+  ).then((_) {
+    IjkManager.unlockOrientation();
+    IjkManager.setCurrentOrientation(DeviceOrientation.portraitUp);
+  });
+  var info = await controller.getVideoInfo();
+
+  Axis axis;
+
+  if (info.width == 0 || info.height == 0) {
+    axis = Axis.horizontal;
+  } else if (info.width > info.height) {
+    axis = Axis.horizontal;
+  } else {
+    axis = Axis.vertical;
+  }
+
+  if (axis == Axis.horizontal) {
+    IjkManager.setLandScape();
+  } else {
+    IjkManager.setPortrait();
+  }
 }
 
 Widget _buildFullScreenMediaController(
