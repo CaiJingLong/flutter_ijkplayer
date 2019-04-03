@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ijkplayer_example/i18n/i18n.dart';
 import 'package:ijkplayer_example/page/asset_page.dart';
 import 'package:ijkplayer_example/page/dialog_video_page.dart';
 import 'package:ijkplayer_example/page/full_screen.dart';
@@ -17,18 +18,18 @@ class _IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("首页"),
+        title: Text(currentI18n.indexTitle),
       ),
       body: ListView(
         children: <Widget>[
-          buildButton("播放网络视频", NetworkPage()),
-          buildButton("播放相册视频", PlayGalleryPage()),
-          buildButton("播放应用asset", AssetPage()),
-          buildButton("ListView中插入视频(未完成)", VideoList()),
-          buildButton("全屏切换示例(自动)", FullScreen()),
-          buildButton("全屏切换示例(手动)", FullScreen2()),
-          buildButton("在dialog中播放显示视频", DialogVideoPage()),
-          buildButton("纵向视频", PagingPickPage()),
+          buildButton(currentI18n.networkButton, NetworkPage()),
+          buildButton(currentI18n.photoButton, PlayGalleryPage()),
+          buildButton(currentI18n.assetButton, AssetPage()),
+          buildButton(currentI18n.listViewButton, VideoList()),
+          buildButton(currentI18n.fullScreenAutoButton, FullScreen()),
+          buildButton(currentI18n.fullScreenManualButton, FullScreen2()),
+          buildButton(currentI18n.withDialogButton, DialogVideoPage()),
+          buildButton(currentI18n.pageViewButton, PagingPickPage()),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:ijkplayer_example/i18n/i18n.dart';
 
 class FullScreen extends StatefulWidget {
   @override
@@ -33,7 +34,7 @@ class _FullScreenState extends State<FullScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text("切换横竖屏可以看到界面变化"),
+        title: Text(currentI18n.autoFullScreenTitle),
       ),
       body: ListView(
         children: <Widget>[
@@ -135,17 +136,9 @@ class _FullScreen2State extends State<FullScreen2> {
   }
 
   Widget buildNormal() {
-    // SystemChrome.setEnabledSystemUIOverlays([
-    //   SystemUiOverlay.top,
-    //   SystemUiOverlay.bottom,
-    // ]);
-    // OrientationPlugin.setEnabledSystemUIOverlays([
-    //   SystemUiOverlay.top,
-    //   SystemUiOverlay.bottom,
-    // ]);
     return Scaffold(
       appBar: AppBar(
-        title: Text("手动切换全屏(强制)"),
+        title: Text(currentI18n.changeFullScreenWithButton),
       ),
       body: ListView(
         children: <Widget>[
@@ -166,11 +159,11 @@ class _FullScreen2State extends State<FullScreen2> {
               await controller.setDataSource(source);
               await controller.play();
             },
-            child: Text("播放"),
+            child: Text(currentI18n.play),
           ),
           RaisedButton(
             onPressed: setLandScapeLeft,
-            child: Text("全屏"),
+            child: Text(currentI18n.fullScreen),
           ),
         ],
       ),
