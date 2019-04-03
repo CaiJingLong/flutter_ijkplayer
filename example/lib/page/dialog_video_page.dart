@@ -18,14 +18,12 @@ class _DialogVideoPageState extends State<DialogVideoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("在dialog中显示ijkplayer"),
+      ),
       body: Center(
         child: Column(
           children: <Widget>[
-            AspectRatio(
-              aspectRatio: 1,
-              child: _buildIJKPlayer(),
-            ),
             FlatButton(
               child: Text("显示dialog"),
               onPressed: showIJKDialog,
@@ -43,14 +41,12 @@ class _DialogVideoPageState extends State<DialogVideoPage> {
     );
     await controller.play();
 
-    await Future.delayed(Duration(seconds: 2));
-
-    showDialog(
+    await showDialog(
       context: context,
-      builder: (_) => IjkPlayer(
-            mediaController: controller,
-          ),
+      builder: (_) => _buildIJKPlayer(),
     );
+
+    controller.pause();
   }
 
   _buildIJKPlayer() {
