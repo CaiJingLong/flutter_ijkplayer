@@ -4,6 +4,7 @@ import 'package:ijkplayer_example/page/dialog_video_page.dart';
 import 'package:ijkplayer_example/page/full_screen.dart';
 import 'package:ijkplayer_example/page/gallery_page.dart';
 import 'package:ijkplayer_example/page/network.dart';
+import 'package:ijkplayer_example/page/paging_page.dart';
 import 'package:ijkplayer_example/page/video_list.dart';
 
 class IndexPage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _IndexPageState extends State<IndexPage> {
           buildButton("全屏切换示例(自动)", FullScreen()),
           buildButton("全屏切换示例(手动)", FullScreen2()),
           buildButton("在dialog中播放显示视频", DialogVideoPage()),
+          buildButton("纵向视频", PagingPickPage()),
         ],
       ),
     );
