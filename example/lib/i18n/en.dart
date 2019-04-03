@@ -49,4 +49,10 @@ class _I18nEn extends I18n {
 
   @override
   String get pick => "pick";
+
+  @override
+  String get useStreamUsage => "Controller stream usage";
+
+  @override
+  String get playFinishToast => "Play video finish";
 }

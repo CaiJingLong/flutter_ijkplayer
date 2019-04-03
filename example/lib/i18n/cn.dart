@@ -50,4 +50,10 @@ class _I18nZh extends I18n {
 
   @override
   String get pick => "选择";
+
+  @override
+  String get useStreamUsage => "Controller stream的使用";
+
+  @override
+  String get playFinishToast => "播放完毕";
 }
