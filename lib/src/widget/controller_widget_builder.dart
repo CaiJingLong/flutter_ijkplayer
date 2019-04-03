@@ -630,9 +630,17 @@ showFullScreenIJKPlayer(
   if (info.width == 0 || info.height == 0) {
     axis = Axis.horizontal;
   } else if (info.width > info.height) {
-    axis = Axis.horizontal;
+    if (info.degree == 90 || info.degree == 270) {
+      axis = Axis.vertical;
+    } else {
+      axis = Axis.horizontal;
+    }
   } else {
-    axis = Axis.vertical;
+    if (info.degree == 90 || info.degree == 270) {
+      axis = Axis.horizontal;
+    } else {
+      axis = Axis.vertical;
+    }
   }
 
   if (axis == Axis.horizontal) {

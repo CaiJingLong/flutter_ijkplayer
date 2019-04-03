@@ -70,6 +70,7 @@ class IjkPlayerState extends State<IjkPlayer> {
         var id = snapshot.data;
         return StreamBuilder<VideoInfo>(
             stream: controller.videoInfoStream,
+            initialData: controller.info,
             builder: (context, videoInfoSnapShot) {
               return _buildTexture(id, videoInfoSnapShot.data);
             });
