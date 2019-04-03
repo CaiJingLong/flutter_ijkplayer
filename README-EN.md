@@ -222,6 +222,36 @@ await controller.reset(); // When this method is called, all native resources ar
 await controller.dispose(); // After this method call, the current controller is theoretically no longer available, resetting dataSource is invalid and may throw an exception.
 ```
 
+### Use self controller UI
+
+Use `IJKPlayer`'s `controllerWidgetBuilder` params can customize UI, default use `defaultBuildIjkControllerWidget` method to get widget.
+
+The returned widget will be overwritten on the `Texture`.
+
+```dart
+IJKPlayer(
+  mediaController: IjkMediaController(),
+  controllerWidgetBuilder: (mediaController){
+    return Container(); // your controller widget.
+  },
+);
+```
+
+### Use Texture widget
+
+Use `textureBuilder` params to customize `Texture` widget, use `playerBuilder` in before 0.1.8 version.
+
+Default use `buildDefaultIjkPlayer` method, params is `context,controller,videoInfo` and reture a `Widget`.
+
+```dart
+IJKPlayer(
+  mediaController: IjkMediaController(),
+  textureBuilder: (context,mediaController,videoInfo){
+    return Texture(); /// Your `Texture` widget
+  },
+);
+```
+
 ## LICENSE
 
 MIT
