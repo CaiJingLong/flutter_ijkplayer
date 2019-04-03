@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/page/index.dart';
+import 'package:oktoast/oktoast.dart';
 
 void main() {
   IjkConfig.isLog = true;
@@ -17,8 +18,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: IndexPage(),
+    return OKToast(
+      child: MaterialApp(
+        home: IndexPage(),
+      ),
     );
   }
 }

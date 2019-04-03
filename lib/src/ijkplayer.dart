@@ -20,17 +20,17 @@ class IjkPlayer extends StatefulWidget {
   final IjkMediaController mediaController;
 
   /// See [DefaultIJKControllerWidget]
-  final ControllerWidgetBuilder controllerWidgetBuilder;
+  final IJKControllerWidgetBuilder controllerWidgetBuilder;
 
   /// See [buildDefaultIjkPlayer]
-  final PlayerBuilder playerBuilder;
+  final IJKTextureBuilder textureBuilder;
 
   /// Main Classes of Library
   const IjkPlayer({
     Key key,
     @required this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
-    this.playerBuilder = buildDefaultIjkPlayer,
+    this.textureBuilder = buildDefaultIjkPlayer,
   }) : super(key: key);
 
   @override
@@ -91,8 +91,8 @@ class IjkPlayerState extends State<IjkPlayer> {
   }
 
   Widget _buildTexture(int id, VideoInfo info) {
-    if (widget?.playerBuilder != null) {
-      return widget.playerBuilder.call(context, controller, info);
+    if (widget?.textureBuilder != null) {
+      return widget.textureBuilder.call(context, controller, info);
     }
 
     if (id == null) {

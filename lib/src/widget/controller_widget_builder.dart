@@ -10,7 +10,7 @@ import 'package:flutter_ijkplayer/src/helper/ui_helper.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
 /// Using mediaController to Construct a Controller UI
-typedef Widget ControllerWidgetBuilder(IjkMediaController controller);
+typedef Widget IJKControllerWidgetBuilder(IjkMediaController controller);
 
 /// default create IJK Controller UI
 Widget defaultBuildIjkControllerWidget(IjkMediaController controller) {
@@ -23,7 +23,7 @@ Widget defaultBuildIjkControllerWidget(IjkMediaController controller) {
 
 /// Default Controller Widget
 ///
-/// see [IjkPlayer] and [ControllerWidgetBuilder]
+/// see [IjkPlayer] and [IJKControllerWidgetBuilder]
 class DefaultIJKControllerWidget extends StatefulWidget {
   final IjkMediaController controller;
 

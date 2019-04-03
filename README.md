@@ -243,7 +243,37 @@ Stream<bool> volumeStream = controller.playingStream;
 ```dart
 await controller.reset(); // 这个方法调用后,会释放所有原生资源,但重新设置dataSource依然可用
 
-await controller.dispose(); //这个方法调用后,当前控制器理论上不再可用,重新设置dataSource无效
+await controller.dispose(); //这个方法调用后,当前控制器理论上不再可用,重新设置dataSource无效,且可能会抛出异常
+```
+
+### 自定义控制器 UI
+
+使用`IJKPlayer`的`controllerWidgetBuilder`属性可以自定义控制器的 UI,默认使用`defaultBuildIjkControllerWidget`方法构建
+
+返回的 Widget 会被覆盖在 Texture 上
+
+```dart
+IJKPlayer(
+  mediaController: IjkMediaController(),
+  controllerWidgetBuilder: (mediaController){
+    return Container(); // 自定义
+  },
+);
+```
+
+### 自定义纹理界面
+
+使用`textureBuilder`属性自定义纹理界面,在 0.1.8 和之前的版本该属性名是`playerBuilder`
+
+默认的方法`buildDefaultIjkPlayer`接受 `context,controller,videoInfo` 参数返回 Widget
+
+```dart
+IJKPlayer(
+  mediaController: IjkMediaController(),
+  textureBuilder: (context,mediaController,videoInfo){
+    return Texture(); // 自定义纹理界面
+  },
+);
 ```
 
 ## Progress
