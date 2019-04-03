@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:ijkplayer_example/i18n/i18n.dart';
 
 class DialogVideoPage extends StatefulWidget {
   @override
@@ -19,13 +20,13 @@ class _DialogVideoPageState extends State<DialogVideoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("在dialog中显示ijkplayer"),
+        title: Text(currentI18n.withDialogButton),
       ),
       body: Center(
         child: Column(
           children: <Widget>[
             FlatButton(
-              child: Text("显示dialog"),
+              child: Text(currentI18n.showDialog),
               onPressed: showIJKDialog,
             ),
           ],

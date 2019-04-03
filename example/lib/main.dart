@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/page/index.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   IjkConfig.isLog = true;
@@ -17,10 +18,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return OKToast(
       child: MaterialApp(
         home: IndexPage(),
+        supportedLocales: [
+          Locale("cn"),
+          Locale("en"),
+        ],
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
       ),
     );
   }

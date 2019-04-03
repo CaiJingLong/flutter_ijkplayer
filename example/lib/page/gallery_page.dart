@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:ijkplayer_example/i18n/i18n.dart';
 import 'package:photo/photo.dart';
 
 class PlayGalleryPage extends StatefulWidget {
@@ -29,12 +30,12 @@ class _PlayGalleryPageState extends State<PlayGalleryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("播放相册视频"),
+        title: Text(currentI18n.photoButton),
       ),
       body: ListView(
         children: <Widget>[
           FlatButton(
-            child: Text("选择"),
+            child: Text("Pick"),
             onPressed: _pickVideo,
           ),
           _buildFileText(),

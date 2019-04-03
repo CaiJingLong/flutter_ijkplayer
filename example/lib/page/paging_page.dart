@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:ijkplayer_example/i18n/i18n.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:photo/photo.dart';
 
@@ -8,12 +9,12 @@ class PagingPickPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("选择视频"),
+        title: Text(currentI18n.pick),
       ),
       body: ListView(
         children: <Widget>[
           FlatButton(
-            child: Text("选择视频并开启"),
+            child: Text(currentI18n.pick),
             onPressed: () => pickVideo(context),
           ),
         ],
@@ -29,7 +30,7 @@ class PagingPickPage extends StatelessWidget {
     );
 
     if (photos == null || photos.isEmpty) {
-      showToast("没选择视频");
+      showToast(currentI18n.noPickTip);
       return;
     }
 
