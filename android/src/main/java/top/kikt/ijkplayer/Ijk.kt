@@ -4,6 +4,7 @@ package top.kikt.ijkplayer
 
 
 import android.util.Base64
+import android.view.TextureView
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
@@ -114,10 +115,21 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
 //                result?.success(this.mediaPlayer.setVolume())
             }
+            "screenShot" -> {
+                screenShot()
+                result?.success(byteArrayOf())
+            }
             else -> {
                 result?.notImplemented()
             }
         }
+    }
+
+    private fun screenShot() {
+        val textureView = TextureView(registry.activity())
+        textureView.surfaceTexture = textureEntry.surfaceTexture()
+        val bitmap = textureView.bitmap
+        logi("bitmap width = ${bitmap?.width} height = ${bitmap?.height}")
     }
 
     fun getInfo(): Info {

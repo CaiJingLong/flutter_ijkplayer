@@ -56,10 +56,7 @@ class DefaultIJKPlayerWrapper extends StatelessWidget {
     );
 
     if (!controller.autoRotate) {
-      return AspectRatio(
-        aspectRatio: null,
-        child: w,
-      );
+      return w;
     }
 
     int degree = info?.degree ?? 0;

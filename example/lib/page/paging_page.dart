@@ -131,6 +131,25 @@ class _PagingPageState extends State<PagingPage> {
     );
   }
 
+  // Hold up to three controllers.
+  // IjkMediaController initControllers(int current) {
+  //   var src = widget.dataSourceList[current];
+  //   var ctl = getControllerWithSrc(src);
+
+  //   var next = current + 1;
+  //   if (next < widget.dataSourceList.length) {
+  //     var datasource = widget.dataSourceList[next];
+  //     var nextCtl = getControllerWithSrc(datasource);
+  //   }
+
+  //   return ctl;
+  // }
+
+  // void disposeOther(int current) {
+  //   var last = current - 1;
+  //   var next = current + 1;
+  // }
+
   Widget _buildItem(BuildContext context, int index) {
     var src = widget.dataSourceList[index];
     var ctl = getControllerWithSrc(src);

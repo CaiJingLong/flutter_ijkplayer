@@ -40,6 +40,8 @@ abstract class I18n {
   String get useStreamUsage;
 
   String get playFinishToast;
+
+  String get screenshotTitle;
 }
 
 I18n get currentI18n => I18n(window.locale);

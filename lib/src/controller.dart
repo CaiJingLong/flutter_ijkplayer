@@ -1,7 +1,7 @@
 part of './ijkplayer.dart';
 
 /// Media Controller
-class IjkMediaController {
+class IjkMediaController with IjkMediaControllerMixin {
   /// MediaController
   IjkMediaController({
     this.autoRotate = true,
@@ -429,6 +429,14 @@ class _IjkPlugin {
     await channel.invokeMethod("setVolume", <String, dynamic>{
       "volume": volume,
     });
+  }
+
+  Future<Uint8List> screenShot() async {
+    var result = await channel.invokeMethod("screenShot");
+    if (result == null) {
+      return null;
+    }
+    return result;
   }
 }
 

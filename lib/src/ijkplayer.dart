@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ijkplayer/src/ijkplayer_controller_mixin.dart';
 
 import 'error.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
@@ -41,7 +43,7 @@ class IjkPlayer extends StatefulWidget {
 class IjkPlayerState extends State<IjkPlayer> {
   /// see [IjkMediaController]
   IjkMediaController controller;
-
+  GlobalKey _wrapperKey = GlobalKey();
   @override
   void initState() {
     super.initState();
@@ -92,7 +94,12 @@ class IjkPlayerState extends State<IjkPlayer> {
 
   Widget _buildTexture(int id, VideoInfo info) {
     if (widget?.textureBuilder != null) {
-      return widget.textureBuilder.call(context, controller, info);
+      var texture = widget.textureBuilder.call(context, controller, info);
+      return _IjkPlayerWrapper(
+        child: texture,
+        globalKey: _wrapperKey,
+        controller: controller,
+      );
     }
 
     if (id == null) {
@@ -103,9 +110,53 @@ class IjkPlayerState extends State<IjkPlayer> {
 
     return Container(
       color: Colors.black,
-      child: Texture(
-        textureId: id,
+      child: _IjkPlayerWrapper(
+        globalKey: _wrapperKey,
+        controller: controller,
+        child: Texture(
+          textureId: id,
+        ),
       ),
+    );
+  }
+}
+
+class _IjkPlayerWrapper extends StatefulWidget {
+  final Widget child;
+  final GlobalKey globalKey;
+  final IjkMediaController controller;
+
+  const _IjkPlayerWrapper({
+    @required this.globalKey,
+    @required this.child,
+    Key key,
+    @required this.controller,
+  }) : super(key: key);
+
+  @override
+  __IjkPlayerWrapperState createState() => __IjkPlayerWrapperState();
+}
+
+class __IjkPlayerWrapperState extends State<_IjkPlayerWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller?.attach(widget.globalKey);
+    print("wrapper state init ");
+  }
+
+  @override
+  void dispose() {
+    widget.controller?.detach(widget.globalKey);
+    print("wrapper state dispose");
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: widget.child,
+      key: widget.globalKey,
     );
   }
 }

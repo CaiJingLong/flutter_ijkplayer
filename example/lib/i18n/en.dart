@@ -55,4 +55,7 @@ class _I18nEn extends I18n {
 
   @override
   String get playFinishToast => "Play video finish";
+
+  @override
+  String get screenshotTitle => "screenshot video frame(experiment)";
 }
