@@ -1,7 +1,7 @@
 part of './ijkplayer.dart';
 
 /// Media Controller
-class IjkMediaController {
+class IjkMediaController with IjkMediaControllerMixin {
   /// MediaController
   IjkMediaController({
     this.autoRotate = true,
@@ -328,6 +328,7 @@ class IjkMediaController {
     await IjkManager.setSystemVolume(volume);
   }
 
+  /// Pause all other players.
   Future<void> pauseOtherController() async {
     await IjkMediaPlayerManager().pauseOther(this);
   }
@@ -345,6 +346,13 @@ class IjkMediaController {
     isPlaying = videoInfo.isPlaying;
     refreshVideoInfo();
     _playFinishController?.add(this);
+  }
+
+  /// Intercept the video frame image and get the `Uint8List` format.
+  ///
+  /// Player UI is not included. If you need the effect of the player, use the screenshot of the system.
+  Future<Uint8List> screenShot() {
+    return _plugin.screenShot();
   }
 }
 
@@ -425,10 +433,19 @@ class _IjkPlugin {
     });
   }
 
+  ///
   Future<void> setVolume(int volume) async {
     await channel.invokeMethod("setVolume", <String, dynamic>{
       "volume": volume,
     });
+  }
+
+  Future<Uint8List> screenShot() async {
+    var result = await channel.invokeMethod("screenShot");
+    if (result == null) {
+      return null;
+    }
+    return result;
   }
 }
 

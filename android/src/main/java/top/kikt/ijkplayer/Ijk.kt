@@ -3,6 +3,7 @@ package top.kikt.ijkplayer
 /// create 2019/3/7 by cai
 
 
+import android.graphics.Bitmap
 import android.util.Base64
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -10,6 +11,7 @@ import io.flutter.plugin.common.PluginRegistry
 import top.kikt.ijkplayer.entity.Info
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.MethodCallHandler {
@@ -111,12 +113,27 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
                 result?.success(true)
             }
             "getVolume" -> {
-
 //                result?.success(this.mediaPlayer.setVolume())
+            }
+            "screenShot" -> {
+                val bytes = screenShot()
+                result?.success(bytes)
             }
             else -> {
                 result?.notImplemented()
             }
+        }
+    }
+
+    private fun screenShot(): ByteArray? {
+        val frameBitmap = mediaPlayer.frameBitmap
+        return if (frameBitmap != null) {
+            val outputStream = ByteArrayOutputStream()
+            frameBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            frameBitmap.recycle()
+            outputStream.toByteArray()
+        } else {
+            null
         }
     }
 

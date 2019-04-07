@@ -1,3 +1,7 @@
+## 0.1.9
+
+add screen shot method.
+
 ## 0.1.8
 
 Screen rotation and full screen control code.

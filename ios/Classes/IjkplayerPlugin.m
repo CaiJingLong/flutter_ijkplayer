@@ -53,7 +53,7 @@ static IjkplayerPlugin *__sharedInstance;
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    
+//    __weak typeof(&*self) weakSelf = self;
     dispatch_async(mainQueue, ^{
         if ([@"create" isEqualToString:call.method]) {
             @try {

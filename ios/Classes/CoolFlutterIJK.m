@@ -32,8 +32,9 @@
         textureId = [textures registerTexture:self];
         NSString *channelName = [NSString stringWithFormat:@"top.kikt/ijkplayer/%lli", textureId];
         channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:[registrar messenger]];
+        __weak typeof(&*self) weakSelf = self;
         [channel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
-            [self handleMethodCall:call result:result];
+            [weakSelf handleMethodCall:call result:result];
         }];
     }
 
@@ -105,6 +106,12 @@
         float v = [params[@"volume"] floatValue] / 100;
         controller.playbackVolume = v;
         result(@(YES));
+    } else if ([@"screenShot" isEqualToString:call.method]) {
+        __weak typeof(&*self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSData *data = [weakSelf screenShot];
+            result(data);
+        });
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -294,6 +301,30 @@
     }
 
     return mDegree;
+}
+
+- (NSData*) screenShot{
+    CVPixelBufferRef ref = [self copyPixelBuffer];
+    if(!ref){
+        return nil;
+    }
+    
+    UIImage *img = [self convertPixeclBufferToUIImage:ref];
+    return UIImageJPEGRepresentation(img, 1.0);
+}
+
+-(UIImage*)convertPixeclBufferToUIImage:(CVPixelBufferRef)pixelBuffer{
+    CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
+    
+    CIContext *temporaryContext = [CIContext contextWithOptions:nil];
+    CGImageRef videoImage = [temporaryContext
+                             createCGImage:ciImage
+                             fromRect:CGRectMake(0, 0, CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer))];
+    
+    UIImage *uiImage = [UIImage imageWithCGImage:videoImage];
+    CGImageRelease(videoImage);
+    
+    return uiImage;
 }
 
 @end

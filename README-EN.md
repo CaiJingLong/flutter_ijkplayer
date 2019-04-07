@@ -196,6 +196,18 @@ await controller.seekTo(0); // double value , such as : 1.1 = 1s100ms, 60 = 1min
   VideoInfo info = await controller.getVideoInfo();
 ```
 
+#### screen shot
+
+Intercept the current video frame
+This video frame comes from the video frame currently decoded by ffmpeg and does not contain the contents of the controller, etc.
+The format in dart is Uint8List.
+
+```dart
+var uint8List = await controller.screenShot();
+var provider = MemoryImage(uint8List);
+Widget image = Image(image:provider);
+```
+
 #### Observer for resource
 
 Broadcasting changes in information outward in the form of streams, in principle the attributes ending with streams are monitorable.

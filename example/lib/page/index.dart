@@ -7,6 +7,7 @@ import 'package:ijkplayer_example/page/full_screen.dart';
 import 'package:ijkplayer_example/page/gallery_page.dart';
 import 'package:ijkplayer_example/page/network.dart';
 import 'package:ijkplayer_example/page/paging_page.dart';
+import 'package:ijkplayer_example/page/screen_shot_page.dart';
 import 'package:ijkplayer_example/page/video_list.dart';
 
 class IndexPage extends StatefulWidget {
@@ -32,6 +33,7 @@ class _IndexPageState extends State<IndexPage> {
           buildButton(currentI18n.withDialogButton, DialogVideoPage()),
           buildButton(currentI18n.pageViewButton, PagingPickPage()),
           buildButton(currentI18n.useStreamUsage, ControllerStreamUsagePage()),
+          buildButton(currentI18n.screenshotTitle, ScreenShotPage()),
         ],
       ),
     );

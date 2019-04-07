@@ -60,9 +60,8 @@ class _ControllerStreamUsagePageState extends State<ControllerStreamUsagePage> {
                 ),
                 Expanded(
                   child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(left: _borderSlider)
-                    ),
+                    decoration:
+                        BoxDecoration(border: Border(left: _borderSlider)),
                     child: buildVideoInfo(),
                   ),
                 ),
