@@ -328,6 +328,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     await IjkManager.setSystemVolume(volume);
   }
 
+  /// Pause all other players.
   Future<void> pauseOtherController() async {
     await IjkMediaPlayerManager().pauseOther(this);
   }
@@ -347,6 +348,9 @@ class IjkMediaController with IjkMediaControllerMixin {
     _playFinishController?.add(this);
   }
 
+  /// Intercept the video frame image and get the `Uint8List` format.
+  /// 
+  /// Player UI is not included. If you need the effect of the player, use the screenshot of the system.
   Future<Uint8List> screenShot(){
     return _plugin.screenShot();
   }
@@ -429,6 +433,7 @@ class _IjkPlugin {
     });
   }
 
+  /// 
   Future<void> setVolume(int volume) async {
     await channel.invokeMethod("setVolume", <String, dynamic>{
       "volume": volume,

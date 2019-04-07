@@ -220,6 +220,18 @@ await controller.setSystemVolume(100); // 范围0~100
   VideoInfo info = await controller.getVideoInfo();
 ```
 
+#### 截取视频帧
+
+视频帧的截图
+
+以`Uint8List`的格式导出,可以使用`Image`控件查看
+
+```dart
+var uint8List = await controller.screenShot();
+var provider = MemoryImage(uint8List);
+Widget image = Image(image:provider);
+```
+
 #### 资源监听
 
 使用 stream 的形式向外广播一些信息的变化,原则上以 stream 结尾的属性都是可监听的
