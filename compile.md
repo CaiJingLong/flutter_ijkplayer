@@ -8,6 +8,10 @@ The modified source code is hosted on gitee.
 
 `$ git clone https://gitee.com/kikt/ijkplayer_thrid_party.git ijkplayer`
 
+or
+
+`$ git clone https://cjlspy@dev.azure.com/cjlspy/flutter_ijkplayer_pod/_git/ijkplayer_for_flutter ijkplayer`
+
 ## Initialization and compilation of projects
 
 This section mainly refers to the official process. If you know something about ijkplayer, you can skip this section and look directly at the following links in flutter.

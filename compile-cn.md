@@ -8,6 +8,10 @@
 
 `$ git clone https://gitee.com/kikt/ijkplayer_thrid_party.git ijkplayer`
 
+或者使用
+
+`$ git clone https://cjlspy@dev.azure.com/cjlspy/flutter_ijkplayer_pod/_git/ijkplayer_for_flutter ijkplayer`
+
 ## 初始化及编译项目
 
 这部分主要参考官方的过程,如果你对于 ijkplayer 有所了解,可以跳过这部分,直接看后面的在 flutter 中使用环节
