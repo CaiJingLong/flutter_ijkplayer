@@ -49,6 +49,9 @@ class _ScreenShotPageState extends State<ScreenShotPage> {
             child: Text(currentI18n.screenshotTitle),
             onPressed: () async {
               var uint8List = await mediaController.screenShot();
+              if(uint8List == null){
+                return;
+              }
               provider = MemoryImage(uint8List);
               setState(() {});
             },

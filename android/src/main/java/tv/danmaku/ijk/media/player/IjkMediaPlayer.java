@@ -510,7 +510,6 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
 
     @Nullable
     public native Bitmap getFrameBitmap();
-    // public native int getFrameBitmap();
 
     @Override
     public String getDataSource() {
