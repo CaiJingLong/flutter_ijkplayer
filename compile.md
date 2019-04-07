@@ -10,7 +10,7 @@ The modified source code is hosted on gitee.
 
 or
 
-`$ git clone https://cjlspy@dev.azure.com/cjlspy/flutter_ijkplayer_pod/_git/ijkplayer_for_flutter ijkplayer`
+`$ git clone https://cjlspy@dev.azure.com/cjlspy/ijkplayer_for_flutter/_git/ijkplayer_for_flutter ijkplayer`
 
 ## Initialization and compilation of projects
 

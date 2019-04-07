@@ -10,7 +10,7 @@
 
 或者使用
 
-`$ git clone https://cjlspy@dev.azure.com/cjlspy/flutter_ijkplayer_pod/_git/ijkplayer_for_flutter ijkplayer`
+`$ git clone https://cjlspy@dev.azure.com/cjlspy/ijkplayer_for_flutter/_git/ijkplayer_for_flutter ijkplayer`
 
 ## 初始化及编译项目
 
