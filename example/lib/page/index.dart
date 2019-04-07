@@ -5,6 +5,7 @@ import 'package:ijkplayer_example/page/controller_stream_use.dart';
 import 'package:ijkplayer_example/page/dialog_video_page.dart';
 import 'package:ijkplayer_example/page/full_screen.dart';
 import 'package:ijkplayer_example/page/gallery_page.dart';
+import 'package:ijkplayer_example/page/in_overlay_page.dart';
 import 'package:ijkplayer_example/page/network.dart';
 import 'package:ijkplayer_example/page/paging_page.dart';
 import 'package:ijkplayer_example/page/screen_shot_page.dart';
@@ -34,6 +35,7 @@ class _IndexPageState extends State<IndexPage> {
           buildButton(currentI18n.pageViewButton, PagingPickPage()),
           buildButton(currentI18n.useStreamUsage, ControllerStreamUsagePage()),
           buildButton(currentI18n.screenshotTitle, ScreenShotPage()),
+          buildButton(currentI18n.overlayPageTitle, InOverlayPage()),
         ],
       ),
     );

@@ -58,4 +58,7 @@ class _I18nEn extends I18n {
 
   @override
   String get screenshotTitle => "screenshot video frame(experiment)";
+
+  @override
+  String get overlayPageTitle => "In overlay";
 }

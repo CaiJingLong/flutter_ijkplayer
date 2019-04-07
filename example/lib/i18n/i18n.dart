@@ -42,6 +42,8 @@ abstract class I18n {
   String get playFinishToast;
 
   String get screenshotTitle;
+
+  String get overlayPageTitle;
 }
 
 I18n get currentI18n => I18n(window.locale);
