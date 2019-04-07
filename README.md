@@ -16,11 +16,36 @@ android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其�
 
 在正式使用前,可以先 star 一下仓库, download 代码跑一下 example 尝试 (clone 也可以)
 
+## 目录
+
+- [ijkplayer](#ijkplayer)
+  - [目录](#目录)
+  - [English Readme](#english-readme)
+  - [安装](#安装)
+  - [原生部分说明](#原生部分说明)
+    - [iOS](#ios)
+    - [Android](#android)
+  - [入门示例](#入门示例)
+  - [使用](#使用)
+    - [设置](#设置)
+    - [关于销毁](#关于销毁)
+    - [控制器的使用](#控制器的使用)
+      - [设置资源](#设置资源)
+      - [播放器的控制](#播放器的控制)
+      - [获取播放信息](#获取播放信息)
+      - [截取视频帧](#截取视频帧)
+      - [资源监听](#资源监听)
+      - [释放资源](#释放资源)
+    - [自定义控制器 UI](#自定义控制器-ui)
+    - [自定义纹理界面](#自定义纹理界面)
+  - [进度](#进度)
+  - [LICENSE](#license)
+
 ## English Readme
 
 https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/README-EN.md
 
-## Install
+## 安装
 
 [![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
 
@@ -33,7 +58,7 @@ dependencies:
   flutter_ijkplayer: ${lastes_version}
 ```
 
-## Build
+## 原生部分说明
 
 编译规则可以参考[这个](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),如果你有自己的特定需求,可以修改编译选项,这个参考 bilibili/ijkplayer 或 ffmpeg
 
@@ -51,9 +76,9 @@ iOS 的代码来自于 https://github.com/jadennn/flutter_ijk 中的 iOS 代码
 
 ### Android
 
-现在使用 [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)中的 ex-so
+现在使用 [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)中的 ex-so 的规则, 但源码经过修改(截取视频帧),编译而成
 
-## Simple Example
+## 入门示例
 
 ```dart
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
@@ -123,7 +148,7 @@ class HomePageState extends State<HomePage> {
 }
 ```
 
-## Usage
+## 使用
 
 ### 设置
 
@@ -288,7 +313,7 @@ IJKPlayer(
 );
 ```
 
-## Progress
+## 进度
 
 目前正处于初始开发阶段,可能有各种问题,欢迎提出,但不一定会实现,也不一定会修改 😌
 

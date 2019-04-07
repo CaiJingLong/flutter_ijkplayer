@@ -12,6 +12,29 @@ The simulator is out of use, so please use the real machine for debugging.
 
 Before using library, you can star and download the code to try the example.
 
+## Menu
+
+- [ijkplayer](#ijkplayer)
+  - [Menu](#menu)
+  - [Install](#install)
+  - [Build](#build)
+    - [iOS](#ios)
+    - [Android](#android)
+  - [Simple Example](#simple-example)
+  - [Usage](#usage)
+    - [Usage of ijkplayer](#usage-of-ijkplayer)
+    - [about dispose](#about-dispose)
+    - [Usage of controller](#usage-of-controller)
+      - [DataSource](#datasource)
+      - [control your media](#control-your-media)
+      - [get media info](#get-media-info)
+      - [screen shot](#screen-shot)
+      - [Observer for resource](#observer-for-resource)
+      - [release resource](#release-resource)
+    - [Use self controller UI](#use-self-controller-ui)
+    - [Use Texture widget](#use-texture-widget)
+  - [LICENSE](#license)
+
 ## Install
 
 [![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
