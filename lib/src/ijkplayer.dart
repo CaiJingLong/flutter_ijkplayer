@@ -142,13 +142,11 @@ class __IjkPlayerWrapperState extends State<_IjkPlayerWrapper> {
   void initState() {
     super.initState();
     widget.controller?.attach(widget.globalKey);
-    print("wrapper state init ");
   }
 
   @override
   void dispose() {
     widget.controller?.detach(widget.globalKey);
-    print("wrapper state dispose");
     super.dispose();
   }
 

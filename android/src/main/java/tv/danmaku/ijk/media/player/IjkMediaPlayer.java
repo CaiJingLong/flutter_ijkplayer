@@ -43,6 +43,8 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -506,6 +508,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
     private native void _setAndroidIOCallback(IAndroidIO androidIO)
             throws IllegalArgumentException, SecurityException, IllegalStateException;
 
+    @Nullable
     public native Bitmap getFrameBitmap();
     // public native int getFrameBitmap();
 

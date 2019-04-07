@@ -346,6 +346,10 @@ class IjkMediaController with IjkMediaControllerMixin {
     refreshVideoInfo();
     _playFinishController?.add(this);
   }
+
+  Future<Uint8List> screenShot(){
+    return _plugin.screenShot();
+  }
 }
 
 /// about channel

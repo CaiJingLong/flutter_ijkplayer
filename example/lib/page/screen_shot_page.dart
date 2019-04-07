@@ -51,9 +51,6 @@ class _ScreenShotPageState extends State<ScreenShotPage> {
               var uint8List = await mediaController.screenShot();
               provider = MemoryImage(uint8List);
               setState(() {});
-
-              var size = await getImageForUint8List(uint8List);
-              print("width = ${size.width} , height = ${size.height}");
             },
           ),
           provider == null
