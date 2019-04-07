@@ -32,8 +32,9 @@
         textureId = [textures registerTexture:self];
         NSString *channelName = [NSString stringWithFormat:@"top.kikt/ijkplayer/%lli", textureId];
         channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:[registrar messenger]];
+        __weak typeof(&*self) weakSelf = self;
         [channel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
-            [self handleMethodCall:call result:result];
+            [weakSelf handleMethodCall:call result:result];
         }];
     }
 
@@ -106,8 +107,11 @@
         controller.playbackVolume = v;
         result(@(YES));
     } else if ([@"screenShot" isEqualToString:call.method]) {
-        NSData *data = [self screenShot];
-        result(data);
+        __weak typeof(&*self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSData *data = [weakSelf screenShot];
+            result(data);
+        });
     } else {
         result(FlutterMethodNotImplemented);
     }
