@@ -1,1 +1,2 @@
 ios/IJKMediaFramework.framework/IJKMediaFramework filter=lfs diff=lfs merge=lfs -text
+*.java linguist-language=dart
