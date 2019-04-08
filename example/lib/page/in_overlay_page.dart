@@ -1,6 +1,8 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
-import 'package:ijkplayer_example/i18n/i18n.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:ijkplayer_example/i18n/i18n.dart';
 
 class InOverlayPage extends StatefulWidget {
   @override
@@ -92,24 +94,20 @@ class OverlayWidget extends StatefulWidget {
   _OverlayWidgetState createState() => _OverlayWidgetState();
 }
 
+const double _overlayWidth = 100;
+
 class _OverlayWidgetState extends State<OverlayWidget> {
   double dx = 0;
-  double dy = 0;
+  double dy = 1;
 
   @override
   Widget build(BuildContext context) {
-    var size = Size(200, 200 * widget.initVideoInfo.ratio);
     return NotificationListener<OffsetNotication>(
-      onNotification: (n) {
-        dx += n.offset.dx;
-        dy += n.offset.dy;
-        setState(() {});
-        return true;
-      },
+      onNotification: _onOffsetNoticiation,
       child: Align(
-        alignment: FractionalOffset.fromOffsetAndSize(Offset(dx, dy), size),
+        alignment: Alignment(dx, dy),
         child: Container(
-          width: 200,
+          width: _overlayWidth,
           child: AspectRatio(
             aspectRatio: widget.initVideoInfo.ratio,
             child: IjkPlayer(
@@ -125,6 +123,40 @@ class _OverlayWidgetState extends State<OverlayWidget> {
         ),
       ),
     );
+  }
+
+  Offset _startOffset;
+
+  bool _onOffsetNoticiation(OffsetNotication notification) {
+    if (notification.type == OffsetType.start) {
+      _startOffset = Offset(dx, dy);
+      return true;
+    }
+
+    var offset = notification.offset;
+
+    var size = MediaQuery.of(context).size;
+
+    dx = _startOffset.dx + offset.dx / size.width * 2;
+    dy = _startOffset.dy + offset.dy / size.height * 2;
+
+    print("dx = $dx");
+    print("dy = $dy");
+
+    if (dx > 1) {
+      dx = 1;
+    } else if (dx < -1) {
+      dx = -1;
+    }
+
+    if (dy > 1) {
+      dy = 1;
+    } else if (dy < -1) {
+      dy = -1;
+    }
+
+    setState(() {});
+    return true;
   }
 }
 
@@ -170,13 +202,26 @@ class _OverlayControllerWidgetState extends State<OverlayControllerWidget> {
       child: child,
       behavior: HitTestBehavior.opaque,
       onTap: () => setState(() => showController = !showController),
-      // onLongPressMoveUpdate: (detail) {
-      //   print("onLongPressMoveUpdate detail = ${detail.offsetFromOrigin}");
+      // onPanUpdate: (detail) {
+      //   var notification = OffsetNotication()
+      //     ..offset = detail.delta
+      //     ..type = OffsetType.update;
+      //   notification.dispatch(context);
       // },
-      onPanUpdate: (detail) {
-        print("onPanUpdate detail = ${detail.delta}");
-        var notification = OffsetNotication()..offset = detail.delta;
+
+      // onPanStart: (detail) {
+      //   var notication = OffsetNotication()..type = OffsetType.start;
+      //   notication.dispatch(context);
+      // },
+      onLongPressMoveUpdate: (detail) {
+        var notification = OffsetNotication()
+          ..offset = detail.offsetFromOrigin
+          ..type = OffsetType.update;
         notification.dispatch(context);
+      },
+      onLongPressStart: (detail) {
+        var n = OffsetNotication()..type = OffsetType.start;
+        n.dispatch(context);
       },
     );
   }
@@ -184,4 +229,11 @@ class _OverlayControllerWidgetState extends State<OverlayControllerWidget> {
 
 class OffsetNotication extends Notification {
   Offset offset;
+
+  OffsetType type;
+}
+
+enum OffsetType {
+  start,
+  update,
 }
