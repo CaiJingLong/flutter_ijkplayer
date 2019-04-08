@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
-import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
+import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/ui_helper.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
@@ -619,17 +619,23 @@ enum VolumeType {
 
 showFullScreenIJKPlayer(
     BuildContext context, IjkMediaController controller) async {
-  showDialog(
-    context: context,
-    builder: (ctx) => IjkPlayer(
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (c) {
+        return IjkPlayer(
           mediaController: controller,
           controllerWidgetBuilder: (ctl) =>
               _buildFullScreenMediaController(ctl, true),
-        ),
+        );
+      },
+      fullscreenDialog: true,
+    ),
   ).then((_) {
     IjkManager.unlockOrientation();
     IjkManager.setCurrentOrientation(DeviceOrientation.portraitUp);
   });
+
   var info = await controller.getVideoInfo();
 
   Axis axis;

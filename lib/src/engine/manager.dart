@@ -55,13 +55,13 @@ class IjkManager {
 
   static setLandScape() async {
     if (Platform.isAndroid) {
-      SystemChrome.setPreferredOrientations(
+      await SystemChrome.setEnabledSystemUIOverlays([]);
+      await SystemChrome.setPreferredOrientations(
         [
           DeviceOrientation.landscapeLeft,
           DeviceOrientation.landscapeRight,
         ],
       );
-      SystemChrome.setEnabledSystemUIOverlays([]);
     } else if (Platform.isIOS) {
       await setSupportOrientation([
         DeviceOrientation.landscapeLeft,
