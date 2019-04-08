@@ -59,4 +59,7 @@ class _I18nZh extends I18n {
 
   @override
   String get screenshotTitle => "截取视频画面(开发中)";
+
+  @override
+  String get overlayPageTitle => "悬浮窗中显示";
 }
