@@ -38,7 +38,7 @@ class IjkPlayer extends StatefulWidget {
     @required this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
     this.textureBuilder = buildDefaultIjkPlayer,
-    this.stateWidgetBuilder = defaultBuildStateWidget,
+    this.stateWidgetBuilder = IjkStateWidget.defaultBuildStateWidget,
   }) : super(key: key);
 
   @override
@@ -88,10 +88,12 @@ class IjkPlayerState extends State<IjkPlayer> {
       },
     );
     var controllerWidget = widget.controllerWidgetBuilder?.call(controller);
+    var statusWidget = buildIjkStateWidget();
     Widget stack = Stack(
       children: <Widget>[
         IgnorePointer(child: video),
         controllerWidget,
+        statusWidget,
       ],
     );
 //    return stack;

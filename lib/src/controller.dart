@@ -113,8 +113,12 @@ class IjkMediaController with IjkMediaControllerMixin {
   IjkStatus get ijkStatus => __ijkStatus;
 
   set _ijkStatus(IjkStatus status) {
-    __ijkStatus = status;
-    _ijkStatusController?.add(status);
+    if (status != __ijkStatus) {
+      __ijkStatus = status;
+      _ijkStatusController?.add(status);
+    } else {
+      __ijkStatus = status;
+    }
   }
 
   /// playFinish
