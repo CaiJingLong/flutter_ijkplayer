@@ -53,6 +53,9 @@ class IjkMediaController with IjkMediaControllerMixin {
   set isPlaying(bool value) {
     this._isPlaying = value;
     _playingController?.add(value);
+    if (value == true) {
+      _ijkStatus = IjkStatus.playing;
+    }
   }
 
   /// playing state stream controller
@@ -105,6 +108,22 @@ class IjkMediaController with IjkMediaControllerMixin {
   Stream<IjkMediaController> get playFinishStream =>
       _playFinishController.stream;
 
+  IjkStatus __ijkStatus = IjkStatus.noDataSource;
+
+  IjkStatus get ijkStatus => __ijkStatus;
+
+  set _ijkStatus(IjkStatus status) {
+    __ijkStatus = status;
+    _ijkStatusController?.add(status);
+  }
+
+  /// playFinish
+  StreamController<IjkStatus> _ijkStatusController =
+      StreamController.broadcast();
+
+  /// On play finish
+  Stream<IjkStatus> get ijkStatusStream => _ijkStatusController.stream;
+
   /// create ijk texture id from native
   Future<void> _initIjk() async {
     try {
@@ -128,12 +147,14 @@ class IjkMediaController with IjkMediaControllerMixin {
     _textureIdController?.close();
     _volumeController?.close();
     _playFinishController?.close();
+    _ijkStatusController?.close();
 
     _playingController = null;
     _videoInfoController = null;
     _textureIdController = null;
     _volumeController = null;
     _playFinishController = null;
+    _ijkStatusController = null;
 
     IjkMediaPlayerManager().remove(this);
   }
@@ -154,11 +175,13 @@ class IjkMediaController with IjkMediaControllerMixin {
     Map<String, String> headers = const {},
     bool autoPlay = false,
   }) async {
+    _ijkStatus = IjkStatus.preparing;
     await _initDataSource(() async {
       await _plugin?.setNetworkDataSource(
         uri: url,
         headers: headers,
       );
+      _ijkStatus = IjkStatus.prepared;
     }, autoPlay);
   }
 
@@ -168,8 +191,10 @@ class IjkMediaController with IjkMediaControllerMixin {
     String package,
     bool autoPlay = false,
   }) async {
+    _ijkStatus = IjkStatus.preparing;
     await _initDataSource(() async {
       await _plugin?.setAssetDataSource(name, package);
+      _ijkStatus = IjkStatus.prepared;
     }, autoPlay);
   }
 
@@ -208,8 +233,10 @@ class IjkMediaController with IjkMediaControllerMixin {
     File file, {
     bool autoPlay = false,
   }) async {
+    _ijkStatus = IjkStatus.preparing;
     await _initDataSource(() async {
       await _plugin?.setFileDataSource(file.absolute.path);
+      _ijkStatus = IjkStatus.prepared;
     }, autoPlay);
   }
 
@@ -252,6 +279,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     LogUtils.info("$this play");
     await _plugin?.play();
     refreshVideoInfo();
+    _ijkStatus = IjkStatus.playing;
   }
 
   /// pause media
@@ -259,6 +287,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     LogUtils.info("$this pause");
     await _plugin?.pause();
     refreshVideoInfo();
+    _ijkStatus = IjkStatus.pause;
   }
 
   /// seek to second
@@ -346,6 +375,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     isPlaying = videoInfo.isPlaying;
     refreshVideoInfo();
     _playFinishController?.add(this);
+    _ijkStatus = IjkStatus.complete;
   }
 
   /// Intercept the video frame image and get the `Uint8List` format.

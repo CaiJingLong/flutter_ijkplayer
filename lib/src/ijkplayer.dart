@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ijkplayer/src/ijkplayer_controller_mixin.dart';
+import 'package:flutter_ijkplayer/src/widget/state_builder.dart';
 
 import 'error.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
@@ -17,6 +18,8 @@ part 'controller.dart';
 part 'ijk_event_channel.dart';
 part 'engine/manager.dart';
 
+typedef Widget IjkStateWidgetBuilder(IjkMediaController controller);
+
 /// Main Classes of Library
 class IjkPlayer extends StatefulWidget {
   final IjkMediaController mediaController;
@@ -27,12 +30,15 @@ class IjkPlayer extends StatefulWidget {
   /// See [buildDefaultIjkPlayer]
   final IJKTextureBuilder textureBuilder;
 
+  final IjkStateWidgetBuilder stateWidgetBuilder;
+
   /// Main Classes of Library
   const IjkPlayer({
     Key key,
     @required this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
     this.textureBuilder = buildDefaultIjkPlayer,
+    this.stateWidgetBuilder = defaultBuildStateWidget,
   }) : super(key: key);
 
   @override
@@ -44,6 +50,9 @@ class IjkPlayerState extends State<IjkPlayer> {
   /// see [IjkMediaController]
   IjkMediaController controller;
   GlobalKey _wrapperKey = GlobalKey();
+
+  IjkStateWidgetBuilder get _ijkStateBuilder => widget.stateWidgetBuilder;
+
   @override
   void initState() {
     super.initState();
@@ -118,6 +127,10 @@ class IjkPlayerState extends State<IjkPlayer> {
         ),
       ),
     );
+  }
+
+  Widget buildIjkStateWidget() {
+    return _ijkStateBuilder?.call(controller) ?? Container();
   }
 }
 
