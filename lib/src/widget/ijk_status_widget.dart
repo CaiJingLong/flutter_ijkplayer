@@ -44,6 +44,9 @@ class IjkStatusWidget extends StatelessWidget {
     if (status == IjkStatus.preparing) {
       return _buildProgressWidget(context);
     }
+    if (status == IjkStatus.prepared) {
+      return _buildPreparedWidget(context, controller);
+    }
     if (status == IjkStatus.error) {
       return _buildFailWidget(context);
     }
@@ -57,6 +60,13 @@ class IjkStatusWidget extends StatelessWidget {
       });
     }
     return Container();
+  }
+
+  static Widget _buildPreparedWidget(
+    BuildContext context,
+    IjkMediaController controller,
+  ) {
+    return _buildCenterIconButton(Icons.play_arrow, controller.play);
   }
 }
 
