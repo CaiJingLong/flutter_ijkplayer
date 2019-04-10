@@ -92,7 +92,7 @@ class OverlayWidget extends StatefulWidget {
   _OverlayWidgetState createState() => _OverlayWidgetState();
 }
 
-const double _overlayWidth = 100;
+const double _overlayWidth = 200;
 
 class _OverlayWidgetState extends State<OverlayWidget> {
   double dx = 0;

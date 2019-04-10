@@ -58,10 +58,10 @@ class _I18nZh extends I18n {
   String get playFinishToast => "播放完毕";
 
   @override
-  String get screenshotTitle => "截取视频画面(开发中)";
+  String get screenshotTitle => "截取视频画面";
 
   @override
-  String get overlayPageTitle => "悬浮窗中显示";
+  String get overlayPageTitle => "悬浮窗中显示(开发中)";
 
   @override
   String get ijkStatusTitle => "IjkStatus的使用";

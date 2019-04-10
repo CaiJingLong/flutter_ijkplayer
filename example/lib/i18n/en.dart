@@ -57,10 +57,10 @@ class _I18nEn extends I18n {
   String get playFinishToast => "Play video finish";
 
   @override
-  String get screenshotTitle => "screenshot video frame(experiment)";
+  String get screenshotTitle => "screenshot video frame";
 
   @override
-  String get overlayPageTitle => "In overlay";
+  String get overlayPageTitle => "In overlay(Developing)";
 
   @override
   String get ijkStatusTitle => "Usage of IjkStatus";
