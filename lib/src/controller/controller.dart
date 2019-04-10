@@ -1,4 +1,4 @@
-part of './ijkplayer.dart';
+part of '../ijkplayer.dart';
 
 /// Media Controller
 class IjkMediaController with IjkMediaControllerMixin {
@@ -53,6 +53,9 @@ class IjkMediaController with IjkMediaControllerMixin {
   set isPlaying(bool value) {
     this._isPlaying = value;
     _playingController?.add(value);
+    if (value == true) {
+      _ijkStatus = IjkStatus.playing;
+    }
   }
 
   /// playing state stream controller
@@ -105,6 +108,26 @@ class IjkMediaController with IjkMediaControllerMixin {
   Stream<IjkMediaController> get playFinishStream =>
       _playFinishController.stream;
 
+  IjkStatus __ijkStatus = IjkStatus.noDatasource;
+
+  IjkStatus get ijkStatus => __ijkStatus;
+
+  set _ijkStatus(IjkStatus status) {
+    if (status != __ijkStatus) {
+      __ijkStatus = status;
+      _ijkStatusController?.add(status);
+    } else {
+      __ijkStatus = status;
+    }
+  }
+
+  /// playFinish
+  StreamController<IjkStatus> _ijkStatusController =
+      StreamController.broadcast();
+
+  /// On play finish
+  Stream<IjkStatus> get ijkStatusStream => _ijkStatusController.stream;
+
   /// create ijk texture id from native
   Future<void> _initIjk() async {
     try {
@@ -123,17 +146,20 @@ class IjkMediaController with IjkMediaControllerMixin {
   /// [reset] and close all controller
   void dispose() async {
     await reset();
+    _ijkStatus = IjkStatus.disposed;
     _playingController?.close();
     _videoInfoController?.close();
     _textureIdController?.close();
     _volumeController?.close();
     _playFinishController?.close();
+    _ijkStatusController?.close();
 
     _playingController = null;
     _videoInfoController = null;
     _textureIdController = null;
     _volumeController = null;
     _playFinishController = null;
+    _ijkStatusController = null;
 
     IjkMediaPlayerManager().remove(this);
   }
@@ -146,6 +172,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     _plugin = null;
     eventChannel?.dispose();
     eventChannel = null;
+    _ijkStatus = IjkStatus.noDatasource;
   }
 
   /// set net DataSource
@@ -154,11 +181,13 @@ class IjkMediaController with IjkMediaControllerMixin {
     Map<String, String> headers = const {},
     bool autoPlay = false,
   }) async {
+    _ijkStatus = IjkStatus.preparing;
     await _initDataSource(() async {
       await _plugin?.setNetworkDataSource(
         uri: url,
         headers: headers,
       );
+      _ijkStatus = IjkStatus.prepared;
     }, autoPlay);
   }
 
@@ -168,8 +197,10 @@ class IjkMediaController with IjkMediaControllerMixin {
     String package,
     bool autoPlay = false,
   }) async {
+    _ijkStatus = IjkStatus.preparing;
     await _initDataSource(() async {
       await _plugin?.setAssetDataSource(name, package);
+      _ijkStatus = IjkStatus.prepared;
     }, autoPlay);
   }
 
@@ -208,8 +239,10 @@ class IjkMediaController with IjkMediaControllerMixin {
     File file, {
     bool autoPlay = false,
   }) async {
+    _ijkStatus = IjkStatus.preparing;
     await _initDataSource(() async {
       await _plugin?.setFileDataSource(file.absolute.path);
+      _ijkStatus = IjkStatus.prepared;
     }, autoPlay);
   }
 
@@ -252,6 +285,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     LogUtils.info("$this play");
     await _plugin?.play();
     refreshVideoInfo();
+    _ijkStatus = IjkStatus.playing;
   }
 
   /// pause media
@@ -259,6 +293,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     LogUtils.info("$this pause");
     await _plugin?.pause();
     refreshVideoInfo();
+    _ijkStatus = IjkStatus.pause;
   }
 
   /// seek to second
@@ -346,6 +381,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     isPlaying = videoInfo.isPlaying;
     refreshVideoInfo();
     _playFinishController?.add(this);
+    _ijkStatus = IjkStatus.complete;
   }
 
   /// Intercept the video frame image and get the `Uint8List` format.
@@ -492,10 +528,4 @@ class DataSource {
     ds._type = DataSourceType.asset;
     return ds;
   }
-}
-
-enum DataSourceType {
-  network,
-  file,
-  asset,
 }

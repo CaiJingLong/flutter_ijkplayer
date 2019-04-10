@@ -1,4 +1,4 @@
-part of 'ijkplayer.dart';
+part of '../ijkplayer.dart';
 
 class _IJKEventChannel {
   int get textureId => controller?.textureId;

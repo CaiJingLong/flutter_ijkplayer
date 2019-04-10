@@ -4,18 +4,22 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_ijkplayer/src/ijkplayer_controller_mixin.dart';
 
+import 'controller/ijkplayer_controller_mixin.dart';
+import 'entity/video_info.dart';
+import 'engine/ijk_controller_manager.dart';
 import 'error.dart';
-import 'package:flutter_ijkplayer/src/helper/logutil.dart';
-import 'package:flutter_ijkplayer/src/entity/video_info.dart';
+import 'helper/logutil.dart';
 import 'widget/controller_widget_builder.dart';
 import 'widget/ijkplayer_builder.dart';
-import 'engine/ijk_controller_manager.dart';
+import 'widget/ijk_status_widget.dart';
 
-part 'controller.dart';
-part 'ijk_event_channel.dart';
+part 'controller/controller.dart';
+part 'controller/enums.dart';
+part 'controller/ijk_event_channel.dart';
 part 'engine/manager.dart';
+
+typedef Widget IjkStateWidgetBuilder(IjkMediaController controller);
 
 /// Main Classes of Library
 class IjkPlayer extends StatefulWidget {
@@ -27,12 +31,15 @@ class IjkPlayer extends StatefulWidget {
   /// See [buildDefaultIjkPlayer]
   final IJKTextureBuilder textureBuilder;
 
+  final IjkStateWidgetBuilder stateWidgetBuilder;
+
   /// Main Classes of Library
   const IjkPlayer({
     Key key,
     @required this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
     this.textureBuilder = buildDefaultIjkPlayer,
+    this.stateWidgetBuilder = IjkStatusWidget.defaultBuildStateWidget,
   }) : super(key: key);
 
   @override
@@ -44,6 +51,9 @@ class IjkPlayerState extends State<IjkPlayer> {
   /// see [IjkMediaController]
   IjkMediaController controller;
   GlobalKey _wrapperKey = GlobalKey();
+
+  IjkStateWidgetBuilder get _ijkStateBuilder => widget.stateWidgetBuilder;
+
   @override
   void initState() {
     super.initState();
@@ -79,10 +89,12 @@ class IjkPlayerState extends State<IjkPlayer> {
       },
     );
     var controllerWidget = widget.controllerWidgetBuilder?.call(controller);
+    var statusWidget = buildIjkStateWidget();
     Widget stack = Stack(
       children: <Widget>[
         IgnorePointer(child: video),
         controllerWidget,
+        statusWidget,
       ],
     );
 //    return stack;
@@ -118,6 +130,10 @@ class IjkPlayerState extends State<IjkPlayer> {
         ),
       ),
     );
+  }
+
+  Widget buildIjkStateWidget() {
+    return _ijkStateBuilder?.call(controller) ?? Container();
   }
 }
 
