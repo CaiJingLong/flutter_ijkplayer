@@ -77,12 +77,23 @@ class _ControllerStreamUsagePageState extends State<ControllerStreamUsagePage> {
 
   Widget buildAudioVolume() {
     return Container(
-      child: StreamBuilder<int>(
-        builder: (BuildContext context, snapshot) {
-          return buildText("volume: ${snapshot.data}");
-        },
-        stream: controller.volumeStream,
-        initialData: controller.volume,
+      child: Column(
+        children: <Widget>[
+          StreamBuilder<int>(
+            builder: (BuildContext context, snapshot) {
+              return buildText("volume: ${snapshot.data}");
+            },
+            stream: controller.volumeStream,
+            initialData: controller.volume,
+          ),
+          StreamBuilder<IjkStatus>(
+            builder: (ctx,snapshot){
+              return buildText("status : ${snapshot.data}");
+            },
+            stream: controller.ijkStatusStream,
+            initialData: controller.ijkStatus,
+          ),
+        ],
       ),
     );
   }

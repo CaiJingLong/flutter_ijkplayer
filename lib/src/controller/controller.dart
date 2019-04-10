@@ -301,6 +301,7 @@ class IjkMediaController with IjkMediaControllerMixin {
   /// [target] unit is second
   Future<void> seekTo(double target) async {
     await _plugin?.seekTo(target);
+    _ijkStatus = IjkStatus.pause;
     refreshVideoInfo();
   }
 
