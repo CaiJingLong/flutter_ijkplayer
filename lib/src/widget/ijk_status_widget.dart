@@ -21,18 +21,14 @@ class IjkStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var statusBuilder =
+        this.statusWidgetBuilder ?? IjkStatusWidget.buildStatusWidget;
     return StreamBuilder<IjkStatus>(
       initialData: controller.ijkStatus,
       stream: controller.ijkStatusStream,
       builder: (BuildContext context, snapshot) {
-        return buildStatusWidget(context, controller, snapshot.data);
+        return statusBuilder.call(context, controller, snapshot.data);
       },
-    );
-  }
-
-  static Widget defaultBuildStateWidget(IjkMediaController controller) {
-    return IjkStatusWidget(
-      controller: controller,
     );
   }
 

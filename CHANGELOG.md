@@ -1,3 +1,9 @@
+## 0.2.0
+
+Add `StatusWidgetBuilder` params.
+
+Update volume and brightness icon
+
 ## 0.1.9
 
 add screen shot method.

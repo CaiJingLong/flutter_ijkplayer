@@ -61,4 +61,7 @@ class _I18nEn extends I18n {
 
   @override
   String get overlayPageTitle => "In overlay";
+
+  @override
+  String get ijkStatusTitle => "Usage of IjkStatus";
 }

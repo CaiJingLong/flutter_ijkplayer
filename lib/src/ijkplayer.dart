@@ -19,8 +19,6 @@ part 'controller/enums.dart';
 part 'controller/ijk_event_channel.dart';
 part 'engine/manager.dart';
 
-typedef Widget IjkStateWidgetBuilder(IjkMediaController controller);
-
 /// Main Classes of Library
 class IjkPlayer extends StatefulWidget {
   final IjkMediaController mediaController;
@@ -31,7 +29,7 @@ class IjkPlayer extends StatefulWidget {
   /// See [buildDefaultIjkPlayer]
   final IJKTextureBuilder textureBuilder;
 
-  final IjkStateWidgetBuilder stateWidgetBuilder;
+  final StatusWidgetBuilder statusWidgetBuilder;
 
   /// Main Classes of Library
   const IjkPlayer({
@@ -39,7 +37,7 @@ class IjkPlayer extends StatefulWidget {
     @required this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
     this.textureBuilder = buildDefaultIjkPlayer,
-    this.stateWidgetBuilder = IjkStatusWidget.defaultBuildStateWidget,
+    this.statusWidgetBuilder = IjkStatusWidget.buildStatusWidget,
   }) : super(key: key);
 
   @override
@@ -51,8 +49,6 @@ class IjkPlayerState extends State<IjkPlayer> {
   /// see [IjkMediaController]
   IjkMediaController controller;
   GlobalKey _wrapperKey = GlobalKey();
-
-  IjkStateWidgetBuilder get _ijkStateBuilder => widget.stateWidgetBuilder;
 
   @override
   void initState() {
@@ -133,7 +129,15 @@ class IjkPlayerState extends State<IjkPlayer> {
   }
 
   Widget buildIjkStateWidget() {
-    return _ijkStateBuilder?.call(controller) ?? Container();
+    return StreamBuilder<IjkStatus>(
+      initialData: controller.ijkStatus,
+      stream: controller.ijkStatusStream,
+      builder: (BuildContext context, snapshot) {
+        return widget.statusWidgetBuilder
+                ?.call(context, controller, snapshot.data) ??
+            Container();
+      },
+    );
   }
 }
 

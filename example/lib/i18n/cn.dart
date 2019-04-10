@@ -62,4 +62,7 @@ class _I18nZh extends I18n {
 
   @override
   String get overlayPageTitle => "悬浮窗中显示";
+
+  @override
+  String get ijkStatusTitle => "IjkStatus的使用";
 }

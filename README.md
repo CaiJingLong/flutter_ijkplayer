@@ -39,6 +39,7 @@ android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其�
       - [释放资源](#%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90)
     - [自定义控制器 UI](#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E5%88%B6%E5%99%A8-ui)
     - [自定义纹理界面](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%B9%E7%90%86%E7%95%8C%E9%9D%A2)
+    - [根据当前状态构建一个 widget](#%E6%A0%B9%E6%8D%AE%E5%BD%93%E5%89%8D%E7%8A%B6%E6%80%81%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA-widget)
   - [进度](#%E8%BF%9B%E5%BA%A6)
   - [LICENSE](#license)
 
@@ -329,6 +330,38 @@ IJKPlayer(
     return Texture(); // 自定义纹理界面
   },
 );
+```
+
+### 根据当前状态构建一个 widget
+
+根据 Controller 当时 IjkStatus 的值构建 Widget,这个 Widget 会根据当前 status 变化而呈现出不同的界面
+
+```dart
+
+Widget buildIjkPlayer() {
+  return IjkPlayer(
+    mediaController: mediaController,
+    stateWidgetBuilder: _buildStatusWidget,
+  );
+}
+
+Widget _buildStatusWidget(
+  BuildContext context,
+  IjkMediaController controller,
+  IjkStatus status,
+) {
+  if (status == IjkStatus.noDatasource) {
+    return Center(
+      child: Text(
+        "no data",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
+  // you can custom your self status widget
+  return IjkStatusWidget.buildStatusWidget(context, controller, status);
+}
 ```
 
 ## 进度

@@ -44,6 +44,8 @@ abstract class I18n {
   String get screenshotTitle;
 
   String get overlayPageTitle;
+
+  String get ijkStatusTitle;
 }
 
 I18n get currentI18n => I18n(window.locale);

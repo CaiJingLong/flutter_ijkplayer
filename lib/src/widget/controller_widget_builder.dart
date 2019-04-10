@@ -324,14 +324,23 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       }
 
       var currentVolume = await getVolume();
+
+      if (currentVolume <= 0) {
+        iconData = Icons.volume_mute;
+      } else if (currentVolume < 50) {
+        iconData = Icons.volume_down;
+      } else {
+        iconData = Icons.volume_up;
+      }
+
       text = currentVolume.toString();
     } else if (leftVerticalDrag == true) {
       var currentBright = await IjkManager.getSystemBrightness();
       double target;
       if (details.delta.dy > 0) {
-        target = currentBright - 0.05;
+        target = currentBright - 0.03;
       } else {
-        target = currentBright + 0.05;
+        target = currentBright + 0.03;
       }
 
       if (target > 1) {
@@ -342,7 +351,14 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
 
       await IjkManager.setSystemBrightness(target);
 
-      iconData = Icons.brightness_high;
+      if (target >= 0.66) {
+        iconData = Icons.brightness_high;
+      } else if (target < 0.66 && target > 0.33) {
+        iconData = Icons.brightness_medium;
+      } else {
+        iconData = Icons.brightness_low;
+      }
+
       text = (target * 100).toStringAsFixed(0);
     } else {
       return;

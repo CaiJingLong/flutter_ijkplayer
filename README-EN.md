@@ -33,6 +33,7 @@ Before using library, you can star and download the code to try the example.
       - [IjkStatus](#ijkstatus)
       - [release resource](#release-resource)
     - [Use self controller UI](#use-self-controller-ui)
+    - [Build widget from IjkStatus](#build-widget-from-ijkstatus)
     - [Use Texture widget](#use-texture-widget)
   - [LICENSE](#license)
 
@@ -290,6 +291,38 @@ IJKPlayer(
     return Container(); // your controller widget.
   },
 );
+```
+
+### Build widget from IjkStatus
+
+Build different widgets based on the current state.
+
+```dart
+
+Widget buildIjkPlayer() {
+  return IjkPlayer(
+    mediaController: mediaController,
+    stateWidgetBuilder: _buildStatusWidget,
+  );
+}
+
+Widget _buildStatusWidget(
+  BuildContext context,
+  IjkMediaController controller,
+  IjkStatus status,
+) {
+  if (status == IjkStatus.noDatasource) {
+    return Center(
+      child: Text(
+        "no data",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
+  // you can custom your self status widget
+  return IjkStatusWidget.buildStatusWidget(context, controller, status);
+}
 ```
 
 ### Use Texture widget
