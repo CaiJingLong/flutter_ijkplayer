@@ -2,6 +2,18 @@
 
 本项目可以通过以下的方式自定义编译选项
 
+- [自定义编译选项](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9)
+  - [获取 ijkplayer 的源码](#%E8%8E%B7%E5%8F%96-ijkplayer-%E7%9A%84%E6%BA%90%E7%A0%81)
+  - [初始化及编译项目](#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8F%8A%E7%BC%96%E8%AF%91%E9%A1%B9%E7%9B%AE)
+    - [编译环境](#%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83)
+    - [通用部分](#%E9%80%9A%E7%94%A8%E9%83%A8%E5%88%86)
+    - [android 部分](#android-%E9%83%A8%E5%88%86)
+    - [iOS](#ios)
+  - [编译产物置入 flutter 项目](#%E7%BC%96%E8%AF%91%E4%BA%A7%E7%89%A9%E7%BD%AE%E5%85%A5-flutter-%E9%A1%B9%E7%9B%AE)
+    - [iOS 篇](#ios-%E7%AF%87)
+    - [andorid 篇](#andorid-%E7%AF%87)
+  - [LICENSE](#license)
+
 ## 获取 ijkplayer 的源码
 
 这部分修改后的源码托管于 gitee

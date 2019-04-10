@@ -2,7 +2,19 @@
 
 This project can customize compilation options in the following ways.
 
-## Get the source code for ijkplayer
+- [Custom compilation options](#custom-compilation-options)
+  - [Get source](#get-source)
+  - [Initialization and compilation of projects](#initialization-and-compilation-of-projects)
+    - [Compiling environment](#compiling-environment)
+    - [General part](#general-part)
+    - [android](#android)
+    - [iOS](#ios)
+  - [Compile the product into the flutter project](#compile-the-product-into-the-flutter-project)
+    - [With iOS](#with-ios)
+    - [With andorid](#with-andorid)
+  - [LICENSE](#license)
+
+## Get source
 
 The modified source code is hosted on gitee.
 
