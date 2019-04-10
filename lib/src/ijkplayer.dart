@@ -4,18 +4,18 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_ijkplayer/src/ijkplayer_controller_mixin.dart';
-import 'package:flutter_ijkplayer/src/widget/state_builder.dart';
 
+import 'controller/ijkplayer_controller_mixin.dart';
+import 'entity/video_info.dart';
+import 'engine/ijk_controller_manager.dart';
 import 'error.dart';
-import 'package:flutter_ijkplayer/src/helper/logutil.dart';
-import 'package:flutter_ijkplayer/src/entity/video_info.dart';
+import 'helper/logutil.dart';
 import 'widget/controller_widget_builder.dart';
 import 'widget/ijkplayer_builder.dart';
-import 'engine/ijk_controller_manager.dart';
+import 'widget/state_builder.dart';
 
-part 'controller.dart';
-part 'ijk_event_channel.dart';
+part 'controller/controller.dart';
+part 'controller/ijk_event_channel.dart';
 part 'engine/manager.dart';
 
 typedef Widget IjkStateWidgetBuilder(IjkMediaController controller);
@@ -38,7 +38,7 @@ class IjkPlayer extends StatefulWidget {
     @required this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
     this.textureBuilder = buildDefaultIjkPlayer,
-    this.stateWidgetBuilder = IjkStateWidget.defaultBuildStateWidget,
+    this.stateWidgetBuilder = IjkStatusWidget.defaultBuildStateWidget,
   }) : super(key: key);
 
   @override

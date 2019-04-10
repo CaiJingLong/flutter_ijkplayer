@@ -1,4 +1,4 @@
-part of './ijkplayer.dart';
+part of '../ijkplayer.dart';
 
 /// Media Controller
 class IjkMediaController with IjkMediaControllerMixin {
@@ -146,6 +146,7 @@ class IjkMediaController with IjkMediaControllerMixin {
   /// [reset] and close all controller
   void dispose() async {
     await reset();
+    _ijkStatus = IjkStatus.disposed;
     _playingController?.close();
     _videoInfoController?.close();
     _textureIdController?.close();
@@ -171,6 +172,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     _plugin = null;
     eventChannel?.dispose();
     eventChannel = null;
+    _ijkStatus = IjkStatus.noDataSource;
   }
 
   /// set net DataSource
@@ -532,4 +534,16 @@ enum DataSourceType {
   network,
   file,
   asset,
+}
+
+/// Current IjkMedia status
+enum IjkStatus {
+  noDataSource,
+  preparing,
+  loadingDataSourceFail,
+  prepared,
+  pause,
+  playing,
+  complete,
+  disposed,
 }
