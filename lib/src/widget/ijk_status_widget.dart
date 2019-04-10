@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 
@@ -40,8 +41,15 @@ class IjkStatusWidget extends StatelessWidget {
     IjkMediaController controller,
     IjkStatus status,
   ) {
-    if (status == IjkStatus.preparing || status == IjkStatus.noDataSource) {
+    if (status == IjkStatus.noDatasource) {
+      return _buildNothing(context);
+    }
+
+    if (status == IjkStatus.preparing) {
       return _buildProgressWidget(context);
+    }
+    if (status == IjkStatus.error) {
+      return _buildFailWidget(context);
     }
     if (status == IjkStatus.pause) {
       return _buildCenterIconButton(Icons.play_arrow, controller.play);
@@ -54,6 +62,15 @@ class IjkStatusWidget extends StatelessWidget {
     }
     return Container();
   }
+}
+
+Widget _buildNothing(BuildContext context) {
+  return Center(
+    child: Text(
+      "",
+      style: TextStyle(color: Colors.white),
+    ),
+  );
 }
 
 Widget _buildCenterIconButton(IconData iconData, Function onTap) {
@@ -84,6 +101,16 @@ Widget _buildProgressWidget(BuildContext context) {
         backgroundColor: Colors.transparent,
         valueColor: AlwaysStoppedAnimation(Colors.white),
       ),
+    ),
+  );
+}
+
+Widget _buildFailWidget(BuildContext context) {
+  return Center(
+    child: Icon(
+      Icons.error,
+      color: Colors.white,
+      size: 44,
     ),
   );
 }

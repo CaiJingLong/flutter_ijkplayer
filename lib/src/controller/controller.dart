@@ -108,7 +108,7 @@ class IjkMediaController with IjkMediaControllerMixin {
   Stream<IjkMediaController> get playFinishStream =>
       _playFinishController.stream;
 
-  IjkStatus __ijkStatus = IjkStatus.noDataSource;
+  IjkStatus __ijkStatus = IjkStatus.noDatasource;
 
   IjkStatus get ijkStatus => __ijkStatus;
 
@@ -172,7 +172,7 @@ class IjkMediaController with IjkMediaControllerMixin {
     _plugin = null;
     eventChannel?.dispose();
     eventChannel = null;
-    _ijkStatus = IjkStatus.noDataSource;
+    _ijkStatus = IjkStatus.noDatasource;
   }
 
   /// set net DataSource
@@ -528,22 +528,4 @@ class DataSource {
     ds._type = DataSourceType.asset;
     return ds;
   }
-}
-
-enum DataSourceType {
-  network,
-  file,
-  asset,
-}
-
-/// Current IjkMedia status
-enum IjkStatus {
-  noDataSource,
-  preparing,
-  loadingDataSourceFail,
-  prepared,
-  pause,
-  playing,
-  complete,
-  disposed,
 }

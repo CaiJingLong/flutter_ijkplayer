@@ -30,6 +30,7 @@ Before using library, you can star and download the code to try the example.
       - [get media info](#get-media-info)
       - [screen shot](#screen-shot)
       - [Observer for resource](#observer-for-resource)
+      - [IjkStatus](#ijkstatus)
       - [release resource](#release-resource)
     - [Use self controller UI](#use-self-controller-ui)
     - [Use Texture widget](#use-texture-widget)
@@ -247,7 +248,26 @@ Stream<VideoInfo> videoInfoStream = controller.videoInfoStream;
 
 // Volume change, which should be noted here, refers to the volume change of the current media, not the volume change of the system.
 Stream<bool> volumeStream = controller.playingStream;
+
+// When the state changes, the stream is called.
+// Detailed descriptions of specific states can be seen in the table below.
+Stream<IjkStatus> ijkStatusStream = controller.ijkStatusStream;
+
 ```
+
+#### IjkStatus
+
+| name              | describe                                                       |
+| ----------------- | -------------------------------------------------------------- |
+| noDatasource      | The initial state, or the state after calling the reset method |
+| preparing         | After setting up src, get ready before src.                    |
+| setDatasourceFail | After setting datasource failed.                               |
+| prepared          | The datasource was prepared.                                   |
+| pause             | Media pause.                                                   |
+| error             | An error occurred in playback.                                 |
+| playing           | Media is playing.                                              |
+| complete          | Media is play complete.                                        |
+| disposed          | After Controller calls `dispose()`.                            |
 
 #### release resource
 

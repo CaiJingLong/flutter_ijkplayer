@@ -12,9 +12,10 @@ import 'error.dart';
 import 'helper/logutil.dart';
 import 'widget/controller_widget_builder.dart';
 import 'widget/ijkplayer_builder.dart';
-import 'widget/state_builder.dart';
+import 'widget/ijk_status_widget.dart';
 
 part 'controller/controller.dart';
+part 'controller/enums.dart';
 part 'controller/ijk_event_channel.dart';
 part 'engine/manager.dart';
 
