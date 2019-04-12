@@ -1,3 +1,7 @@
+## 0.2.2
+
+Add `setIjkPlayerOptions` and `addIjkPlayerOptions`.
+
 ## 0.2.1
 
 Recompile android so library.
