@@ -15,12 +15,12 @@ class _NetworkPageState extends State<NetworkPage> {
   void initState() {
     super.initState();
 
-    // some init mp4s
-
     editingController.text =
         "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_30mb.mp4";
     editingController.text =
         "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4";
+
+    // editingController.text = "rtmp://172.16.100.245:1935/live1";
 
     // editingController.text = "http://172.16.100.245:5000/meng.mp4";
     // editingController.text = "http://172.16.100.245:5000/sample1.mp4";
