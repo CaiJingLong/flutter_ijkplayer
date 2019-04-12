@@ -65,4 +65,7 @@ class _I18nZh extends I18n {
 
   @override
   String get ijkStatusTitle => "IjkStatus的使用";
+
+  @override
+  String get customOption => "自定义Option的使用";
 }

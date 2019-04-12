@@ -8,13 +8,14 @@ import android.util.Base64
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
+import top.kikt.ijkplayer.entity.IjkOption
 import top.kikt.ijkplayer.entity.Info
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.MethodCallHandler {
+class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<String, Any>) : MethodChannel.MethodCallHandler {
 
     private val textureEntry = registry.textures().createSurfaceTexture()
     val id: Long
@@ -50,6 +51,40 @@ class Ijk(private val registry: PluginRegistry.Registrar) : MethodChannel.Method
 
         //        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", maxCacheSize)
         //        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", if (isBufferCache) 1 else 0)
+
+        fun setOptionToMediaPlayer(option: IjkOption) {
+            if (option.isInit.not()) {
+                return
+            }
+            val category = when (option.type) {
+                IjkOption.Type.Format -> IjkMediaPlayer.OPT_CATEGORY_FORMAT
+                IjkOption.Type.Player -> IjkMediaPlayer.OPT_CATEGORY_PLAYER
+                IjkOption.Type.Sws -> IjkMediaPlayer.OPT_CATEGORY_SWS
+                IjkOption.Type.Codec -> IjkMediaPlayer.OPT_CATEGORY_CODEC
+                else -> -1
+            }
+
+            if (category == -1) {
+                return
+            }
+
+            val value = option.value
+            when (value) {
+                is Int -> mediaPlayer.setOption(category, option.key, value.toLong())
+                is String -> mediaPlayer.setOption(category, option.key, value)
+                is Long -> mediaPlayer.setOption(category, option.key, value)
+            }
+        }
+
+        val options = options["options"]
+        if (options is List<*>) {
+            for (option in options) {
+                if (option is Map<*, *>) {
+                    val ijkOptions = IjkOption(option)
+                    setOptionToMediaPlayer(ijkOptions)
+                }
+            }
+        }
     }
 
     override fun onMethodCall(call: MethodCall?, result: MethodChannel.Result?) {

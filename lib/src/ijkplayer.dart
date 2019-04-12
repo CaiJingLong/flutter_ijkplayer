@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'entity/video_info.dart';
+import 'entity/options.dart';
 import 'engine/ijk_controller_manager.dart';
 import 'error.dart';
 import 'helper/logutil.dart';

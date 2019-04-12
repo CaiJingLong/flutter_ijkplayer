@@ -9,8 +9,8 @@ import java.util.*
 class IjkManager(private val registrar: PluginRegistry.Registrar) {
     private val ijkList = ArrayList<Ijk>()
 
-    fun create(): Ijk {
-        val ijk = Ijk(registrar)
+    fun create(options: Map<String, Any>): Ijk {
+        val ijk = Ijk(registrar,options)
         ijkList.add(ijk)
         return ijk
     }

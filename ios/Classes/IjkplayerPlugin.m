@@ -57,7 +57,7 @@ static IjkplayerPlugin *__sharedInstance;
     dispatch_async(mainQueue, ^{
         if ([@"create" isEqualToString:call.method]) {
             @try {
-                int64_t id = [self->manager create];
+                int64_t id = [self->manager createWithCall:call];
                 result(@(id));
             }
             @catch (NSException *exception) {

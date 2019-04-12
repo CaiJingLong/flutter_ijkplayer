@@ -10,6 +10,8 @@ class IjkMediaController
 
   String get debugLabel => index.toString();
 
+  Map<TargetPlatform, List<IjkOption>> _options = {};
+
   /// MediaController
   IjkMediaController({
     this.autoRotate = true,
@@ -20,7 +22,16 @@ class IjkMediaController
   /// create ijk texture id from native
   Future<void> _initIjk() async {
     try {
-      var id = await _createIjk();
+      List<IjkOption> options = [];
+      if (Platform.isAndroid) {
+        var opt = _options[TargetPlatform.android] ?? [];
+        options.addAll(opt);
+      } else {
+        var opt = _options[TargetPlatform.iOS] ?? [];
+        options.addAll(opt);
+      }
+
+      var id = await _createIjk(options: options);
       this.textureId = id;
       _plugin = _IjkPlugin(id);
       eventChannel = _IJKEventChannel(this);
@@ -266,5 +277,9 @@ class IjkMediaController
   /// Player UI is not included. If you need the effect of the player, use the screenshot of the system.
   Future<Uint8List> screenShot() {
     return _plugin.screenShot();
+  }
+
+  void setIjkPlayerOptions(TargetPlatform platform, List<IjkOption> options) {
+    _options[platform] = options;
   }
 }

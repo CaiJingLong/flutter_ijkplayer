@@ -15,7 +15,7 @@
 
 + (instancetype)managerWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar;
 
-- (int64_t)create;
+- (int64_t)createWithCall:(FlutterMethodCall*) call;
 
 - (CoolFlutterIJK *)findIJKWithId:(int64_t)id1;
 

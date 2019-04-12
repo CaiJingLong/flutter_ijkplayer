@@ -3,8 +3,21 @@ part of '../ijkplayer.dart';
 /// about channel
 MethodChannel _globalChannel = MethodChannel("top.kikt/ijkplayer");
 
-Future<int> _createIjk() async {
-  int id = await _globalChannel.invokeMethod("create");
+Future<int> _createIjk({
+  List<IjkOption> options,
+}) async {
+  List<Map<String, dynamic>> _optionList = [];
+
+  for (var option in options) {
+    _optionList.add(option.toMap());
+  }
+
+  int id = await _globalChannel.invokeMethod(
+    "create",
+    <String, dynamic>{
+      "options": _optionList,
+    },
+  );
   return id;
 }
 

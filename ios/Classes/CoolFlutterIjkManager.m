@@ -5,6 +5,7 @@
 #import "CoolFlutterIjkManager.h"
 #import "CoolFlutterIJK.h"
 #import <IJKMediaFramework/IJKMediaFramework.h>
+#import "CoolIjkOption.h"
 
 @implementation CoolFlutterIjkManager {
     NSMutableDictionary<NSNumber *, CoolFlutterIJK *> *dict;
@@ -25,11 +26,34 @@
     return [[self alloc] initWithRegistrar:registrar];
 }
 
-- (int64_t)create {
+- (int64_t)createWithCall:(FlutterMethodCall*) call {
+    NSArray<CoolIjkOption*>* options = [self getOptionsFromCall:call];
     CoolFlutterIJK *ijk = [CoolFlutterIJK ijkWithRegistrar:self.registrar];
+    ijk.options = options;
     NSNumber *number = @([ijk id]);
     dict[number] = ijk;
     return [ijk id];
+}
+
+-(NSArray<CoolIjkOption*>*)getOptionsFromCall:(FlutterMethodCall *)call{
+    NSMutableArray<CoolIjkOption*> *array = [NSMutableArray new];
+    
+    NSDictionary *args = call.arguments;
+    NSArray *dartOptions = args[@"options"];
+    
+    for (NSDictionary *dict in dartOptions){
+        int type = [dict[@"category"] intValue];
+        NSString *key = dict[@"key"];
+        id value = dict[@"value"];
+        CoolIjkOption *option = [CoolIjkOption new];
+        option.key = key;
+        option.value = value;
+        option.type = type;
+        
+        [array addObject:option];
+    }
+    
+    return array;
 }
 
 - (CoolFlutterIJK *)findIJKWithId:(int64_t)id {
