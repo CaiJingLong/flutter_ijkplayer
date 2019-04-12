@@ -1,3 +1,7 @@
+## 0.2.1
+
+Recompile android so library.
+
 ## 0.2.0
 
 Add `StatusWidgetBuilder` params.
