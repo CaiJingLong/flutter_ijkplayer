@@ -36,6 +36,8 @@ android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其�
       - [截取视频帧](#%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%B8%A7)
       - [资源监听](#%E8%B5%84%E6%BA%90%E7%9B%91%E5%90%AC)
       - [IjkStatus 说明](#ijkstatus-%E8%AF%B4%E6%98%8E)
+      - [自定义 Option](#%E8%87%AA%E5%AE%9A%E4%B9%89-option)
+        - [IjkOptionCategory](#ijkoptioncategory)
       - [释放资源](#%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90)
     - [自定义控制器 UI](#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E5%88%B6%E5%99%A8-ui)
     - [自定义纹理界面](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%B9%E7%90%86%E7%95%8C%E9%9D%A2)
@@ -293,6 +295,45 @@ Stream<IjkStatus> ijkStatusStream = controller.ijkStatusStream;
 | playing           | 播放中                   |
 | complete          | 播放完毕后               |
 | disposed          | 调用 dispose 后的状态    |
+
+#### 自定义 Option
+
+支持自定义 IJKPlayer 的 option,这个 option 会直接传输至 android/iOS 原生,具体的数值和含义你需要查看[bilibili/ijkplayer](https://github.com/bilibili/ijkplayer)的设置选项
+
+但这个设置后的选项不是即时生效的
+只有在你重新 setDataSource 以后才会生效
+
+设置方法`setIjkPlayerOptions`
+
+```dart
+void initIjkController() async {
+  var option1 = IjkOption(IjkOptionCategory.format, "fflags", "fastseek");// category, key ,value
+
+  controller.setIjkPlayerOptions(
+    [TargetPlatform.iOS, TargetPlatform.android],
+    [option1].toSet(),
+  );
+
+  await controller.setDataSource(
+    DataSource.network(
+        "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4"),
+    autoPlay: true,
+  );
+}
+```
+
+第一个参数是一个数组,代表了你 option 目标设备的类型(android/iOS)
+
+第二个参数是一个`Set<IjkOption>`,代表了 Option 的集合,因为 category 和 key 均相同的情况下会覆盖,所以这里使用了 set
+
+##### IjkOptionCategory
+
+| name   |
+| ------ |
+| format |
+| codec  |
+| sws    |
+| player |
 
 #### 释放资源
 

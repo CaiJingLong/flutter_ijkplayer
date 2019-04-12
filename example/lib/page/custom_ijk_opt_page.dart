@@ -45,13 +45,8 @@ class _CustomIjkOptionPageState extends State<CustomIjkOptionPage> {
     var option1 = IjkOption(IjkOptionCategory.format, "fflags", "fastseek");
 
     controller.setIjkPlayerOptions(
-      TargetPlatform.iOS,
-      [option1],
-    );
-
-    controller.setIjkPlayerOptions(
-      TargetPlatform.android,
-      [option1],
+      [TargetPlatform.iOS, TargetPlatform.android],
+      [option1].toSet(),
     );
 
     await controller.setDataSource(

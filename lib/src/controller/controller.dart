@@ -10,7 +10,7 @@ class IjkMediaController
 
   String get debugLabel => index.toString();
 
-  Map<TargetPlatform, List<IjkOption>> _options = {};
+  Map<TargetPlatform, Set<IjkOption>> _options = {};
 
   /// MediaController
   IjkMediaController({
@@ -24,10 +24,10 @@ class IjkMediaController
     try {
       List<IjkOption> options = [];
       if (Platform.isAndroid) {
-        var opt = _options[TargetPlatform.android] ?? [];
+        var opt = _options[TargetPlatform.android] ?? Set();
         options.addAll(opt);
       } else {
-        var opt = _options[TargetPlatform.iOS] ?? [];
+        var opt = _options[TargetPlatform.iOS] ?? Set();
         options.addAll(opt);
       }
 
@@ -63,6 +63,8 @@ class IjkMediaController
   }
 
   /// set net DataSource
+  ///
+  /// see [setDataSource]
   Future<void> setNetworkDataSource(
     String url, {
     Map<String, String> headers = const {},
@@ -79,6 +81,8 @@ class IjkMediaController
   }
 
   /// set asset DataSource
+  ///
+  /// see [setDataSource]
   Future<void> setAssetDataSource(
     String name, {
     String package,
@@ -87,6 +91,20 @@ class IjkMediaController
     _ijkStatus = IjkStatus.preparing;
     await _initDataSource(() async {
       await _plugin?.setAssetDataSource(name, package);
+      _ijkStatus = IjkStatus.prepared;
+    }, autoPlay);
+  }
+
+  /// set file DataSource
+  ///
+  /// see [setDataSource]
+  Future<void> setFileDataSource(
+    File file, {
+    bool autoPlay = false,
+  }) async {
+    _ijkStatus = IjkStatus.preparing;
+    await _initDataSource(() async {
+      await _plugin?.setFileDataSource(file.absolute.path);
       _ijkStatus = IjkStatus.prepared;
     }, autoPlay);
   }
@@ -119,18 +137,6 @@ class IjkMediaController
         break;
       default:
     }
-  }
-
-  /// set file DataSource
-  Future<void> setFileDataSource(
-    File file, {
-    bool autoPlay = false,
-  }) async {
-    _ijkStatus = IjkStatus.preparing;
-    await _initDataSource(() async {
-      await _plugin?.setFileDataSource(file.absolute.path);
-      _ijkStatus = IjkStatus.prepared;
-    }, autoPlay);
   }
 
   /// dispose last textureId resource
@@ -279,7 +285,32 @@ class IjkMediaController
     return _plugin.screenShot();
   }
 
-  void setIjkPlayerOptions(TargetPlatform platform, List<IjkOption> options) {
-    _options[platform] = options;
+  /// Set [IjkOption] with IJKPlayer.
+  ///
+  /// It will only take effect if you call [setDataSource] again.
+  void setIjkPlayerOptions(
+    List<TargetPlatform> platforms,
+    Set<IjkOption> options,
+  ) {
+    for (var platform in platforms) {
+      _options[platform] = options;
+    }
+  }
+
+  /// Add [IjkOption] with IJKPlayer in native
+  ///
+  /// see [setIjkPlayerOptions]
+  void addIjkPlayerOptions(
+    List<TargetPlatform> platforms,
+    Iterable<IjkOption> options,
+  ) {
+    for (var platform in platforms) {
+      var opts = _options[platform];
+      if (opts == null) {
+        opts = Set();
+        _options[platform] = opts;
+      }
+      opts.addAll(options);
+    }
   }
 }

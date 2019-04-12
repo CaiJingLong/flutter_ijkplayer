@@ -31,6 +31,8 @@ Before using library, you can star and download the code to try the example.
       - [screen shot](#screen-shot)
       - [Observer for resource](#observer-for-resource)
       - [IjkStatus](#ijkstatus)
+      - [自定义 Option](#%E8%87%AA%E5%AE%9A%E4%B9%89-option)
+        - [IjkOptionCategory](#ijkoptioncategory)
       - [release resource](#release-resource)
     - [Use self controller UI](#use-self-controller-ui)
     - [Build widget from IjkStatus](#build-widget-from-ijkstatus)
@@ -268,6 +270,45 @@ Stream<IjkStatus> ijkStatusStream = controller.ijkStatusStream;
 | playing           | Media is playing.                                              |
 | complete          | Media is play complete.                                        |
 | disposed          | After Controller calls `dispose()`.                            |
+
+#### 自定义 Option
+
+Support custom IJKPlayer options, which are transmitted directly to Android/iOS native. For specific values and meanings, you need to see bilibili/ijkplayer](https://github.com/bilibili/ijkplayer).
+
+However, this option does not take effect immediately.
+It will only take effect if you call `setDataSource` again.
+
+Setup method `setIjkPlayerOptions`
+
+```dart
+void initIjkController() async {
+  var option1 = IjkOption(IjkOptionCategory.format, "fflags", "fastseek");// category, key ,value
+
+  controller.setIjkPlayerOptions(
+    [TargetPlatform.iOS, TargetPlatform.android],
+    [option1].toSet(),
+  );
+
+  await controller.setDataSource(
+    DataSource.network(
+        "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4"),
+    autoPlay: true,
+  );
+}
+```
+
+第一个参数是一个数组,代表了你 option 目标设备的类型(android/iOS)
+
+第二个参数是一个`Set<IjkOption>`,代表了 Option 的集合,因为 category 和 key 均相同的情况下会覆盖,所以这里使用了 set
+
+##### IjkOptionCategory
+
+| name   |
+| ------ |
+| format |
+| codec  |
+| sws    |
+| player |
 
 #### release resource
 
