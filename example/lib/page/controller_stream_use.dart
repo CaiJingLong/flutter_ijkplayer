@@ -87,7 +87,7 @@ class _ControllerStreamUsagePageState extends State<ControllerStreamUsagePage> {
             initialData: controller.volume,
           ),
           StreamBuilder<IjkStatus>(
-            builder: (ctx,snapshot){
+            builder: (ctx, snapshot) {
               return buildText("status : ${snapshot.data}");
             },
             stream: controller.ijkStatusStream,
