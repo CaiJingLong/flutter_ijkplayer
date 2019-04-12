@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
 
-ijkplayer for bilibili/ijkplayer, use flutter Texture widget.
+ijkplayer for [bilibili/ijkplayer](https://github.com/bilibili/ijkplayer), use flutter Texture widget.
 Read this README and refer to example/lib/main.dart before using it.
 The question of Android might not be able to run will be explained in detail.
 The simulator is out of use, so please use the real machine for debugging.
@@ -52,8 +52,7 @@ dependencies:
 
 Current config file see [url](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh).
 
-Compilation options for ijkplayer:
-https://github.com/CaiJingLong/flutter_ijkplayer_pod/blob/master/config/module.sh
+For custom configuration options, refer to the [bibibili/ijkplayer](https://github.com/bilibili/ijkplayer) or [ffmpeg](http://ffmpeg.org/).
 
 Custom compilation options:
 https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile.md

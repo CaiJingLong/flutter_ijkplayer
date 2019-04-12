@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/flutter_ijkplayer.svg)](https://pub.dartlang.org/packages/flutter_ijkplayer)
 
-ijkplayer,通过纹理的方式接入 bilibili/ijkplayer
+ijkplayer,通过纹理的方式接入 [bilibili/ijkplayer](https://github.com/bilibili/ijkplayer)
 
 使用前请完整阅读本 README 并参阅 example/lib/main.dart
 
@@ -62,7 +62,7 @@ dependencies:
 
 ## 原生部分说明
 
-编译规则可以参考[这个](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),如果你有自己的特定需求,可以修改编译选项,这个参考 bilibili/ijkplayer 或 ffmpeg
+编译规则可以参考[这个](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),如果你有自己的特定需求,可以修改编译选项,这个参考 [bilibili/ijkplayer](https://github.com/bilibili/ijkplayer) 或 [ffmpeg](http://ffmpeg.org/)
 
 自定义编译选项可以看[这里](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md)
 
