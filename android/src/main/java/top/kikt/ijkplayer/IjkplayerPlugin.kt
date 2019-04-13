@@ -28,7 +28,8 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
             }
             "create" -> {
                 try {
-                    val ijk = manager.create()
+                    val options: Map<String, Any> = call.arguments()
+                    val ijk = manager.create(options)
                     result.success(ijk.id)
                 } catch (e: Exception) {
                     e.printStackTrace()

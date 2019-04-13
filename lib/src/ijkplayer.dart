@@ -5,8 +5,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'controller/ijkplayer_controller_mixin.dart';
 import 'entity/video_info.dart';
+import 'entity/options.dart';
 import 'engine/ijk_controller_manager.dart';
 import 'error.dart';
 import 'helper/logutil.dart';
@@ -15,8 +15,11 @@ import 'widget/ijkplayer_builder.dart';
 import 'widget/ijk_status_widget.dart';
 
 part 'controller/controller.dart';
+part 'controller/datasoure.dart';
 part 'controller/enums.dart';
 part 'controller/ijk_event_channel.dart';
+part 'controller/ijkplayer_controller_mixin.dart';
+part 'controller/plugin.dart';
 part 'engine/manager.dart';
 
 /// Main Classes of Library

@@ -1,3 +1,9 @@
+## 0.2.2
+
+Add `setIjkPlayerOptions` and `addIjkPlayerOptions`.
+
+iOS podspec add `s.static_framework = true`
+
 ## 0.2.1
 
 Recompile android so library.

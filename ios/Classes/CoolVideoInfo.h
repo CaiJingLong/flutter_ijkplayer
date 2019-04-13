@@ -18,7 +18,7 @@
 @property(nonatomic, assign) int degree;
 
 /**
- * Unit is KB.
+ * Unit is Byte.
  */
 @property(nonatomic, assign) int64_t tcpSpeed;
 

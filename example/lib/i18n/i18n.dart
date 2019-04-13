@@ -46,6 +46,8 @@ abstract class I18n {
   String get overlayPageTitle;
 
   String get ijkStatusTitle;
+
+  String get customOption;
 }
 
 I18n get currentI18n => I18n(window.locale);

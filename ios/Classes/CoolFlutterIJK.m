@@ -173,6 +173,51 @@
 //    [options setPlayerOptionIntValue:0      forKey:@"video-max-frame-width-default"];
 //    [options setPlayerOptionIntValue:1      forKey:@"videotoolbox"];
 
+    for (CoolIjkOption *opt in self.options) {
+        if (opt) {
+            NSString* key = opt.key;
+            BOOL isString = [opt.value isKindOfClass:[NSString class]];
+            BOOL isInt;
+            if([opt.value isKindOfClass:[NSNumber class]]){
+                isInt = strcmp([opt.value objCType], @encode(int)) == 0;
+            }else{
+                isInt = NO;
+            }
+            switch (opt.type) {
+                case 0:
+                    if(isString){
+                        [options setFormatOptionValue:opt.value forKey:key];
+                    }else if(isInt){
+                        [options setFormatOptionIntValue:[opt.value intValue] forKey:key];
+                    }
+                    break;
+                case 1:
+                    if(isString){
+                        [options setCodecOptionValue:opt.value forKey:key];
+                    }else if(isInt){
+                        [options setCodecOptionIntValue:[opt.value intValue] forKey:key];
+                    }
+                    break;
+                case 2:
+                    if(isString){
+                        [options setSwsOptionValue:opt.value forKey:key];
+                    }else if(isInt){
+                        [options setSwsOptionIntValue:[opt.value intValue] forKey:key];
+                    }
+                    break;
+                case 3:
+                    if(isString){
+                        [options setPlayerOptionValue:opt.value forKey:key];
+                    }else if(isInt){
+                        [options setPlayerOptionIntValue:[opt.value intValue] forKey:key];
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    
     return options;
 }
 

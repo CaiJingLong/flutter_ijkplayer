@@ -35,6 +35,7 @@ class _I18nEn extends I18n {
 
   @override
   String get autoFullScreenTitle => "Rotate device to see change";
+
   @override
   String get changeFullScreenWithButton => "Click button to show change";
 
@@ -64,4 +65,7 @@ class _I18nEn extends I18n {
 
   @override
   String get ijkStatusTitle => "Usage of IjkStatus";
+
+  @override
+  String get customOption => "Usage of custom IjkPlayer options";
 }
