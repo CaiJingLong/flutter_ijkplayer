@@ -31,7 +31,7 @@ Before using library, you can star and download the code to try the example.
       - [screen shot](#screen-shot)
       - [Observer for resource](#observer-for-resource)
       - [IjkStatus](#ijkstatus)
-      - [自定义 Option](#%E8%87%AA%E5%AE%9A%E4%B9%89-option)
+      - [Custom Options](#custom-options)
         - [IjkOptionCategory](#ijkoptioncategory)
       - [release resource](#release-resource)
     - [Use self controller UI](#use-self-controller-ui)
@@ -271,7 +271,9 @@ Stream<IjkStatus> ijkStatusStream = controller.ijkStatusStream;
 | complete          | Media is play complete.                                        |
 | disposed          | After Controller calls `dispose()`.                            |
 
-#### 自定义 Option
+#### Custom Options
+
+**This function may cause problems, such as not playing, etc.** Stop using this feature if you find that you cannot use or have an exception after setting options.
 
 Support custom IJKPlayer options, which are transmitted directly to Android/iOS native. For specific values and meanings, you need to see bilibili/ijkplayer](https://github.com/bilibili/ijkplayer).
 
@@ -297,9 +299,9 @@ void initIjkController() async {
 }
 ```
 
-第一个参数是一个数组,代表了你 option 目标设备的类型(android/iOS)
+The first parameter is an array that represents the type of device you choose to target (android/iOS).
 
-第二个参数是一个`Set<IjkOption>`,代表了 Option 的集合,因为 category 和 key 均相同的情况下会覆盖,所以这里使用了 set
+The second parameter is a `Set<IjkOption>`, which represents the set of Option, because both categories and keys are covered, so set is used here.
 
 ##### IjkOptionCategory
 

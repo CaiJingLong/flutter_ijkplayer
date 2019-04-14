@@ -76,6 +76,6 @@
   - [x] 在悬浮窗中播放
     - [x] 悬浮窗的 UI 控制器
 - [x] iOS 部分视频无法显示图像的问题: 可能很长时间内都无法解决
-- [ ] 支持在 dart 端初始化 ijkPlayer 播放器的 option
-  - [ ] android
-  - [ ] iOS
+- [x] 支持在 dart 端初始化 ijkPlayer 播放器的 option
+  - [x] android
+  - [x] iOS
