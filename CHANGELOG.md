@@ -1,3 +1,7 @@
+## 0.2.3
+
+Fixed the problem that a project without kotlin could not be compiled.
+
 ## 0.2.2
 
 Add `setIjkPlayerOptions` and `addIjkPlayerOptions`.
