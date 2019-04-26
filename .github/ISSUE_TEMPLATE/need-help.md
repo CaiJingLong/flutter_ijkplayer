@@ -2,7 +2,7 @@
 name: Need help
 about: Describe your needs, see if anyone can help you.
 title: "[Need help]"
-labels: ''
+labels: help wanted, wait confirm
 assignees: ''
 
 ---
