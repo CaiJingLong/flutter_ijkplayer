@@ -48,6 +48,8 @@ abstract class I18n {
   String get ijkStatusTitle;
 
   String get customOption;
+
+  String get errorUrl;
 }
 
 I18n get currentI18n => I18n(window.locale);

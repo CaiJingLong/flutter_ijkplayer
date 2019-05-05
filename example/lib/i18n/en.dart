@@ -68,4 +68,7 @@ class _I18nEn extends I18n {
 
   @override
   String get customOption => "Usage of custom IjkPlayer options";
+
+  @override
+  String get errorUrl => "Error Url";
 }

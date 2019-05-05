@@ -38,6 +38,7 @@ class IjkMediaController
       await eventChannel.init();
       volume = 100;
     } catch (e) {
+      await reset();
       LogUtils.warning(e);
       LogUtils.warning("初始化失败");
     }
@@ -151,7 +152,11 @@ class IjkMediaController
     }
     await _initIjk();
     Future playFuture = _autoPlay(autoPlay);
-    await setDataSource();
+    try {
+      await setDataSource();
+    } on Exception catch (e) {
+      print("init data error is ${e.toString()}");
+    }
     return playFuture;
   }
 
@@ -276,6 +281,12 @@ class IjkMediaController
     refreshVideoInfo();
     _playFinishController?.add(this);
     _ijkStatus = IjkStatus.complete;
+  }
+
+  void _onError(int errorValueInt) async {
+    _playFinishController?.add(this);
+    _ijkStatus = IjkStatus.error;
+    _ijkErrorController?.add(errorValueInt);
   }
 
   /// Intercept the video frame image and get the `Uint8List` format.

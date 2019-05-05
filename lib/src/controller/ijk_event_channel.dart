@@ -39,6 +39,12 @@ class _IJKEventChannel {
       case "rotateChanged":
         onRotateChanged(call);
         break;
+      case "error":
+        var info = await controller.getVideoInfo();
+        _onPlayFinish(info);
+        int errorValue = call.arguments;
+        _onPlayError(errorValue);
+        break;
       default:
         return MissingPluginException(
           "$channelName ${call.method} not implement",
@@ -92,6 +98,11 @@ class _IJKEventChannel {
   void onRotateChanged(MethodCall call) {
     var info = getInfo(call);
     LogUtils.debug("onRotateChanged , info = $info");
+  }
+
+  void _onPlayError(int errorValue) {
+    LogUtils.warning("play error , errorValue : $errorValue");
+    controller._onError(errorValue);
   }
 }
 
