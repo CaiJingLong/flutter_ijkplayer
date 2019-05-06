@@ -43,6 +43,8 @@ class _IndexPageState extends State<IndexPage> {
           buildButton(currentI18n.ijkStatusTitle, IjkStatusPage()),
           buildButton(currentI18n.customOption, CustomIjkOptionPage()),
           buildButton(currentI18n.errorUrl, ErrorUrlPage()),
+          buildButton(
+              currentI18n.customFullScreenWidget, CustomFullControllerPage()),
         ],
       ),
     );

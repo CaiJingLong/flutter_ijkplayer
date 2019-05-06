@@ -71,4 +71,7 @@ class _I18nEn extends I18n {
 
   @override
   String get errorUrl => "Error Url";
+
+  @override
+  String get customFullScreenWidget => "Custom Full Screen Interface";
 }

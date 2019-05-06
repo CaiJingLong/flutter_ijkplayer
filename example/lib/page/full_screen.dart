@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:ijkplayer_example/const/resource.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
 
 class FullScreen extends StatefulWidget {
@@ -180,5 +181,58 @@ class _FullScreen2State extends State<FullScreen2> {
 
   unlockOrientation() async {
     await IjkManager.unlockOrientation();
+  }
+}
+
+class CustomFullControllerPage extends StatefulWidget {
+  @override
+  _CustomFullControllerPageState createState() =>
+      _CustomFullControllerPageState();
+}
+
+class _CustomFullControllerPageState extends State<CustomFullControllerPage> {
+  IjkMediaController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = IjkMediaController();
+    controller.setDataSource(
+      DataSource.asset(R.ASSETS_SAMPLE1_MP4),
+      autoPlay: true,
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        height: 500,
+        child: IjkPlayer(
+          mediaController: controller,
+          controllerWidgetBuilder: (ctl) {
+            return DefaultIJKControllerWidget(
+              controller: ctl,
+              fullscreenControllerWidgetBuilder: _buildFullScrrenCtl,
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFullScrrenCtl(IjkMediaController controller) {
+    return DefaultIJKControllerWidget(
+      controller: controller,
+      doubleTapPlay: true,
+      currentFullScreenState: true,
+    );
   }
 }

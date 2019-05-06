@@ -50,6 +50,8 @@ abstract class I18n {
   String get customOption;
 
   String get errorUrl;
+
+  String get customFullScreenWidget;
 }
 
 I18n get currentI18n => I18n(window.locale);
