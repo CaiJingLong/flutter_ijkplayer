@@ -68,4 +68,10 @@ class _I18nZh extends I18n {
 
   @override
   String get customOption => "自定义Option的使用";
+
+  @override
+  String get errorUrl => "错误的url";
+
+  @override
+  String get customFullScreenWidget => "自定义全屏界面";
 }

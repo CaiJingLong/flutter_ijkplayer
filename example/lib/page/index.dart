@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ijkplayer_example/page/paging_page.dart';
 import 'package:ijkplayer_example/page/screen_shot_page.dart';
 import 'package:ijkplayer_example/page/video_list.dart';
-import '../i18n/i18n.dart';
 
+import '../i18n/i18n.dart';
+import 'error_url.dart';
 import 'asset_page.dart';
 import 'controller_stream_use.dart';
 import 'custom_ijk_opt_page.dart';
@@ -41,6 +42,9 @@ class _IndexPageState extends State<IndexPage> {
           buildButton(currentI18n.overlayPageTitle, InOverlayPage()),
           buildButton(currentI18n.ijkStatusTitle, IjkStatusPage()),
           buildButton(currentI18n.customOption, CustomIjkOptionPage()),
+          buildButton(currentI18n.errorUrl, ErrorUrlPage()),
+          buildButton(
+              currentI18n.customFullScreenWidget, CustomFullControllerPage()),
         ],
       ),
     );

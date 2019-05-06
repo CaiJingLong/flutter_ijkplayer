@@ -7,6 +7,7 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
 import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/ui_helper.dart';
+import 'package:flutter_ijkplayer/src/route/fullscreen_route.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
 /// Using mediaController to Construct a Controller UI
@@ -16,8 +17,8 @@ typedef Widget IJKControllerWidgetBuilder(IjkMediaController controller);
 Widget defaultBuildIjkControllerWidget(IjkMediaController controller) {
   return DefaultIJKControllerWidget(
     controller: controller,
-//    verticalGesture: false,
-//    horizontalGesture: false,
+    fullscreenControllerWidgetBuilder: (ctl) =>
+        buildFullscreenMediaController(ctl),
   );
 }
 
@@ -47,6 +48,8 @@ class DefaultIJKControllerWidget extends StatefulWidget {
   /// The current full-screen button style should not be changed by users.
   final bool currentFullScreenState;
 
+  final IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder;
+
   /// The UI of the controller.
   const DefaultIJKControllerWidget({
     @required this.controller,
@@ -57,12 +60,41 @@ class DefaultIJKControllerWidget extends StatefulWidget {
     this.playWillPauseOther = true,
     this.currentFullScreenState = false,
     this.showFullScreenButton = true,
+    this.fullscreenControllerWidgetBuilder,
     Key key,
   }) : super(key: key);
 
   @override
   _DefaultIJKControllerWidgetState createState() =>
       _DefaultIJKControllerWidgetState();
+
+  DefaultIJKControllerWidget copyWith({
+    IjkMediaController controller,
+    bool doubleTapPlay,
+    bool verticalGesture,
+    bool horizontalGesture,
+    VolumeType volumeType,
+    bool playWillPauseOther,
+    bool currentFullScreenState,
+    bool showFullScreenButton,
+    IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder,
+    Key key,
+  }) {
+    return DefaultIJKControllerWidget(
+      controller: controller ?? this.controller,
+      doubleTapPlay: doubleTapPlay ?? this.doubleTapPlay,
+      fullscreenControllerWidgetBuilder: fullscreenControllerWidgetBuilder ??
+          this.fullscreenControllerWidgetBuilder,
+      horizontalGesture: horizontalGesture ?? this.horizontalGesture,
+      currentFullScreenState:
+          currentFullScreenState ?? this.currentFullScreenState,
+      key: key,
+      volumeType: volumeType ?? this.volumeType,
+      playWillPauseOther: playWillPauseOther ?? this.playWillPauseOther,
+      showFullScreenButton: showFullScreenButton ?? this.showFullScreenButton,
+      verticalGesture: verticalGesture ?? this.verticalGesture,
+    );
+  }
 }
 
 class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
@@ -171,6 +203,11 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       return Container();
     }
     var isFull = widget.currentFullScreenState;
+
+    IJKControllerWidgetBuilder fullscreenBuilder =
+        widget.fullscreenControllerWidgetBuilder ??
+            (ctx) => widget.copyWith(currentFullScreenState: true);
+
     return IconButton(
       color: Colors.white,
       icon: Icon(isFull ? Icons.fullscreen_exit : Icons.fullscreen),
@@ -178,7 +215,8 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
         if (isFull) {
           Navigator.pop(context);
         } else {
-          showFullScreenIJKPlayer(context, controller);
+          showFullScreenIJKPlayer(context, controller,
+              fullscreenControllerWidgetBuilder: fullscreenBuilder);
         }
       },
     );
@@ -634,18 +672,20 @@ enum VolumeType {
 }
 
 showFullScreenIJKPlayer(
-    BuildContext context, IjkMediaController controller) async {
+  BuildContext context,
+  IjkMediaController controller, {
+  IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder,
+}) async {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    FullScreenRoute(
       builder: (c) {
         return IjkPlayer(
           mediaController: controller,
           controllerWidgetBuilder: (ctl) =>
-              _buildFullScreenMediaController(ctl, true),
+              fullscreenControllerWidgetBuilder(ctl),
         );
       },
-      fullscreenDialog: true,
     ),
   ).then((_) {
     IjkManager.unlockOrientation();
@@ -685,4 +725,8 @@ Widget _buildFullScreenMediaController(
     controller: controller,
     currentFullScreenState: true,
   );
+}
+
+Widget buildFullscreenMediaController(IjkMediaController controller) {
+  return _buildFullScreenMediaController(controller, true);
 }

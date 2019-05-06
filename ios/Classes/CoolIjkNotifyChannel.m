@@ -99,20 +99,24 @@
 
 
 - (void)moviePlayBackFinish:(NSNotification *)notification {
-//    int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
-//    int type = 2;
-//    switch (reason) {
-//        case IJKMPMovieFinishReasonPlaybackEnded:
-//            type = 0;
-//            break;
-//        case IJKMPMovieFinishReasonUserExited:
-//            type = 1;
-//            break;
-//        case IJKMPMovieFinishReasonPlaybackError:
-//            break;
-//        default:
-//            break;
-//    }
+    int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
+    int type = 2;
+    switch (reason) {
+        case IJKMPMovieFinishReasonPlaybackEnded:
+            type = 0;
+            break;
+        case IJKMPMovieFinishReasonUserExited:
+            type = 1;
+            break;
+        case IJKMPMovieFinishReasonPlaybackError:{
+            int errValue = [[[notification userInfo] valueForKey:@"error"] intValue];
+            [channel invokeMethod:@"error" arguments:@(errValue)];
+            return;
+        }
+        default:
+            break;
+    }
+    NSLog(@"type = %d", type);
 //    [channel invokeMethod:@"finish" arguments:@{@"type": @(type)}];
     [channel invokeMethod:@"finish" arguments:[self getInfo]];
 }

@@ -36,7 +36,7 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
         }
         player.setOnErrorListener { mp, what, extra ->
             channel.invokeMethod("error", what)
-            logi("onError $what")
+            logi("onError $what , extra = $extra")
             false
         }
         player.setOnInfoListener { mp, what, extra ->
@@ -60,15 +60,10 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
             logi("onController message $it, isPlaying = ${player.isPlaying}")
             ""
         }
-
     }
 
     fun dispose() {
         player.resetListeners()
     }
 
-}
-
-class Temp {
-    fun invokeMethod(str: String, any: Any?) {}
 }

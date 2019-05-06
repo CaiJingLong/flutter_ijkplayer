@@ -127,6 +127,70 @@ mixin IjkMediaControllerStreamMixin {
   /// On play finish
   Stream<IjkStatus> get ijkStatusStream => _ijkStatusController.stream;
 
+  /// errorStream
+  StreamController<int> _ijkErrorController = StreamController.broadcast();
+
+  /// # On Error stream
+  ///
+  /// In iOS, this value is zero for a lot of time.
+  ///
+  /// see [bilibili-doc](https://github.com/bilibili/ijkplayer/blob/cced91e3ae3730f5c63f3605b00d25eafcf5b97b/ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFMoviePlayerController.m#L1025-L1041)
+  ///
+  /// ----
+  ///
+  /// In android, see next document.
+  ///
+  /// Code value see [bilibili-doc](https://github.com/bilibili/ijkplayer/blob/cced91e3ae3730f5c63f3605b00d25eafcf5b97b/ijkmedia/ijkplayer/android/ijkplayer_android_def.h#L48-L83)
+  ///
+  /// ## Next is the part code
+  ///
+  /// Generic error codes for the media player framework.  Errors are fatal, the
+  /// playback must abort.
+  ///
+  /// Errors are communicated back to the client using the
+  /// MediaPlayerListener::notify method defined below.
+  ///
+  /// ### In this situation, 'notify' is invoked with the following:
+  ///
+  ///  - 'msg' is set to MEDIA_ERROR.
+  ///  - 'ext1' should be a value from the enum media_error_type.
+  ///  - 'ext2' contains an implementation dependant error code to provide
+  ///          more details. Should default to 0 when not used.
+  ///
+  /// ### The codes are distributed as follow:
+  ///
+  ///  - 0xx: Reserved
+  ///  - 1xx: Android Player errors. Something went wrong inside the MediaPlayer.
+  ///  - 2xx: Media errors (e.g Codec not supported). There is a problem with the
+  ///        media itself.
+  ///  - 3xx: Runtime errors. Some extraordinary condition arose making the playback
+  ///        impossible.
+  ///
+  /// ```c
+  ///
+  /// enum media_error_type {
+  ///    // 0xx
+  ///    MEDIA_ERROR_UNKNOWN = 1,
+  ///    // 1xx
+  ///    MEDIA_ERROR_SERVER_DIED = 100,
+  ///    // 2xx
+  ///    MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK = 200,
+  ///    // 3xx
+  ///
+  ///
+  ///    // -xx
+  ///    MEDIA_ERROR_IO          = -1004,
+  ///    MEDIA_ERROR_MALFORMED   = -1007,
+  ///    MEDIA_ERROR_UNSUPPORTED = -1010,
+  ///    MEDIA_ERROR_TIMED_OUT   = -110,
+  ///
+  ///
+  ///    MEDIA_ERROR_IJK_PLAYER  = -10000,
+  /// };
+  ///
+  /// ```
+  Stream<int> get ijkErrorStream => _ijkErrorController.stream;
+
   void _setVolume(int value);
 
   Future<void> _disposeStream() async {
@@ -137,6 +201,7 @@ mixin IjkMediaControllerStreamMixin {
     _volumeController?.close();
     _playFinishController?.close();
     _ijkStatusController?.close();
+    _ijkErrorController?.close();
 
     _playingController = null;
     _videoInfoController = null;
@@ -144,5 +209,6 @@ mixin IjkMediaControllerStreamMixin {
     _volumeController = null;
     _playFinishController = null;
     _ijkStatusController = null;
+    _ijkErrorController = null;
   }
 }
