@@ -1,3 +1,14 @@
+## 0.2.4
+
+fix bug:
+
+- set datasource and play error.
+- iOS xs max fullscreen problem.
+
+new:
+
+- Customizing the interface affects the full screen.
+
 ## 0.2.3
 
 Fixed the problem that a project without kotlin could not be compiled.
