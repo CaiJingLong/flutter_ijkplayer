@@ -7,6 +7,7 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
 import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/ui_helper.dart';
+import 'package:flutter_ijkplayer/src/route/fullscreen_route.dart';
 import 'package:flutter_ijkplayer/src/widget/progress_bar.dart';
 
 /// Using mediaController to Construct a Controller UI
@@ -637,7 +638,7 @@ showFullScreenIJKPlayer(
     BuildContext context, IjkMediaController controller) async {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    FullScreenRoute(
       builder: (c) {
         return IjkPlayer(
           mediaController: controller,
@@ -645,7 +646,6 @@ showFullScreenIJKPlayer(
               _buildFullScreenMediaController(ctl, true),
         );
       },
-      fullscreenDialog: true,
     ),
   ).then((_) {
     IjkManager.unlockOrientation();
