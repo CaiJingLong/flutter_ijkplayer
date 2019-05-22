@@ -4,17 +4,19 @@ mixin IjkMediaControllerMixin {
   List<GlobalKey> _keys = [];
 
   attach(GlobalKey key) {
-    print("IjkMediaControllerMixin attach $key");
+    LogUtils.info("IjkMediaControllerMixin attach $key");
     _keys.add(key);
   }
 
   detach(GlobalKey key) {
-    print("IjkMediaControllerMixin detach $key");
+    LogUtils.info("IjkMediaControllerMixin detach $key");
     _keys.remove(key);
   }
 }
 
 mixin IjkMediaControllerStreamMixin {
+  var _isDispose = false;
+
   /// texture id from native
   int _textureId;
 
@@ -23,8 +25,9 @@ mixin IjkMediaControllerStreamMixin {
 
   /// set texture id, Normally the user does not call
   set textureId(int id) {
+    if (_isDispose) return;
     _textureId = id;
-    _textureIdController.add(id);
+    _textureIdController?.add(id);
   }
 
   /// on texture id change
@@ -50,6 +53,7 @@ mixin IjkMediaControllerStreamMixin {
 
   /// playing state
   set isPlaying(bool value) {
+    if (_isDispose) return;
     this._isPlaying = value;
     _playingController?.add(value);
     if (value == true) {
@@ -86,6 +90,7 @@ mixin IjkMediaControllerStreamMixin {
 
   /// video volume, not system volume
   set volume(int value) {
+    if (_isDispose) return;
     if (value > 100) {
       value = 100;
     } else if (value < 0) {
@@ -193,8 +198,8 @@ mixin IjkMediaControllerStreamMixin {
 
   void _setVolume(int value);
 
-  Future<void> _disposeStream() async {
-    _ijkStatus = IjkStatus.disposed;
+  Future<void> _disposeStream([changeStatus = true]) async {
+    if (changeStatus) _ijkStatus = IjkStatus.disposed;
     _playingController?.close();
     _videoInfoController?.close();
     _textureIdController?.close();

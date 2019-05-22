@@ -19,6 +19,15 @@ class IjkMediaController
     index = IjkMediaPlayerManager().add(this);
   }
 
+  @override
+  set _ijkStatus(IjkStatus status) {
+    if (__ijkStatus == IjkStatus.disposed) {
+      dispose(false);
+      return;
+    }
+    super._ijkStatus = status;
+  }
+
   /// create ijk texture id from native
   Future<void> _initIjk() async {
     try {
@@ -45,22 +54,23 @@ class IjkMediaController
   }
 
   /// [reset] and close all controller
-  void dispose() async {
-    await reset();
-    await _disposeStream();
+  void dispose([changeStatus = true]) async {
+    _isDispose = true;
+    await reset(changeStatus);
+    await _disposeStream(changeStatus);
 
     IjkMediaPlayerManager().remove(this);
   }
 
   /// dispose all resource
-  Future<void> reset() async {
+  Future<void> reset([changeStatus = true]) async {
     volume = 100;
     this.textureId = null;
     _plugin?.dispose();
     _plugin = null;
     eventChannel?.dispose();
     eventChannel = null;
-    _ijkStatus = IjkStatus.noDatasource;
+    if (changeStatus) _ijkStatus = IjkStatus.noDatasource;
   }
 
   /// set net DataSource
