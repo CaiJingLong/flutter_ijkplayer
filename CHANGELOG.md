@@ -1,3 +1,9 @@
+## 0.2.5
+
+Fix bug:
+
+Problems in `TabView`.
+
 ## 0.2.4
 
 fix bug:
