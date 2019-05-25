@@ -148,7 +148,7 @@ packages:
       name: oktoast
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.6"
+    version: "2.1.7"
   package_config:
     dependency: transitive
     description:
@@ -183,14 +183,14 @@ packages:
       name: photo
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.3"
+    version: "0.3.4"
   photo_manager:
     dependency: transitive
     description:
       name: photo_manager
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.3"
+    version: "0.3.4"
   pub_semver:
     dependency: transitive
     description:

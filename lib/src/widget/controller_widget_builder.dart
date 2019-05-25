@@ -330,8 +330,11 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
 
   void _onHorizontalDragEnd(DragEndDetails details) async {
     hideTooltip();
-    var targetSeek = _calculator.getTargetSeek(details);
+    var targetSeek = _calculator?.getTargetSeek(details);
     _calculator = null;
+    if (targetSeek == null) {
+      return;
+    }
     await controller.seekTo(targetSeek);
     var videoInfo = await controller.getVideoInfo();
     if (targetSeek < videoInfo.duration) await controller.play();
