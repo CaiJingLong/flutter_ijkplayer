@@ -1,3 +1,9 @@
+## 0.2.6
+
+Fix bug:
+
+- Possible null pointer exceptions
+
 ## 0.2.5
 
 Fix bug:
