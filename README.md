@@ -23,6 +23,7 @@ android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其�
   - [English Readme](#english-readme)
   - [安装](#%E5%AE%89%E8%A3%85)
   - [原生部分说明](#%E5%8E%9F%E7%94%9F%E9%83%A8%E5%88%86%E8%AF%B4%E6%98%8E)
+    - [自定义编译](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E8%AF%91)
     - [iOS](#ios)
     - [Android](#android)
   - [入门示例](#%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B)
@@ -64,9 +65,11 @@ dependencies:
 
 ## 原生部分说明
 
+### 自定义编译
+
 编译规则可以参考[这个](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),如果你有自己的特定需求,可以修改编译选项,这个参考 [bilibili/ijkplayer](https://github.com/bilibili/ijkplayer) 或 [ffmpeg](http://ffmpeg.org/)
 
-自定义编译选项可以看[这里](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md)
+自定义编译选项的完整过程请看[文档](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md),否则不保证编译出来的代码不报错
 
 ### iOS
 
@@ -260,6 +263,9 @@ var uint8List = await controller.screenShot();
 var provider = MemoryImage(uint8List);
 Widget image = Image(image:provider);
 ```
+
+这个和显示中的视频不总完全一样, 这个是因为截取的是解码后的完整视频帧, 可能比当前播放的**略快 1~2 帧**.
+如果你不能接受这种不同步,请不要使用这个功能,或提交可行的 PR
 
 #### 资源监听
 

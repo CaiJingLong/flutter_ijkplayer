@@ -18,6 +18,7 @@ Before using library, you can star and download the code to try the example.
   - [Menu](#menu)
   - [Install](#install)
   - [Build](#build)
+    - [Custom compile library](#custom-compile-library)
     - [iOS](#ios)
     - [Android](#android)
   - [Simple Example](#simple-example)
@@ -52,12 +53,16 @@ dependencies:
 
 ## Build
 
+### Custom compile library
+
 Current config file see [url](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh).
 
 For custom configuration options, refer to the [bibibili/ijkplayer](https://github.com/bilibili/ijkplayer) or [ffmpeg](http://ffmpeg.org/).
 
-Custom compilation options:
+Custom compilation source document:
 https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile.md
+
+Because I edit some source, so you must see the compile.md to customize your library.
 
 ### iOS
 
@@ -70,7 +75,7 @@ On this basis, rotation notification is added.
 
 ### Android
 
-Now, use [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer) `.so` library.
+Now, use compilation options in [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer).
 
 ## Simple Example
 
@@ -233,6 +238,8 @@ var uint8List = await controller.screenShot();
 var provider = MemoryImage(uint8List);
 Widget image = Image(image:provider);
 ```
+
+**This is not always the same as the video on display. This is because it intercepts the decoded full video frame, which may be 1-2 frames faster than the current play.** If you can't accept it, please don't use this feature or submit a viable PR.
 
 #### Observer for resource
 
