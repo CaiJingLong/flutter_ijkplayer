@@ -3,7 +3,10 @@ package top.kikt.ijkplayer
 /// create 2019/3/7 by cai
 
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.media.AudioManager
+import android.net.Uri
 import android.util.Base64
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -36,6 +39,9 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
         textureMediaPlayer.surfaceTexture = textureEntry.surfaceTexture()
         methodChannel.setMethodCallHandler(this)
     }
+
+    private val appContext: Context
+        get() = registry.activity().application
 
     private fun configOptions() {
         // see https://www.jianshu.com/p/843c86a9e9ad
@@ -198,14 +204,22 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
             result?.success(true)
         } else {
             throwable.printStackTrace()
-            result?.error("1", "设置资源失败", throwable)
+            result?.error("1", "set resource error", throwable)
         }
     }
 
-    private fun setUri(uri: String, headers: Map<String, String>?, callback: (Throwable?) -> Unit) {
+    private fun setUri(uriString: String, headers: Map<String, String>?, callback: (Throwable?) -> Unit) {
         try {
-//            mediaPlayer.dataSource = uri
-            mediaPlayer.setDataSource(uri, headers)
+            val uri = Uri.parse(uriString)
+//            val scheme = uri.scheme
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+//                    (TextUtils.isEmpty(scheme) || scheme.equals("file", ignoreCase = true))) {
+//                val dataSource = FileMediaDataSource(File(uri.toString()))
+//                mediaPlayer.setDataSource(dataSource)
+//            } else {
+            mediaPlayer.setDataSource(appContext, uri, headers)
+//            }
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
             mediaPlayer.prepareAsync()
             callback(null)
         } catch (e: Exception) {

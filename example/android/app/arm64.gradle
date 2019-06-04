@@ -1,0 +1,66 @@
+apply plugin: Arm64Plugin
+
+class Arm64Plugin implements Plugin<Project> {
+    private Properties localProperties
+
+    private Properties readPropertiesIfExist(File propertiesFile) {
+        Properties result = new Properties()
+        if (propertiesFile.exists()) {
+            propertiesFile.withReader('UTF-8') { reader -> result.load(reader) }
+        }
+        return result
+    }
+
+    private String resolveProperty(Project project, String name, String defaultValue) {
+        if (localProperties == null) {
+            localProperties = readPropertiesIfExist(new File(project.projectDir.parentFile, "local.properties"))
+        }
+        String result
+        if (project.hasProperty(name)) {
+            result = project.property(name)
+        }
+        if (result == null) {
+            result = localProperties.getProperty(name)
+        }
+        if (result == null) {
+            result = defaultValue
+        }
+        return result
+    }
+
+    @Override
+    void apply(Project project) {
+        project.android.buildTypes {
+            profile {
+                initWith debug
+                if (it.hasProperty('matchingFallbacks')) {
+                    matchingFallbacks = ['debug', 'release']
+                }
+            }
+            dynamicProfile {
+                initWith debug
+                if (it.hasProperty('matchingFallbacks')) {
+                    matchingFallbacks = ['debug', 'release']
+                }
+            }
+            dynamicRelease {
+                initWith debug
+                if (it.hasProperty('matchingFallbacks')) {
+                    matchingFallbacks = ['debug', 'release']
+                }
+            }
+        }
+
+        String flutterRoot = resolveProperty(project, "flutter.sdk", System.env.FLUTTER_ROOT)
+//        原始jar包文件
+        def zipFile = file("$flutterRoot/bin/cache/artifacts/engine/android-arm64-dynamic-release/flutter.jar")
+
+        // 解压缩目标目录
+        def outputDir = file("$flutterRoot/bin/cache/artifacts/engine/android-arm64-dynamic-release/dist")
+
+//        FileTree jarTree = zipTree(zipFile)
+//
+//        from jarTree
+//        into outputDir
+    }
+}

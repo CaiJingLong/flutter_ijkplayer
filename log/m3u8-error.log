@@ -1,0 +1,514 @@
+D/IJKMEDIA(10223): IjkMediaPlayer_native_profileBegin
+
+W/IJKMEDIA(10223): monstartup already called
+
+D/IJKMEDIA(10223): IjkMediaPlayer_native_setup
+
+I/IJKMEDIA(10223): av_version_info: ff3.4--ijk0.8.7--20180103--001
+
+I/IJKMEDIA(10223): ijk_version_info: k0.8.8-15-ge7fde118
+
+D/IJKMEDIA(10223): ffpipeline_create_from_android()
+
+D/IJKMEDIA(10223): ijkmp_set_inject_opaque(0x2f76)
+
+D/IJKMEDIA(10223): ijkmp_set_inject_opaque()=void
+
+D/IJKMEDIA(10223): ijkmp_set_ijkio_inject_opaque(0x2f76)
+
+D/IJKMEDIA(10223): ijkmp_set_ijkio_inject_opaque()=void
+
+D/IJKMEDIA(10223): ijkmp_android_set_mediacodec_select_callback()
+
+D/IJKMEDIA(10223): ffpipeline_set_mediacodec_select_callback
+
+D/IJKMEDIA(10223): ijkmp_android_set_mediacodec_select_callback()=void
+
+D/IJKMEDIA(10223): IjkMediaPlayer_setOption
+
+D/IJKMEDIA(10223): IjkMediaPlayer_setOptionLong
+
+I/chatty  (10223): uid=10209(com.example.ijkplayer_example) identical 13 lines
+
+D/IJKMEDIA(10223): IjkMediaPlayer_setOptionLong
+
+D/IJKMEDIA(10223): IjkMediaPlayer_setVideoSurface
+
+D/IJKMEDIA(10223): ijkmp_set_android_surface(surface=0x7fde0d0da8)
+
+D/IJKMEDIA(10223): ffpipeline_set_surface()
+
+D/IJKMEDIA(10223): ijkmp_set_android_surface(surface=0x7fde0d0da8)=void
+
+I/flutter (10223): (d)Ijk:onTextureChange 1
+
+I/flutter (10223): (d)Ijk:id = 1 net uri = https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-9aede6861be944d696fe365f3a33b7b4-sd.m3u8 ,headers = {}
+
+D/IJKMEDIA(10223): IjkMediaPlayer_setVolume
+
+D/IJKMEDIA(10223): ijkmp_android_set_volume(1.000000, 1.000000)
+
+D/IJKMEDIA(10223): ffpipeline_set_volume
+
+D/IJKMEDIA(10223): ijkmp_android_set_volume(1.000000, 1.000000)=void
+
+D/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): Couldn't open file on client side, trying server side
+
+D/IJKMEDIA(10223): IjkMediaPlayer_setDataSourceAndHeaders
+
+V/IJKMEDIA(10223): setDataSource: path https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-9aede6861be944d696fe365f3a33b7b4-sd.m3u8
+
+D/IJKMEDIA(10223): ijkmp_set_data_source(url="https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-9aede6861be944d696fe365f3a33b7b4-sd.m3u8")
+
+D/IJKMEDIA(10223): ijkmp_set_data_source(url="https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-9aede6861be944d696fe365f3a33b7b4-sd.m3u8")=0
+
+D/IJKMEDIA(10223): IjkMediaPlayer_prepareAsync
+
+D/IJKMEDIA(10223): ijkmp_prepare_async()
+
+I/IJKMEDIA(10223): ===== versions =====
+
+I/IJKMEDIA(10223): ijkplayer    : k0.8.8-15-ge7fde118
+
+I/IJKMEDIA(10223): FFmpeg       : ff3.4--ijk0.8.7--20180103--001
+
+I/IJKMEDIA(10223): libavutil    : 55.78.100
+
+I/IJKMEDIA(10223): libavcodec   : 57.107.100
+
+I/IJKMEDIA(10223): libavformat  : 57.83.100
+
+I/IJKMEDIA(10223): libswscale   : 4.8.100
+
+I/IJKMEDIA(10223): libswresample: 2.9.100
+
+I/IJKMEDIA(10223): ===== options =====
+
+I/IJKMEDIA(10223): player-opts : reconnect                    = 5
+
+I/IJKMEDIA(10223): player-opts : overlay-format               = 842225234
+
+I/IJKMEDIA(10223): player-opts : enable-accurate-seek         = 1
+
+I/IJKMEDIA(10223): player-opts : mediacodec                   = 0
+
+I/IJKMEDIA(10223): player-opts : opensles                     = 0
+
+I/IJKMEDIA(10223): player-opts : framedrop                    = 1
+
+I/IJKMEDIA(10223): player-opts : start-on-prepared            = 0
+
+I/IJKMEDIA(10223): format-opts : ijkapplication               = 480570153696
+
+I/IJKMEDIA(10223): format-opts : ijkiomanager                 = 480810515456
+
+I/IJKMEDIA(10223): format-opts : fflags                       = fastseek
+
+I/IJKMEDIA(10223): format-opts : analyzemaxduration           = 100
+
+I/IJKMEDIA(10223): format-opts : analyzeduration              = 1
+
+I/IJKMEDIA(10223): format-opts : probesize                    = 10240
+
+I/IJKMEDIA(10223): format-opts : flush_packets                = 1
+
+I/IJKMEDIA(10223): format-opts : http-detect-range-support    = 0
+
+I/IJKMEDIA(10223): codec-opts  : skip_loop_filter             = 48
+
+I/IJKMEDIA(10223): ===================
+
+I/IJKMEDIA(10223): SDL_RunThread: [10641] ff_msg_loop
+
+D/IJKMEDIA(10223): message_loop
+
+D/IJKMEDIA(10223): FFP_MSG_FLUSH:
+
+D/IJKMEDIA(10223): ijkmp_prepare_async()=0
+
+I/IJKMEDIA(10223): SDL_RunThread: [10643] ff_read
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 1
+
+I/NotifyChannel(10223): onNativeInvoke 1
+
+I/IJKMEDIA(10223): Hit DNS cache hostname = media001.geekbang.org
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131073
+
+I/NotifyChannel(10223): onNativeInvoke 131073
+
+I/IJKMEDIA(10223): SDL_RunThread: [10642] ff_vout
+
+I/flutter (10223): (i)Ijk:IjkMediaControllerMixin attach [GlobalKey#c70eb]
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131074
+
+I/NotifyChannel(10223): onNativeInvoke 131074
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): onNativeInvoke 2
+
+I/IJKMEDIA(10223): Opening 'https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-b64cf280cabc4d9c202a62095ae10e95-sd-00001.ts' for reading
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 1
+
+I/NotifyChannel(10223): onNativeInvoke 1
+
+I/IJKMEDIA(10223): Hit DNS cache hostname = media001.geekbang.org
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131073
+
+I/NotifyChannel(10223): onNativeInvoke 131073
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131074
+
+I/NotifyChannel(10223): onNativeInvoke 131074
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): onNativeInvoke 2
+
+E/IJKMEDIA(10223): Option http-detect-range-support not found.
+
+D/IJKMEDIA(10223): FFP_MSG_OPEN_INPUT:
+
+I/NotifyChannel(10223): onInfoListener 10005, extra = 0, isPlaying = false
+
+E/IJKMEDIA(10223): Invalid NAL unit 0, skipping.
+
+W/IJKMEDIA(10223): Stream #0: not enough frames to estimate rate; consider increasing probesize
+
+W/IJKMEDIA(10223): Could not find codec parameters for stream 1 (Audio: aac ([15][0][0][0] / 0x000F), 0 channels, fltp): unspecified sample rate
+
+W/IJKMEDIA(10223): Consider increasing the value for the 'analyzeduration' and 'probesize' options
+
+I/IJKMEDIA(10223): max_frame_duration: 10.000
+
+D/IJKMEDIA(10223): FFP_MSG_FIND_STREAM_INFO:
+
+I/IJKMEDIA(10223): Input #0, hls,applehttp, from 'https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-9aede6861be944d696fe365f3a33b7b4-sd.m3u8':
+
+I/IJKMEDIA(10223):   Duration:
+
+I/IJKMEDIA(10223): 00:04:45.96
+
+I/IJKMEDIA(10223): , start:
+
+I/IJKMEDIA(10223): 1.480000
+
+I/IJKMEDIA(10223): , bitrate:
+
+I/IJKMEDIA(10223): 0 kb/s
+
+I/IJKMEDIA(10223):
+
+I/IJKMEDIA(10223):   Program 0
+
+I/IJKMEDIA(10223):     Metadata:
+
+I/IJKMEDIA(10223):       variant_bitrate :
+
+I/IJKMEDIA(10223): 0
+
+I/IJKMEDIA(10223):
+
+I/IJKMEDIA(10223):     Stream #0:0
+
+I/IJKMEDIA(10223): : Video: h264 ([27][0][0][0] / 0x001B), yuv420p, 1280x720 [SAR 1:1 DAR 16:9]
+
+I/IJKMEDIA(10223): ,
+
+I/IJKMEDIA(10223): 25 tbr,
+
+I/IJKMEDIA(10223): 90k tbn,
+
+I/IJKMEDIA(10223): 50 tbc
+
+I/IJKMEDIA(10223):
+
+I/IJKMEDIA(10223):     Metadata:
+
+I/IJKMEDIA(10223):       variant_bitrate :
+
+I/IJKMEDIA(10223): 0
+
+I/IJKMEDIA(10223):
+
+I/IJKMEDIA(10223):     Stream #0:1
+
+I/IJKMEDIA(10223): : Audio: aac ([15][0][0][0] / 0x000F), 0 channels, fltp
+
+I/IJKMEDIA(10223):
+
+I/IJKMEDIA(10223):     Metadata:
+
+I/IJKMEDIA(10223):       variant_bitrate :
+
+I/IJKMEDIA(10223): 0
+
+I/IJKMEDIA(10223):
+
+I/NotifyChannel(10223): onInfoListener 10006, extra = 0, isPlaying = false
+
+I/IJKMEDIA(10223): VideoCodec: avcodec, h264
+
+W/IJKMEDIA(10223): fps: 25.000000 (normal)
+
+I/IJKMEDIA(10223): SDL_RunThread: [10651] ff_video_dec
+
+D/IJKMEDIA(10223): FFP_MSG_COMPONENT_OPEN:
+
+D/IJKMEDIA(10223): FFP_MSG_VIDEO_SIZE_CHANGED: 1280, 720
+
+D/IJKMEDIA(10223): FFP_MSG_SAR_CHANGED: 1, 1
+
+D/IJKMEDIA(10223): ijkmp_get_msg: FFP_MSG_PREPARED
+
+D/IJKMEDIA(10223): FFP_MSG_PREPARED:
+
+D/IJKMEDIA(10223): FFP_MSG_VIDEO_ROTATION_CHANGED: 0
+
+D/IJKMEDIA(10223): FFP_MSG_BUFFERING_START:
+
+I/NotifyChannel(10223): onInfoListener 10007, extra = 0, isPlaying = false
+
+I/NotifyChannel(10223): prepare {duration=285.96, tcpSpeed=111723, isPlaying=false, outputFps=0.0, currentPosition=0.0, width=1280, degree=0, height=720}
+
+I/NotifyChannel(10223): onInfoListener 10001, extra = 0, isPlaying = false
+
+I/NotifyChannel(10223): onInfoListener 701, extra = 0, isPlaying = false
+
+I/flutter (10223): (i)Ijk:IJKController[2] play
+
+D/IJKMEDIA(10223): IjkMediaPlayer_start
+
+D/IJKMEDIA(10223): ijkmp_start()
+
+D/IJKMEDIA(10223): ijkmp_start()=0
+
+D/IJKMEDIA(10223): ijkmp_get_msg: FFP_REQ_START
+
+I/flutter (10223): (d)Ijk:onRotateChanged , info = {"duration":285.96,"tcpSpeed":111723,"isPlaying":false,"outputFps":0.0,"currentPosition":0.0,"width":1280,"degree":0,"height":720}
+
+D/IJKMEDIA(10223): ijkmp_get_msg: FFP_REQ_START
+
+I/NotifyChannel(10223): completion buffer update {duration=285.96, tcpSpeed=137689, isPlaying=true, outputFps=0.0, currentPosition=0.0, width=1280, degree=0, height=720} 0
+
+D/IJKMEDIA(10223): SDL_VoutFFmpeg_CreateOverlay(w=1280, h=720, fmt=RV32(0x32335652, dp=0x6fdcf88e40)
+
+D/IJKMEDIA(10223): FFP_MSG_VIDEO_SIZE_CHANGED: 1280, 720
+
+D/IJKMEDIA(10223): Video: first frame decoded
+
+D/IJKMEDIA(10223): FFP_MSG_VIDEO_DECODED_START:
+
+D/IJKMEDIA(10223): SDL_VoutFFmpeg_CreateOverlay(w=1280, h=720, fmt=RV32(0x32335652, dp=0x6fdcf88e40)
+
+D/IJKMEDIA(10223): FFP_MSG_VIDEO_SIZE_CHANGED: 1280, 720
+
+I/NotifyChannel(10223): onInfoListener 10004, extra = 0, isPlaying = true
+
+D/IJKMEDIA(10223): SDL_VoutFFmpeg_CreateOverlay(w=1280, h=720, fmt=RV32(0x32335652, dp=0x6fdcf88e40)
+
+D/IJKMEDIA(10223): FFP_MSG_VIDEO_SIZE_CHANGED: 1280, 720
+
+D/IJKMEDIA(10223): FFP_MSG_BUFFERING_END:
+
+I/NotifyChannel(10223): completion buffer update {duration=285.96, tcpSpeed=1010080, isPlaying=true, outputFps=0.0, currentPosition=0.0, width=1280, degree=0, height=720} 0
+
+I/NotifyChannel(10223): onInfoListener 702, extra = 0, isPlaying = true
+
+D/IJKMEDIA(10223): ANativeWindow_setBuffersGeometry: w=1, h=1, f=(0x1) => w=1280, h=720, f=RV32(0x32335652)
+
+D/IJKMEDIA(10223): FFP_MSG_VIDEO_RENDERING_START:
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): Info: MEDIA_INFO_VIDEO_RENDERING_START
+
+I/NotifyChannel(10223): onInfoListener 3, extra = 0, isPlaying = true
+
+D/libEGL  (10223): eglInitialize: enter
+
+D/libEGL  (10223): eglInitialize: exit(res=1)
+
+D/libEGL  (10223): eglInitialize: enter
+
+D/libEGL  (10223): eglInitialize: exit(res=1)
+
+I/IJKMEDIA(10223): Opening 'https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-b64cf280cabc4d9c202a62095ae10e95-sd-00002.ts' for reading
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 1
+
+I/NotifyChannel(10223): onNativeInvoke 1
+
+I/IJKMEDIA(10223): Hit DNS cache hostname = media001.geekbang.org
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131073
+
+I/NotifyChannel(10223): onNativeInvoke 131073
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131074
+
+I/NotifyChannel(10223): onNativeInvoke 131074
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): completion buffer update {duration=285.96, tcpSpeed=2543365, isPlaying=true, outputFps=25.806452, currentPosition=0.515, width=1280, degree=0, height=720} 3
+
+I/IJKMEDIA(10223): Opening 'https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-b64cf280cabc4d9c202a62095ae10e95-sd-00003.ts' for reading
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 1
+
+I/NotifyChannel(10223): onNativeInvoke 1
+
+I/IJKMEDIA(10223): Hit DNS cache hostname = media001.geekbang.org
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131073
+
+I/NotifyChannel(10223): onNativeInvoke 131073
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131074
+
+I/NotifyChannel(10223): onNativeInvoke 131074
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): completion buffer update {duration=285.96, tcpSpeed=3215354, isPlaying=true, outputFps=25.0, currentPosition=1.026, width=1280, degree=0, height=720} 7
+
+I/IJKMEDIA(10223): Opening 'https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-b64cf280cabc4d9c202a62095ae10e95-sd-00004.ts' for reading
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 1
+
+I/NotifyChannel(10223): onNativeInvoke 1
+
+I/IJKMEDIA(10223): Hit DNS cache hostname = media001.geekbang.org
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131073
+
+I/NotifyChannel(10223): onNativeInvoke 131073
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131074
+
+I/NotifyChannel(10223): onNativeInvoke 131074
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): completion buffer update {duration=285.96, tcpSpeed=3325089, isPlaying=true, outputFps=25.0, currentPosition=1.558, width=1280, degree=0, height=720} 10
+
+I/IJKMEDIA(10223): Opening 'https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-b64cf280cabc4d9c202a62095ae10e95-sd-00005.ts' for reading
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 1
+
+I/NotifyChannel(10223): onNativeInvoke 1
+
+I/IJKMEDIA(10223): Hit DNS cache hostname = media001.geekbang.org
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131073
+
+I/NotifyChannel(10223): onNativeInvoke 131073
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131074
+
+I/NotifyChannel(10223): onNativeInvoke 131074
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): onNativeInvoke 2
+
+D/libEGL  (10223): eglInitialize: enter
+
+D/libEGL  (10223): eglInitialize: exit(res=1)
+
+I/NotifyChannel(10223): completion buffer update {duration=285.96, tcpSpeed=3523889, isPlaying=true, outputFps=24.242424, currentPosition=2.072, width=1280, degree=0, height=720} 14
+
+I/IJKMEDIA(10223): Opening 'https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-b64cf280cabc4d9c202a62095ae10e95-sd-00006.ts' for reading
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 1
+
+I/NotifyChannel(10223): onNativeInvoke 1
+
+I/IJKMEDIA(10223): Hit DNS cache hostname = media001.geekbang.org
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131073
+
+I/NotifyChannel(10223): onNativeInvoke 131073
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 131074
+
+I/NotifyChannel(10223): onNativeInvoke 131074
+
+I/tv.danmaku.ijk.media.player.IjkMediaPlayer(10223): onNativeInvoke 2
+
+I/NotifyChannel(10223): onNativeInvoke 2
+
+D/IJKMEDIA(10223): IjkMediaPlayer_native_finalize
+
+D/IJKMEDIA(10223): IjkMediaPlayer_release
+
+W/System  (10223): A resource failed to call release.
+
+I/flutter (10223): (i)Ijk:IjkMediaControllerMixin detach [GlobalKey#c70eb]
+
+D/IJKMEDIA(10223): IjkMediaPlayer_native_profileBegin
+
+W/IJKMEDIA(10223): monstartup already called
+
+D/IJKMEDIA(10223): IjkMediaPlayer_native_profileBegin
+
+W/IJKMEDIA(10223): monstartup already called
+
+D/IJKMEDIA(10223): ijkmp_stop()
+
+D/IJKMEDIA(10223): ijkmp_stop()=0
+
+D/IJKMEDIA(10223): IjkMediaPlayer_release
+
+D/IJKMEDIA(10223): ijkmp_set_android_surface(surface=0x0)
+
+D/IJKMEDIA(10223): ffpipeline_set_surface()
+
+D/IJKMEDIA(10223): ijkmp_set_android_surface(surface=0x0)=void
+
+D/IJKMEDIA(10223): ijkmp_shutdown_l()
+
+D/IJKMEDIA(10223): message_loop exit
+
+I/IJKMEDIA(10223): SDL_JNI_DetachThreadEnv: [10641]
+
+I/IJKMEDIA(10223): convert image convert_frame_count = 0
+
+I/IJKMEDIA(10223): SDL_JNI_DetachThreadEnv: [10651]
+
+E/IJKMEDIA(10223): Stream ends prematurely at 441603, should be 2042056
+
+I/IJKMEDIA(10223): SDL_JNI_DetachThreadEnv: [10643]
+
+I/IJKMEDIA(10223): SDL_JNI_DetachThreadEnv: [10642]
+
+E/IJKMEDIA(10223): SDL_Overlay(ffmpeg): overlay_free_l(0x6ff5a7e760)
+
+E/IJKMEDIA(10223): SDL_Overlay(ffmpeg): overlay_free_l(0x6ff5a7e7d0)
+
+E/IJKMEDIA(10223): SDL_Overlay(ffmpeg): overlay_free_l(0x6ff5a7e840)
+
+D/IJKMEDIA(10223): ijkmp_shutdown_l()=void
+
+D/IJKMEDIA(10223): ijkmp_dec_ref(): ref=0
+
+D/IJKMEDIA(10223): ijkmp_shutdown_l()
+
+D/IJKMEDIA(10223): ijkmp_shutdown_l()=void
+
+D/IJKMEDIA(10223): IjkMediaPlayer_native_finalize
+
+D/IJKMEDIA(10223): IjkMediaPlayer_release
+
+W/System  (10223): A resource failed to call release.
+
