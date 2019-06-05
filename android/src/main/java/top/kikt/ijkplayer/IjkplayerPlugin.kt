@@ -8,6 +8,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 
 /**
@@ -17,6 +18,8 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
 
 
     override fun onMethodCall(call: MethodCall, result: Result) {
+        IjkMediaPlayer.loadLibrariesOnce(null)
+        IjkMediaPlayer.native_profileBegin("libijkplayer.so")
         handleMethodCall(call, result)
     }
 

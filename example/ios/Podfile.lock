@@ -10,7 +10,7 @@ PODS:
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
   - flutter_ijkplayer (from `/Users/cai/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec`)
-  - photo_manager (from `/Users/cai/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.3/ios/photo_manager.podspec`)
+  - photo_manager (from `/Users/cai/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.4/ios/photo_manager.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -22,7 +22,7 @@ EXTERNAL SOURCES:
   flutter_ijkplayer:
     :path: "/Users/cai/Documents/GitHub/flutter_ijkplayer/ios/flutter_ijkplayer.podspec"
   photo_manager:
-    :path: "/Users/cai/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.3/ios/photo_manager.podspec"
+    :path: "/Users/cai/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.3.4/ios/photo_manager.podspec"
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
@@ -32,4 +32,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a14c63eb48a9d676ed6d876506b3258fd9c85235
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.1

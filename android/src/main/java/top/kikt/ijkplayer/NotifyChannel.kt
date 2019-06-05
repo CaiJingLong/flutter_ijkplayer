@@ -21,6 +21,9 @@ class NotifyChannel(val registry: PluginRegistry.Registrar, val textureId: Long,
     init {
         player.setOnPreparedListener {
             logi("prepare $info")
+            player.trackInfo.forEach {
+                
+            }
             channel.invokeMethod("prepare", info)
         }
         player.setOnCompletionListener {

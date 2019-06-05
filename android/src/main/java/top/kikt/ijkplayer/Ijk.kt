@@ -3,7 +3,10 @@ package top.kikt.ijkplayer
 /// create 2019/3/7 by cai
 
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.media.AudioManager
+import android.net.Uri
 import android.util.Base64
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -37,17 +40,24 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
         methodChannel.setMethodCallHandler(this)
     }
 
+    private val appContext: Context
+        get() = registry.activity().application
+
     private fun configOptions() {
         // see https://www.jianshu.com/p/843c86a9e9ad
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "fastseek")
-        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzemaxduration", 100L)
-        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1)
-        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 1024 * 10)
-        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1L)
+
+        // 以下注释有选项会导致m3u8类型无声音
+//        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzemaxduration", 100L)
+//        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1)
+//        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 1024 * 10)
+//        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1L)
+
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "reconnect", 5)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1) // 开硬解
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering",1)
 
         //        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", maxCacheSize)
         //        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", if (isBufferCache) 1 else 0)
@@ -198,14 +208,22 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
             result?.success(true)
         } else {
             throwable.printStackTrace()
-            result?.error("1", "设置资源失败", throwable)
+            result?.error("1", "set resource error", throwable)
         }
     }
 
-    private fun setUri(uri: String, headers: Map<String, String>?, callback: (Throwable?) -> Unit) {
+    private fun setUri(uriString: String, headers: Map<String, String>?, callback: (Throwable?) -> Unit) {
         try {
-//            mediaPlayer.dataSource = uri
-            mediaPlayer.setDataSource(uri, headers)
+            val uri = Uri.parse(uriString)
+//            val scheme = uri.scheme
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+//                    (TextUtils.isEmpty(scheme) || scheme.equals("file", ignoreCase = true))) {
+//                val dataSource = FileMediaDataSource(File(uri.toString()))
+//                mediaPlayer.setDataSource(dataSource)
+//            } else {
+            mediaPlayer.setDataSource(appContext, uri, headers)
+//            }
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
             mediaPlayer.prepareAsync()
             callback(null)
         } catch (e: Exception) {
