@@ -83,6 +83,7 @@ class _NetworkPageState extends State<NetworkPage> {
   }
 }
 
+// the option is copied from ijkplayer example
 Set<IjkOption> createIJKOptions() {
   return <IjkOption>[
     IjkOption(IjkOptionCategory.player, "mediacodec", 0),
