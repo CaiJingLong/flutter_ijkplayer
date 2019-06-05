@@ -57,7 +57,7 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1)
         mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1) // 开硬解
-        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering",1)
+        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 1)
 
         //        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", maxCacheSize)
         //        mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", if (isBufferCache) 1 else 0)
@@ -244,14 +244,17 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
                         registry.lookupKeyForAsset(name, `package`)
                     }
             val assetManager = registry.context().assets
-            val fd = assetManager.openFd(asset)
+            val input = assetManager.open(asset)
             val cacheDir = registry.context().cacheDir.absoluteFile.path
 
             val fileName = Base64.encodeToString(asset.toByteArray(), Base64.DEFAULT)
             val file = File(cacheDir, fileName)
-            fd.createInputStream().copyTo(file.outputStream())
-            mediaPlayer.dataSource = file.path
-//            ijkPlayer.setDataSource(fd.fileDescriptor) // can't use,
+            file.outputStream().use { outputStream ->
+                input.use { inputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            mediaPlayer.setDataSource(FileMediaDataSource(file))
             mediaPlayer.prepareAsync()
         } catch (e: Exception) {
             e.printStackTrace()
