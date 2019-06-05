@@ -1,3 +1,10 @@
+## 0.2.7
+
+Fix bug:
+
+- some m3u8 no sound.
+- some asset cannot play.
+
 ## 0.2.6
 
 Fix bug:
