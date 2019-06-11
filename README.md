@@ -23,7 +23,7 @@ android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其�
   - [English Readme](#english-readme)
   - [安装](#%E5%AE%89%E8%A3%85)
   - [原生部分说明](#%E5%8E%9F%E7%94%9F%E9%83%A8%E5%88%86%E8%AF%B4%E6%98%8E)
-    - [自定义编译](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E8%AF%91)
+    - [自定义编译和原生部分源码](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E8%AF%91%E5%92%8C%E5%8E%9F%E7%94%9F%E9%83%A8%E5%88%86%E6%BA%90%E7%A0%81)
     - [iOS](#ios)
     - [Android](#android)
   - [入门示例](#%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B)
@@ -65,25 +65,28 @@ dependencies:
 
 ## 原生部分说明
 
-### 自定义编译
+### 自定义编译和原生部分源码
 
-编译规则可以参考[这个](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),如果你有自己的特定需求,可以修改编译选项,这个参考 [bilibili/ijkplayer](https://github.com/bilibili/ijkplayer) 或 [ffmpeg](http://ffmpeg.org/)
+自定义编译的主要目的是修改支持的格式, 因为默认包含了一些格式, 这些格式
 
-自定义编译选项的完整过程请看[文档](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md),否则不保证编译出来的代码不报错
+[当前的编译规则文件](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),如果你有自己的特定需求,可以修改编译选项,这个参考 [bilibili/ijkplayer](https://github.com/bilibili/ijkplayer) 或 [ffmpeg](http://ffmpeg.org/)
+
+自定义编译选项的完整过程请看[文档](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md),否则不保证编译出来的代码不报错, 具体的更改方案也请查看编译文档,本篇不再提及
 
 ### iOS
 
-因为 iOS 部分代码的库文件比较大,所以创建了一个 pod 依赖托管 iOS 的 ijkplayer 库  
-pod 库托管在 github 仓库内 https://github.com/CaiJingLong/flutter_ijkplayer_pod  
-没有采用通用的 tar.gz 或 zip,而是使用 tar.xz 的方式压缩,这个压缩格式压缩率高,但是压缩和解压缩的的速度慢,综合考虑使用高压缩率的方式  
+因为 iOS 部分代码的库文件比较大,为了方便管理版本, 所以创建了一个 pod 依赖托管 iOS 的 ijkplayer 库  
+pod 库托管在 github 仓库内 https://github.com/CaiJingLong/flutter_ijkplayer_pod
+
+因为 framework 文件的大小超过了 100M,所以采用了压缩的方式储存
+没有采用通用的 tar.gz 或 zip,而是使用 tar.xz 的方式压缩,这个压缩格式压缩率高,但是压缩和解压缩的的速度慢,综合考虑使用高压缩率的方式来快速获取源文件并解压缩  
 如果有朋友愿意提供 cdn 加速,可以联系我 😁
 
-iOS 的代码来自于 https://github.com/jadennn/flutter_ijk 中的 iOS 代码
-在这基础上增加了旋转通知
+iOS 的代码来自于 https://github.com/jadennn/flutter_ijk 中的 iOS 代码, 但在这基础上增加了旋转通知, 具体的源码[在这里](https://gitee.com/kikt/ijkplayer_thrid_party)
 
 ### Android
 
-现在使用 [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)中的 ex-so 的规则, 但源码经过修改(截取视频帧),编译而成
+现在的 ffmpeg 编译基本是参考的 [GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)中的 ex-so 的规则, 但当前项目的 c 语言源码有修改(截取视频帧), 所以你**不能**直接拿别的项目的 so 文件来用, 修改的内容可以在[gitee](https://gitee.com/kikt/ijkplayer_thrid_party)查到
 
 ## 入门示例
 
