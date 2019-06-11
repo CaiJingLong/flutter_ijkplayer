@@ -67,11 +67,11 @@ dependencies:
 
 ### 自定义编译和原生部分源码
 
-自定义编译的主要目的是修改支持的格式, 因为默认包含了一些格式, 这些格式
+自定义编译的主要目的是修改支持的格式, 因为默认包含了一些编解码器,解复用,协议等等, 这些格式可能你的项目用不到, 这时候可以修改 ffmpeg 的自定义编译选项, 以便于可以缩小库文件的体积, 以达到给 app 瘦身的目的
 
-[当前的编译规则文件](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),如果你有自己的特定需求,可以修改编译选项,这个参考 [bilibili/ijkplayer](https://github.com/bilibili/ijkplayer) 或 [ffmpeg](http://ffmpeg.org/)
+[当前的编译规则文件](https://gitee.com/kikt/ijkplayer_thrid_party/blob/master/config/module.sh),修改编译选项,这个参考 [bilibili/ijkplayer](https://github.com/bilibili/ijkplayer) 或 [ffmpeg](http://ffmpeg.org/),ffmpeg 的相关信息也可以通过搜索引擎获取
 
-自定义编译选项的完整过程请看[文档](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md),否则不保证编译出来的代码不报错, 具体的更改方案也请查看编译文档,本篇不再提及
+自定义编译选项的完整过程请看[文档](https://github.com/CaiJingLong/flutter_ijkplayer/blob/master/compile-cn.md), 否则不保证编译出来的代码不报错, 具体的更改方案也请查看编译文档, 本篇不再提及
 
 ### iOS
 

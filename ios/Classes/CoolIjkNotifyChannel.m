@@ -122,6 +122,8 @@
 }
 
 - (void)loadStateDidChange:(NSNotification *)notification {
+    NSLog(@"load state change, state = %d", _controller.loadState);
+    // todo 添加回调逻辑通知返回加载结果, 确定是否可播放
 //    [channel invokeMethod:@"loadStateChange" arguments:[self getInfo]];
 }
 
