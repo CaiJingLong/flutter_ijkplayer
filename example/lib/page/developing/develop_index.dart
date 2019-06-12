@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'develop_prepare_page.dart';
+import 'live_interruption_page.dart';
 
 class DevelopingIndexPage extends StatefulWidget {
   @override
@@ -12,11 +13,12 @@ class DevelopingIndexPageState extends State<DevelopingIndexPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("开发中"),
+        title: Text("For Developer , user don't use."),
       ),
       body: ListView(
         children: <Widget>[
           buildButton("developing preare page", ForPreparePage()),
+          buildButton("直播中断", LiveInterruptionPage()),
         ],
       ),
     );

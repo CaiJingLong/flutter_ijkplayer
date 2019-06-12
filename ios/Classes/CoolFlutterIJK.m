@@ -108,6 +108,12 @@
             NSData *data = [weakSelf screenShot];
             result(data);
         });
+    } else if ([@"setSpeed" isEqualToString:call.method]) {
+        float speedValue = [call.arguments floatValue];
+        if (controller) {
+            [controller setPlaybackRate:speedValue];
+        }
+        result(@YES);
     } else {
         result(FlutterMethodNotImplemented);
     }

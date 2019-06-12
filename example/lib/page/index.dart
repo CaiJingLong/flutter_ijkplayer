@@ -7,7 +7,6 @@ import '../i18n/i18n.dart';
 import 'asset_page.dart';
 import 'controller_stream_use.dart';
 import 'custom_ijk_opt_page.dart';
-import 'package:ijkplayer_example/page/developing/develop_prepare_page.dart';
 import 'developing/develop_index.dart';
 import 'dialog_video_page.dart';
 import 'error_url.dart';
@@ -16,6 +15,7 @@ import 'gallery_page.dart';
 import 'ijk_status_page.dart';
 import 'in_overlay_page.dart';
 import 'network.dart';
+import 'speed_page.dart';
 
 class IndexPage extends StatefulWidget {
   @override
@@ -46,6 +46,7 @@ class _IndexPageState extends State<IndexPage> {
           buildButton(currentI18n.ijkStatusTitle, IjkStatusPage()),
           buildButton(currentI18n.customOption, CustomIjkOptionPage()),
           buildButton(currentI18n.errorUrl, ErrorUrlPage()),
+          buildButton(currentI18n.setSpeed, SpeedPage()),
           buildButton(
               currentI18n.customFullScreenWidget, CustomFullControllerPage()),
         ],

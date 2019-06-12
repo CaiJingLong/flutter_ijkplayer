@@ -1,3 +1,13 @@
+## 0.2.8
+
+New feature:
+
+- Now, user can setSpeed.
+
+Fix:
+
+- About setDataSource and autoPlay.
+
 ## 0.2.7
 
 Fix bug:

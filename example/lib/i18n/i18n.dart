@@ -52,6 +52,8 @@ abstract class I18n {
   String get errorUrl;
 
   String get customFullScreenWidget;
+
+  String get setSpeed;
 }
 
 I18n get currentI18n => I18n(window.locale);

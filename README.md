@@ -36,6 +36,7 @@ android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其�
       - [获取播放信息](#%E8%8E%B7%E5%8F%96%E6%92%AD%E6%94%BE%E4%BF%A1%E6%81%AF)
       - [截取视频帧](#%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%B8%A7)
       - [资源监听](#%E8%B5%84%E6%BA%90%E7%9B%91%E5%90%AC)
+      - [倍速播放](#%E5%80%8D%E9%80%9F%E6%92%AD%E6%94%BE)
       - [IjkStatus 说明](#ijkstatus-%E8%AF%B4%E6%98%8E)
       - [自定义 Option](#%E8%87%AA%E5%AE%9A%E4%B9%89-option)
         - [IjkOptionCategory](#ijkoptioncategory)
@@ -289,6 +290,23 @@ Stream<bool> volumeStream = controller.playingStream;
 
 // 当前Controller状态的监听,取值范围可以查看
 Stream<IjkStatus> ijkStatusStream = controller.ijkStatusStream;
+```
+
+#### 倍速播放
+
+调用代码:
+
+```dart
+controller.setSpeed(2.0);
+```
+
+支持的倍率默认为 1.0, 上限不明,下限请不要小于等于 0,否则可能会 crash
+
+变调的问题:
+由于变速变调的问题, 如果需要不变调, 需要一个 option 的支持, 这个 option **默认开启**, 如果要关闭这个, 可以使用如下代码
+
+```dart
+IjkMediaController(needChangeSpeed: false); // 这个设置为false后, 则变速时会声音会变调的情况发生
 ```
 
 #### IjkStatus 说明
