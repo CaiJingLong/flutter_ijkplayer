@@ -41,8 +41,8 @@ class _ForPreparePageState extends State<ForPreparePage> {
   Future initPlayer() async {
     await controller.setDataSource(
       DataSource.asset("assets/sample1.mp4"),
-      autoPlay: false,
+      autoPlay: true,
     );
-    controller.play();
+    controller.pause();
   }
 }
