@@ -12,6 +12,8 @@
 - (CoolVideoInfo *)getInfo;
 
 - (void)setDegree:(int)newDegree;
+
+- (void)onLoadStateChange;
 @end
 
 @interface CoolIjkNotifyChannel : NSObject

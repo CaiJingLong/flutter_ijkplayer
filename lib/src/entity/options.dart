@@ -44,4 +44,9 @@ class IjkOption {
     }
     return this.category == other.category && this.key == other.key;
   }
+
+  @override
+  String toString() {
+    return 'IjkOption{category: $category, key: $key, value: $value}';
+  }
 }

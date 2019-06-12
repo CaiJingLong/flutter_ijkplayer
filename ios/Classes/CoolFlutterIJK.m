@@ -4,9 +4,7 @@
 
 #import "CoolFlutterIJK.h"
 #import "CoolVideoInfo.h"
-#import "CoolIjkNotifyChannel.h"
-#import <IJKMediaFramework/IJKMediaFramework.h>
-#import <IJKMediaFramework/IJKMediaPlayer.h>
+#import "CoolFlutterResult.h"
 #import <AVFoundation/AVFoundation.h>
 #import <libkern/OSAtomic.h>
 
@@ -22,6 +20,7 @@
     FlutterMethodChannel *channel;
     CoolIjkNotifyChannel *notifyChannel;
     int degree;
+    CoolFlutterResult *prepareResult;
 }
 
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
@@ -67,8 +66,7 @@
             NSDictionary *params = call.arguments;
             NSString *uri = params[@"uri"];
             NSDictionary *headers = params[@"headers"];
-            [self setDataSourceWithUri:uri headers:headers];
-            result(@(YES));
+            [self setDataSourceWithUri:uri headers:headers result:[CoolFlutterResult resultWithResult:result]];
         }
         @catch (NSException *exception) {
             NSLog(@"Exception occurred: %@, %@", exception, [exception userInfo]);
@@ -80,8 +78,7 @@
             NSString *name = params[@"name"];
             NSString *pkg = params[@"package"];
             IJKFFMoviePlayerController *playerController = [self createControllerWithAssetName:name pkg:pkg];
-            [self setDataSourceWithController:playerController];
-            result(@(YES));
+            [self setDataSourceWithController:playerController result:[CoolFlutterResult resultWithResult:result]];
         }
         @catch (NSException *exception) {
             NSLog(@"Exception occurred: %@, %@", exception, [exception userInfo]);
@@ -91,8 +88,7 @@
         NSDictionary *params = call.arguments;
         NSString *path = params[@"path"];
         IJKFFMoviePlayerController *playerController = [self createControllerWithPath:path];
-        [self setDataSourceWithController:playerController];
-        result(@(YES));
+        [self setDataSourceWithController:playerController result:[CoolFlutterResult resultWithResult:result]];
     } else if ([@"seekTo" isEqualToString:call.method]) {
         NSDictionary *params = call.arguments;
         double target = [params[@"target"] doubleValue];
@@ -150,10 +146,10 @@
     }
 }
 
-- (void)setDataSourceWithController:(IJKFFMoviePlayerController *)ctl {
+- (void)setDataSourceWithController:(IJKFFMoviePlayerController *)ctl result:(CoolFlutterResult *)result {
     if (ctl) {
         controller = ctl;
-        [self prepare];
+        [self prepare:result];
     }
 }
 
@@ -221,7 +217,7 @@
     return options;
 }
 
-- (void)setDataSourceWithUri:(NSString *)uri headers:(NSDictionary *)headers {
+- (void)setDataSourceWithUri:(NSString *)uri headers:(NSDictionary *)headers result:(CoolFlutterResult *)result {
     IJKFFOptions *options = [self createOption];
     if (headers) {
         NSMutableString *headerString = [NSMutableString new];
@@ -234,7 +230,7 @@
     }
     controller = [[IJKFFMoviePlayerController alloc] initWithContentURLString:uri withOptions:options];
 
-    [self prepare];
+    [self prepare:result];
 }
 
 - (void)setDegree:(int)d {
@@ -242,7 +238,8 @@
 }
 
 
-- (void)prepare {
+- (void)prepare:(CoolFlutterResult *)result {
+    prepareResult = result;
     [controller prepareToPlay];
     if (displayLink) {
         displayLink.paused = YES;
@@ -257,6 +254,15 @@
     notifyChannel = [CoolIjkNotifyChannel channelWithController:controller textureId:textureId registrar:self.registrar];
     notifyChannel.infoDelegate = self;
 }
+
+- (void)onLoadStateChange {
+//    IJKMPMovieLoadState loadState = controller.loadState;
+    if (prepareResult) {
+        [prepareResult replyResult:@YES];
+    }
+    prepareResult = nil;
+}
+
 
 - (IJKFFMoviePlayerController *)createControllerWithAssetName:(NSString *)assetName pkg:(NSString *)pkg {
     NSString *asset;

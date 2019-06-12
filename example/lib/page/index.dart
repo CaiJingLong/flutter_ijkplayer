@@ -4,11 +4,13 @@ import 'package:ijkplayer_example/page/screen_shot_page.dart';
 import 'package:ijkplayer_example/page/video_list.dart';
 
 import '../i18n/i18n.dart';
-import 'error_url.dart';
 import 'asset_page.dart';
 import 'controller_stream_use.dart';
 import 'custom_ijk_opt_page.dart';
+import 'package:ijkplayer_example/page/developing/develop_prepare_page.dart';
+import 'developing/develop_index.dart';
 import 'dialog_video_page.dart';
+import 'error_url.dart';
 import 'full_screen.dart';
 import 'gallery_page.dart';
 import 'ijk_status_page.dart';
@@ -29,6 +31,7 @@ class _IndexPageState extends State<IndexPage> {
       ),
       body: ListView(
         children: <Widget>[
+          buildButton("For developer, user don't use.", DevelopingIndexPage()),
           buildButton(currentI18n.networkButton, NetworkPage()),
           buildButton(currentI18n.photoButton, PlayGalleryPage()),
           buildButton(currentI18n.assetButton, AssetPage()),

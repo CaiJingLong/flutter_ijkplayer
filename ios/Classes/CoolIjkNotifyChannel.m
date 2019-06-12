@@ -122,7 +122,8 @@
 }
 
 - (void)loadStateDidChange:(NSNotification *)notification {
-//    [channel invokeMethod:@"loadStateChange" arguments:[self getInfo]];
+    NSLog(@"load state change, state = %lu", (unsigned long)_controller.loadState);
+    [self.infoDelegate onLoadStateChange];
 }
 
 - (void)movieRotationChange:(NSNotification *)notification {
