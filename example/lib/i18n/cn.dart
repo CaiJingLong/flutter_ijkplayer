@@ -74,4 +74,7 @@ class _I18nZh extends I18n {
 
   @override
   String get customFullScreenWidget => "自定义全屏界面";
+
+  @override
+  String get setSpeed => "播放速度";
 }

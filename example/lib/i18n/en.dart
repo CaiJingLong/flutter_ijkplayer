@@ -74,4 +74,7 @@ class _I18nEn extends I18n {
 
   @override
   String get customFullScreenWidget => "Custom Full Screen Interface";
+
+  @override
+  String get setSpeed => "Set media speed";
 }

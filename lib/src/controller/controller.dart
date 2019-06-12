@@ -12,11 +12,24 @@ class IjkMediaController
 
   Map<TargetPlatform, Set<IjkOption>> _options = {};
 
+  bool needChangeSpeed;
+
   /// MediaController
   IjkMediaController({
     this.autoRotate = true,
+    this.needChangeSpeed = true,
   }) {
     index = IjkMediaPlayerManager().add(this);
+    if (needChangeSpeed) {
+      setIjkPlayerOptions(
+          [
+            TargetPlatform.iOS,
+            TargetPlatform.android,
+          ],
+          <IjkOption>[
+            IjkOption(IjkOptionCategory.player, "soundtouch", 1),
+          ].toSet());
+    }
   }
 
   @override
@@ -245,15 +258,6 @@ class IjkMediaController
     }
   }
 
-  /// AutoPlay use
-  Future<void> _autoPlay(bool autoPlay) async {
-    if (autoPlay) {
-      await eventChannel?.autoPlay(this);
-    } else {
-      await eventChannel?.disableAutoPlay(this);
-    }
-  }
-
   /// set video volume
   Future<void> _setVolume(int volume) async {
     await _plugin?.setVolume(volume);
@@ -317,10 +321,10 @@ class IjkMediaController
   /// It will only take effect if you call [setDataSource] again.
   void setIjkPlayerOptions(
     List<TargetPlatform> platforms,
-    Set<IjkOption> options,
+    Iterable<IjkOption> options,
   ) {
     for (var platform in platforms) {
-      _options[platform] = options;
+      _options[platform] = options.toSet();
     }
   }
 
@@ -339,5 +343,9 @@ class IjkMediaController
       }
       opts.addAll(options);
     }
+  }
+
+  Future<void> setSpeed(double speed) async {
+    await _plugin.setSpeed(speed);
   }
 }

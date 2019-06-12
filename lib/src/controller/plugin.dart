@@ -108,4 +108,8 @@ class _IjkPlugin {
     }
     return result;
   }
+
+  Future<void> setSpeed(double speed) async {
+    await channel.invokeMethod("setSpeed", speed);
+  }
 }

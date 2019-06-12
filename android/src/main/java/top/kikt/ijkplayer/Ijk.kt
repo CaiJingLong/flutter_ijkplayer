@@ -164,6 +164,10 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
                 val bytes = screenShot()
                 result?.success(bytes)
             }
+            "setSpeed" -> {
+                val speed = call.arguments<Double>()
+                mediaPlayer.setSpeed(speed.toFloat())
+            }
             else -> {
                 result?.notImplemented()
             }
