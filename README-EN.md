@@ -31,6 +31,7 @@ Before using library, you can star and download the code to try the example.
       - [get media info](#get-media-info)
       - [screen shot](#screen-shot)
       - [Observer for resource](#observer-for-resource)
+      - [Media Speed](#media-speed)
       - [IjkStatus](#ijkstatus)
       - [Custom Options](#custom-options)
         - [IjkOptionCategory](#ijkoptioncategory)
@@ -262,6 +263,22 @@ Stream<bool> volumeStream = controller.playingStream;
 // Detailed descriptions of specific states can be seen in the table below.
 Stream<IjkStatus> ijkStatusStream = controller.ijkStatusStream;
 
+```
+
+#### Media Speed
+
+code:
+
+```dart
+controller.setSpeed(2.0);
+```
+
+Default speed is 1.0, the min value need bigger than 0
+
+Because of the speed change, the tone will change. So you need to use an option to keep the tone unchanged. The option **default value is open**, and if you want to close it, use the code:
+
+```dart
+IjkMediaController(needChangeSpeed: false); // set needChangeSpeed to false, the tone will change on speed change.
 ```
 
 #### IjkStatus
