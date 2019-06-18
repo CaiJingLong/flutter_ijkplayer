@@ -15,31 +15,31 @@ Before using library, you can star and download the code to try the example.
 ## Menu
 
 - [ijkplayer](#ijkplayer)
-  - [Menu](#menu)
-  - [Install](#install)
-  - [Build](#build)
-    - [Custom compile library](#custom-compile-library)
-    - [iOS](#ios)
-    - [Android](#android)
-  - [Simple Example](#simple-example)
-  - [Usage](#usage)
-    - [Usage of ijkplayer](#usage-of-ijkplayer)
+  - [Menu](#Menu)
+  - [Install](#Install)
+  - [Build](#Build)
+    - [Custom compile library](#Custom-compile-library)
+    - [iOS](#iOS)
+    - [Android](#Android)
+  - [Simple Example](#Simple-Example)
+  - [Usage](#Usage)
+    - [Usage of ijkplayer](#Usage-of-ijkplayer)
     - [about dispose](#about-dispose)
-    - [Usage of controller](#usage-of-controller)
-      - [DataSource](#datasource)
+    - [Usage of controller](#Usage-of-controller)
+      - [DataSource](#DataSource)
       - [control your media](#control-your-media)
       - [get media info](#get-media-info)
       - [screen shot](#screen-shot)
-      - [Observer for resource](#observer-for-resource)
-      - [Media Speed](#media-speed)
-      - [IjkStatus](#ijkstatus)
-      - [Custom Options](#custom-options)
-        - [IjkOptionCategory](#ijkoptioncategory)
+      - [Observer for resource](#Observer-for-resource)
+      - [Media Speed](#Media-Speed)
+      - [IjkStatus](#IjkStatus)
+      - [Custom Options](#Custom-Options)
+        - [IjkOptionCategory](#IjkOptionCategory)
       - [release resource](#release-resource)
-    - [Use self controller UI](#use-self-controller-ui)
-    - [Build widget from IjkStatus](#build-widget-from-ijkstatus)
-    - [Use Texture widget](#use-texture-widget)
-  - [LICENSE](#license)
+    - [Use self controller UI](#Use-self-controller-UI)
+    - [Build widget from IjkStatus](#Build-widget-from-IjkStatus)
+    - [Use Texture widget](#Use-Texture-widget)
+  - [LICENSE](#LICENSE)
 
 ## Install
 
@@ -180,6 +180,9 @@ controller.dispose();
 // network
 await controller.setNetworkDataSource("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4");
 
+// Custom headers for network source
+await controller.setNetworkDataSource(url, headers: <String,String>{});
+
 // asset
 await controller.setAssetDataSource("assets/test.mp4");
 
@@ -188,7 +191,7 @@ await controller.setFileDataSource(File("/sdcard/1.mp4"));
 
 // dataSource
 var dataSource = DataSource.file(File("/sdcard/1.mp4"));
-var dataSource = DataSource.network("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4");
+var dataSource = DataSource.network("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4", headers:<String,String>{});
 var dataSource = DataSource.asset("assets/test.mp4");
 await controller.setDataSource(dataSource);
 

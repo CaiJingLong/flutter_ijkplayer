@@ -20,12 +20,12 @@ android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其�
 
 - [ijkplayer](#ijkplayer)
   - [目录](#%E7%9B%AE%E5%BD%95)
-  - [English Readme](#english-readme)
+  - [English Readme](#English-Readme)
   - [安装](#%E5%AE%89%E8%A3%85)
   - [原生部分说明](#%E5%8E%9F%E7%94%9F%E9%83%A8%E5%88%86%E8%AF%B4%E6%98%8E)
     - [自定义编译和原生部分源码](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E8%AF%91%E5%92%8C%E5%8E%9F%E7%94%9F%E9%83%A8%E5%88%86%E6%BA%90%E7%A0%81)
-    - [iOS](#ios)
-    - [Android](#android)
+    - [iOS](#iOS)
+    - [Android](#Android)
   - [入门示例](#%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B)
   - [使用](#%E4%BD%BF%E7%94%A8)
     - [设置](#%E8%AE%BE%E7%BD%AE)
@@ -37,15 +37,15 @@ android 模拟器 mac android sdk 自带的 emulator(API28 android9)可用,其�
       - [截取视频帧](#%E6%88%AA%E5%8F%96%E8%A7%86%E9%A2%91%E5%B8%A7)
       - [资源监听](#%E8%B5%84%E6%BA%90%E7%9B%91%E5%90%AC)
       - [倍速播放](#%E5%80%8D%E9%80%9F%E6%92%AD%E6%94%BE)
-      - [IjkStatus 说明](#ijkstatus-%E8%AF%B4%E6%98%8E)
-      - [自定义 Option](#%E8%87%AA%E5%AE%9A%E4%B9%89-option)
-        - [IjkOptionCategory](#ijkoptioncategory)
+      - [IjkStatus 说明](#IjkStatus-%E8%AF%B4%E6%98%8E)
+      - [自定义 Option](#%E8%87%AA%E5%AE%9A%E4%B9%89-Option)
+        - [IjkOptionCategory](#IjkOptionCategory)
       - [释放资源](#%E9%87%8A%E6%94%BE%E8%B5%84%E6%BA%90)
-    - [自定义控制器 UI](#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E5%88%B6%E5%99%A8-ui)
+    - [自定义控制器 UI](#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E5%88%B6%E5%99%A8-UI)
     - [自定义纹理界面](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%B9%E7%90%86%E7%95%8C%E9%9D%A2)
     - [根据当前状态构建一个 widget](#%E6%A0%B9%E6%8D%AE%E5%BD%93%E5%89%8D%E7%8A%B6%E6%80%81%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA-widget)
   - [进度](#%E8%BF%9B%E5%BA%A6)
-  - [LICENSE](#license)
+  - [LICENSE](#LICENSE)
 
 ## English Readme
 
@@ -197,6 +197,9 @@ controller.dispose();
 // 网络
 await controller.setNetworkDataSource("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4");
 
+// 设置请求头, 使用headers参数
+await controller.setNetworkDataSource(url, headers: <String,String>{});
+
 // 应用内资源
 await controller.setAssetDataSource("assets/test.mp4");
 
@@ -205,7 +208,7 @@ await controller.setFileDataSource(File("/sdcard/1.mp4"));
 
 // 通过数据源的方式
 var dataSource = DataSource.file(File("/sdcard/1.mp4"));
-var dataSource = DataSource.network("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4");
+var dataSource = DataSource.network("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4", headers:<String,String>{});
 var dataSource = DataSource.asset("assets/test.mp4");
 await controller.setDataSource(dataSource);
 
