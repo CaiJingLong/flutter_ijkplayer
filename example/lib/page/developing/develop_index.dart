@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'develop_prepare_page.dart';
 import 'live_interruption_page.dart';
+import 'src_error_page.dart';
 
 class DevelopingIndexPage extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class DevelopingIndexPageState extends State<DevelopingIndexPage> {
         children: <Widget>[
           buildButton("developing preare page", ForPreparePage()),
           buildButton("直播中断", LiveInterruptionPage()),
+          buildButton("视频源错误", SreErrorPage()),
         ],
       ),
     );

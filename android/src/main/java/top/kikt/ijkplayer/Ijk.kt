@@ -267,11 +267,25 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
     }
 
     fun dispose() {
-        notifyChannel.dispose()
-        methodChannel.setMethodCallHandler(null)
-        textureMediaPlayer.stop()
-        textureMediaPlayer.release()
-        textureEntry.release()
+        tryCatchError {
+            notifyChannel.dispose()
+            methodChannel.setMethodCallHandler(null)
+            textureMediaPlayer.stop()
+        }
+        tryCatchError {
+            textureMediaPlayer.release()
+        }
+        tryCatchError {
+            textureEntry.release()
+        }
+    }
+
+    private fun tryCatchError(runnable: () -> Unit) {
+        try {
+            runnable()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun play() {
