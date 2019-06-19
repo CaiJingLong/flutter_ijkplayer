@@ -1,3 +1,7 @@
+## 0.2.9
+
+Fix: [#87](https://github.com/CaiJingLong/flutter_ijkplayer/issues/87)
+
 ## 0.2.8+1
 
 Update pubspec and some Readme.
