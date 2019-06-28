@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.media.AudioManager
 import android.net.Uri
 import android.util.Base64
-import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import top.kikt.ijkplayer.entity.IjkOption
@@ -18,7 +17,7 @@ import tv.danmaku.ijk.media.player.TextureMediaPlayer
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<String, Any>) : MethodChannel.MethodCallHandler {
+class Ijk(private val registry: PluginRegistry.Registrar, private val options: Map<String, Any>) {
 
     private val textureEntry = registry.textures().createSurfaceTexture()
     val id: Long
@@ -37,7 +36,82 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
         textureMediaPlayer = TextureMediaPlayer(mediaPlayer)
         configOptions()
         textureMediaPlayer.surfaceTexture = textureEntry.surfaceTexture()
-        methodChannel.setMethodCallHandler(this)
+        methodChannel.setMethodCallHandler { call, result ->
+            when (call?.method) {
+                "setNetworkDataSource" -> {
+                    val uri = call.argument<String>("uri")
+                    val params = call.argument<Map<String, String>>("headers")
+                    if (uri == null) {
+                        handleSetUriResult(Exception("uri是必传参数"), result)
+                        return@setMethodCallHandler
+                    }
+                    setUri(uri, params) { throwable ->
+                        handleSetUriResult(throwable, result)
+                    }
+                }
+                "setAssetDataSource" -> {
+                    val name = call.argument<String>("name")
+                    val `package` = call.argument<String>("package")
+                    if (name != null) {
+                        setAssetUri(name, `package`) { throwable ->
+                            handleSetUriResult(throwable, result)
+                        }
+                    } else {
+                        handleSetUriResult(Exception("没有找到资源"), result)
+                    }
+                }
+                "setFileDataSource" -> {
+                    val path = call.argument<String>("path")
+                    if (path != null) {
+                        setUri("file://$path", hashMapOf()) { throwable ->
+                            handleSetUriResult(throwable, result)
+                        }
+                    }
+                }
+                "play" -> {
+                    play()
+                    result?.success(true)
+                }
+                "pause" -> {
+                    pause()
+                    result?.success(true)
+                }
+                "stop" -> {
+                    stop()
+                    result?.success(true)
+                }
+                "getInfo" -> {
+                    val info = getInfo()
+                    result?.success(info.toMap())
+                }
+                "seekTo" -> {
+                    val target = call.argument<Double>("target")
+                    if (target != null) {
+                        seekTo((target * 1000).toLong())
+                    }
+                    result?.success(true)
+                }
+                "setVolume" -> {
+                    val volume = call.argument<Int>("volume")
+                    setVolume(volume)
+                    result?.success(true)
+                }
+                "getVolume" -> {
+//                result?.success(this.mediaPlayer.setVolume())
+                }
+                "screenShot" -> {
+                    val bytes = screenShot()
+                    result?.success(bytes)
+                }
+                "setSpeed" -> {
+                    val speed = call.arguments<Double>()
+                    mediaPlayer.setSpeed(speed.toFloat())
+                }
+                else -> {
+                    result?.notImplemented()
+                }
+            }
+        }
     }
 
     private val appContext: Context
@@ -93,83 +167,6 @@ class Ijk(private val registry: PluginRegistry.Registrar, val options: Map<Strin
                     val ijkOptions = IjkOption(option)
                     setOptionToMediaPlayer(ijkOptions)
                 }
-            }
-        }
-    }
-
-    override fun onMethodCall(call: MethodCall?, result: MethodChannel.Result?) {
-        when (call?.method) {
-            "setNetworkDataSource" -> {
-                val uri = call.argument<String>("uri")
-                val params = call.argument<Map<String, String>>("headers")
-                if (uri == null) {
-                    handleSetUriResult(Exception("uri是必传参数"), result)
-                    return
-                }
-                setUri(uri, params) { throwable ->
-                    handleSetUriResult(throwable, result)
-                }
-            }
-            "setAssetDataSource" -> {
-                val name = call.argument<String>("name")
-                val `package` = call.argument<String>("package")
-                if (name != null) {
-                    setAssetUri(name, `package`) { throwable ->
-                        handleSetUriResult(throwable, result)
-                    }
-                } else {
-                    handleSetUriResult(Exception("没有找到资源"), result)
-                }
-            }
-            "setFileDataSource" -> {
-                val path = call.argument<String>("path")
-                if (path != null) {
-                    setUri("file://$path", hashMapOf()) { throwable ->
-                        handleSetUriResult(throwable, result)
-                    }
-                }
-            }
-            "play" -> {
-                play()
-                result?.success(true)
-            }
-            "pause" -> {
-                pause()
-                result?.success(true)
-            }
-            "stop" -> {
-                stop()
-                result?.success(true)
-            }
-            "getInfo" -> {
-                val info = getInfo()
-                result?.success(info.toMap())
-            }
-            "seekTo" -> {
-                val target = call.argument<Double>("target")
-                if (target != null) {
-                    seekTo((target * 1000).toLong())
-                }
-                result?.success(true)
-            }
-            "setVolume" -> {
-                val volume = call.argument<Int>("volume")
-                setVolume(volume)
-                result?.success(true)
-            }
-            "getVolume" -> {
-//                result?.success(this.mediaPlayer.setVolume())
-            }
-            "screenShot" -> {
-                val bytes = screenShot()
-                result?.success(bytes)
-            }
-            "setSpeed" -> {
-                val speed = call.arguments<Double>()
-                mediaPlayer.setSpeed(speed.toFloat())
-            }
-            else -> {
-                result?.notImplemented()
             }
         }
     }
