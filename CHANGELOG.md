@@ -1,3 +1,9 @@
+## 0.3.0
+
+Fix: [#91](https://github.com/CaiJingLong/flutter_ijkplayer/issues/91)
+
+- Fix: for android annotation @Nonnull
+
 ## 0.2.9
 
 Fix: [#87](https://github.com/CaiJingLong/flutter_ijkplayer/issues/87)
