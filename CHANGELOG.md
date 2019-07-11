@@ -1,3 +1,9 @@
+## 0.3.1
+
+Update:
+
+- Use a new full screen type: Now, use `RotateBox` to rotate IjkPlayer.
+
 ## 0.3.0
 
 Fix: [#91](https://github.com/CaiJingLong/flutter_ijkplayer/issues/91)
