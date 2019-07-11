@@ -379,6 +379,8 @@ await controller.dispose(); //这个方法调用后,当前控制器理论上不�
 
 使用`IJKPlayer`的`controllerWidgetBuilder`属性可以自定义控制器的 UI,默认使用`defaultBuildIjkControllerWidget`方法构建
 
+签名如下: `typedef Widget IJKControllerWidgetBuilder(IjkMediaController controller);`
+
 返回的 Widget 会被覆盖在 Texture 上
 
 ```dart
@@ -389,6 +391,22 @@ IJKPlayer(
   },
 );
 ```
+
+内置的播放器 UI 使用的类为: `DefaultIJKControllerWidget`
+
+这个类提供了一些属性进行自定义, 除`controller`外所有属性均为可选:
+
+|               name                |            type            |      default      |                      desc                       |
+| :-------------------------------: | :------------------------: | :---------------: | :---------------------------------------------: |
+|           doubleTapPlay           |            bool            |       false       |                  双击播放暂停                   |
+|          verticalGesture          |            bool            |       true        |                    纵向手势                     |
+|         horizontalGesture         |            bool            |       true        |                    横向手势                     |
+|            volumeType             |         VolumeType         | VolumeType.system |        纵向手势改变的声音类型(系统,媒体)        |
+|        playWillPauseOther         |            bool            |       true        |            播放当前是否暂停其他媒体             |
+|      currentFullScreenState       |            bool            |       false       | **如果你是自定义全屏界面, 这个必须设置为 true** |
+|       showFullScreenButton        |            bool            |       true        |                是否显示全屏按钮                 |
+| fullscreenControllerWidgetBuilder | IJKControllerWidgetBuilder |                   |              可以自定义全屏的界面               |
+|          fullScreenType           |       FullScreenType       |                   |     全屏的类型(旋转屏幕,或是使用 RotateBox)     |
 
 ### 自定义纹理界面
 

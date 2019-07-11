@@ -79,8 +79,11 @@ class _NetworkPageState extends State<NetworkPage> {
 
   void _playInput() async {
     var text = editingController.text;
-    await mediaController
-        .setNetworkDataSource(text, autoPlay: true, headers: <String,String>{});
+    await mediaController.setNetworkDataSource(
+      text,
+      autoPlay: true,
+      headers: <String, String>{},
+    );
   }
 }
 

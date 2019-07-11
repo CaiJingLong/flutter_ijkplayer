@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'develop_prepare_page.dart';
 import 'live_interruption_page.dart';
+import 'new_full_screen_page.dart';
 import 'src_error_page.dart';
 
 class DevelopingIndexPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class DevelopingIndexPageState extends State<DevelopingIndexPage> {
           buildButton("developing preare page", ForPreparePage()),
           buildButton("直播中断", LiveInterruptionPage()),
           buildButton("视频源错误", SreErrorPage()),
+          buildButton("新的全屏", NewFullScreenPage()),
         ],
       ),
     );
