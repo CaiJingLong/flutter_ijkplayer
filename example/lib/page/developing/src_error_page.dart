@@ -74,7 +74,8 @@ class _SreErrorPageState extends State<SreErrorPage> {
         child: PageView.builder(
           itemBuilder: (BuildContext context, int index) {
             // return VideoWidget("http://114.55.36.48/1204/27/index$index.m3u8");
-            return VideoWidget("http://itv.100.ahct.lv1.vcache.cn/100/ott_baseline_kalaok/hd/151/CP0541903573/playlist.m3u8");
+            return VideoWidget(
+                "http://itv.100.ahct.lv1.vcache.cn/100/ott_baseline_kalaok/hd/151/CP0541903573/playlist.m3u8");
           },
         ),
       ),

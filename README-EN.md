@@ -351,6 +351,8 @@ await controller.dispose(); // After this method call, the current controller is
 
 Use `IJKPlayer`'s `controllerWidgetBuilder` params can customize UI, default use `defaultBuildIjkControllerWidget` method to get widget.
 
+The type def sign: `typedef Widget IJKControllerWidgetBuilder(IjkMediaController controller);`
+
 The returned widget will be overwritten on the `Texture`.
 
 ```dart
@@ -361,6 +363,22 @@ IJKPlayer(
   },
 );
 ```
+
+The library use `DefaultIJKControllerWidget` to build the widget.
+
+This class provides some properties for customization. All properties except `controller` are optional:
+
+|               name                |            type            |         default          |                                      desc                                      |
+| :-------------------------------: | :------------------------: | :----------------------: | :----------------------------------------------------------------------------: |
+|           doubleTapPlay           |            bool            |          false           |                            doubleTap gesture switch                            |
+|          verticalGesture          |            bool            |           true           |                            vertical gesture switch                             |
+|         horizontalGesture         |            bool            |           true           |                           horizontal gesture switch                            |
+|            volumeType             |         VolumeType         |    VolumeType.system     |           vertical gesture changes the type of sound (system,media)            |
+|        playWillPauseOther         |            bool            |           true           |                     play the video will pause other medias                     |
+|      currentFullScreenState       |            bool            |          false           | **If you are customizing the full screen interface, this must be set to true** |
+|       showFullScreenButton        |            bool            |           true           |                   Whether to display the full screen button                    |
+| fullscreenControllerWidgetBuilder | IJKControllerWidgetBuilder |                          |                    Can customize the full screen interface                     |
+|          fullScreenType           |       FullScreenType       | FullScreenType.rotateBox |               Full screen type (rotate screen, or use RotateBox)               |
 
 ### Build widget from IjkStatus
 

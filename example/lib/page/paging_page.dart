@@ -51,8 +51,8 @@ class PagingPickPage extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (_) => PagingPage(
-              dataSourceList: dataSourceList,
-            ),
+          dataSourceList: dataSourceList,
+        ),
       ),
     );
   }
