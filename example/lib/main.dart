@@ -3,10 +3,10 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/page/index.dart';
 import 'package:oktoast/oktoast.dart';
 
-void main() {
+void main() async {
   IjkConfig.isLog = true;
 //  IjkConfig.level = LogLevel.verbose;
-  IjkManager.initIJKPlayer();
+  await IjkManager.initIJKPlayer();
   runApp(MyApp());
 }
 
