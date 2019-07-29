@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/const/video_datasource.dart';
@@ -13,6 +11,7 @@ class ErrorUrlPage extends StatefulWidget {
 class _ErrorUrlPageState extends State<ErrorUrlPage> {
   TextEditingController editingController = TextEditingController();
   IjkMediaController mediaController = IjkMediaController();
+
   // StreamSubscription statusSub;
   // StreamSubscription ijkErrorSub;
   @override

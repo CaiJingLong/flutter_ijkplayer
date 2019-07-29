@@ -16,7 +16,6 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer
  */
 class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
 
-
     override fun onMethodCall(call: MethodCall, result: Result) {
         IjkMediaPlayer.loadLibrariesOnce(null)
         IjkMediaPlayer.native_profileBegin("libijkplayer.so")

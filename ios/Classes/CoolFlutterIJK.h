@@ -13,6 +13,8 @@
 
 @property(nonatomic, strong) NSArray<CoolIjkOption*> *options;
 
+@property(nonatomic, assign) BOOL isDisposed;
+
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar;
 
 + (instancetype)ijkWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar;

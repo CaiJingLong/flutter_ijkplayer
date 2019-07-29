@@ -32,11 +32,16 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
 
     var degree = 0
 
+    var isDisposed = false
+
     init {
         textureMediaPlayer = TextureMediaPlayer(mediaPlayer)
         configOptions()
         textureMediaPlayer.surfaceTexture = textureEntry.surfaceTexture()
         methodChannel.setMethodCallHandler { call, result ->
+            if (isDisposed) {
+                return@setMethodCallHandler
+            }
             when (call?.method) {
                 "setNetworkDataSource" -> {
                     val uri = call.argument<String>("uri")
@@ -264,6 +269,10 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
     }
 
     fun dispose() {
+        if (isDisposed) {
+            return
+        }
+        isDisposed = true
         tryCatchError {
             notifyChannel.dispose()
             methodChannel.setMethodCallHandler(null)
