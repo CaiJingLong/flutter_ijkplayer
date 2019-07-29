@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:flutter_ijkplayer/src/helper/full_screen_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/logutil.dart';
 import 'package:flutter_ijkplayer/src/helper/time_helper.dart';
 import 'package:flutter_ijkplayer/src/helper/ui_helper.dart';
@@ -234,7 +235,10 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     );
   }
 
+  int _overlayTurns = 0;
+
   Widget buildPortrait(VideoInfo info) {
+    _overlayTurns = FullScreenHelper.getQuarterTurns(info, context);
     return PortraitController(
       controller: controller,
       info: info,
@@ -273,11 +277,20 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     hideTooltip();
     _tipOverlay = OverlayEntry(
       builder: (BuildContext context) {
-        return IgnorePointer(
+        Widget w = IgnorePointer(
           child: Center(
             child: widget,
           ),
         );
+
+        if (this.widget.fullScreenType == FullScreenType.rotateBox && this.widget.currentFullScreenState && _overlayTurns != 0) {
+          w = RotatedBox(
+            child: w,
+            quarterTurns: _overlayTurns,
+          );
+        }
+
+        return w;
       },
     );
     Overlay.of(context).insert(_tipOverlay);
