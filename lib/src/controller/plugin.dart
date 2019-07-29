@@ -27,7 +27,7 @@ class _IjkPlugin {
   /// texture id
   int textureId;
 
-  bool _isDisposed;
+  bool _isDisposed = false;
 
   bool get isDisposed => _isDisposed;
 
