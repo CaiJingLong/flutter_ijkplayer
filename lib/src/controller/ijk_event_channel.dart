@@ -13,12 +13,17 @@ class _IJKEventChannel {
 
   Completer _prepareCompleter;
 
+  bool _isDisposed = false;
+
+  bool get isDisposed => _isDisposed;
+
   Future<void> init() async {
     channel = MethodChannel(channelName);
     channel.setMethodCallHandler(handler);
   }
 
   void dispose() {
+    _isDisposed = true;
     channel.setMethodCallHandler(null);
     controller = null;
   }

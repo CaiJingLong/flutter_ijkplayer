@@ -35,6 +35,7 @@
         [channel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
             [weakSelf handleMethodCall:call result:result];
         }];
+        self.isDisposed = NO;
     }
 
     return self;
@@ -42,6 +43,10 @@
 
 
 - (void)dispose {
+    if(self.isDisposed){
+        return;
+    }
+    self.isDisposed = YES;
     [notifyChannel dispose];
     [[self.registrar textures] unregisterTexture:self.id];
     [controller stop];
@@ -52,6 +57,9 @@
 }
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
+    if(self.isDisposed){
+        return;
+    }
     if ([@"play" isEqualToString:call.method]) {
         [self play];
         result(@(YES));
