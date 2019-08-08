@@ -1,3 +1,10 @@
+## 0.3.2
+
+Fix:
+
+- Touch gesture problem
+- Missing plugin error message
+
 ## 0.3.1
 
 Update:
