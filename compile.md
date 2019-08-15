@@ -35,7 +35,7 @@ I'm macOS here. If you're linux, you can compile the Android part.
 
 IOS compilation can only be completed under macOS.
 
-Windows: Please give up
+Windows: Please give up.
 
 ### General part
 
@@ -200,7 +200,7 @@ Copy all ijkplayer so files into `flutter_ijkplayer/android/src/main/libs/${CPU}
 
 ## LICENSE
 
-The project base on bilibili/ijkplayer 's 0.8.8 version. Before you use it, you need to make sure that your project meets ijkplayer's requirements.
+The project base on 0.8.8 of bilibili/ijkplayer. Before you use it, you need to make sure that your project meets ijkplayer's requirements.
 
 Part of the iOS code in the project comes from https://github.com/jadennn/flutter_ijk, all of which are based on the MIT protocol.
 

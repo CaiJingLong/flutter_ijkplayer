@@ -8,7 +8,7 @@ The question of Android might not be able to run will be explained in detail.
 The simulator is out of use, so please use the real machine for debugging.
 
 - Android: I added the so Library of x86, but my voice decoding here is abnormal.
-- iOS: The simulator library is added, but it has sound and no pictures.
+- iOS: The simulator library is added, but it has sound and no video. It's normal in real device.
 
 Before using library, you can star and download the code to try the example.
 
