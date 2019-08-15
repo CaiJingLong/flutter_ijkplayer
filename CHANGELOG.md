@@ -1,3 +1,7 @@
+## 0.3.3
+
+Migrate ios pod library from github to azure.
+
 ## 0.3.2
 
 Fix:
