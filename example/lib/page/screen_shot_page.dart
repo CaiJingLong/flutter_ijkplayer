@@ -19,9 +19,19 @@ class _ScreenShotPageState extends State<ScreenShotPage> {
   @override
   void initState() {
     super.initState();
+    mediaController.setIjkPlayerOptions(
+      [
+        TargetPlatform.android,
+        TargetPlatform.iOS,
+      ],
+      [
+        IjkOption(IjkOptionCategory.player, "mediacodec", 0),
+      ],
+    );
     mediaController.setDataSource(
         DataSource.network(
             "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4"),
+        // "rtmp://58.200.131.2:1935/livetv/hunantv"),
         autoPlay: true);
   }
 
