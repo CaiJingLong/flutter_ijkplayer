@@ -1,3 +1,9 @@
+## 0.3.4
+
+Fix:
+
+- The fps of the autoplayed datasource is always 3.
+
 ## 0.3.3
 
 Migrate ios pod library from github to azure.
