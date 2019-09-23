@@ -263,7 +263,6 @@
 
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onDisplayLink:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    displayLink.paused = YES;
 
     notifyChannel = [CoolIjkNotifyChannel channelWithController:controller textureId:textureId registrar:self.registrar];
     notifyChannel.infoDelegate = self;
