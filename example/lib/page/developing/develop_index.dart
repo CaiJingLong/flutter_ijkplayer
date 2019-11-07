@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'crash_on_set_src_page.dart';
 import 'develop_prepare_page.dart';
 import 'live_interruption_page.dart';
 import 'new_full_screen_page.dart';
@@ -20,6 +21,7 @@ class DevelopingIndexPageState extends State<DevelopingIndexPage> {
       body: ListView(
         children: <Widget>[
           buildButton("developing preare page", ForPreparePage()),
+          buildButton("切换视频源crash", CrashOnSetSrcPage()),
           buildButton("直播中断", LiveInterruptionPage()),
           buildButton("视频源错误", SreErrorPage()),
           buildButton("新的全屏", NewFullScreenPage()),

@@ -25,7 +25,8 @@ class _ScreenShotPageState extends State<ScreenShotPage> {
         TargetPlatform.iOS,
       ],
       [
-        IjkOption(IjkOptionCategory.player, "mediacodec", 0),
+        // IjkOption(IjkOptionCategory.player, "mediacodec", 1),
+        // IjkOption(IjkOptionCategory.player, "videotoolbox", 1),
       ],
     );
     mediaController.setDataSource(
