@@ -51,10 +51,17 @@ class DefaultIJKControllerWidget extends StatefulWidget {
   /// The current full-screen button style should not be changed by users.
   final bool currentFullScreenState;
 
+  /// Build widget for full screen.
   final IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder;
 
   /// See [FullScreenType]
   final FullScreenType fullScreenType;
+
+  /// Whether to automatically hide the status bar when it is full screen.
+  final bool hideSystemBarOnFullScreen;
+
+  /// Callback in full screen, full screen when enter true, false to exit full screen.
+  final void Function(bool enter) onFullScreen;
 
   /// The UI of the controller.
   const DefaultIJKControllerWidget({
@@ -69,6 +76,8 @@ class DefaultIJKControllerWidget extends StatefulWidget {
     this.showFullScreenButton = true,
     this.fullscreenControllerWidgetBuilder,
     this.fullScreenType = FullScreenType.rotateBox,
+    this.hideSystemBarOnFullScreen = true,
+    this.onFullScreen,
   }) : super(key: key);
 
   @override
@@ -229,6 +238,8 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
             controller,
             fullscreenControllerWidgetBuilder: fullscreenBuilder,
             fullScreenType: widget.fullScreenType,
+            hideSystemBar: widget.hideSystemBarOnFullScreen,
+            onFullscreen: widget.onFullScreen,
           );
         }
       },
@@ -283,7 +294,9 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
           ),
         );
 
-        if (this.widget.fullScreenType == FullScreenType.rotateBox && this.widget.currentFullScreenState && _overlayTurns != 0) {
+        if (this.widget.fullScreenType == FullScreenType.rotateBox &&
+            this.widget.currentFullScreenState &&
+            _overlayTurns != 0) {
           w = RotatedBox(
             child: w,
             quarterTurns: _overlayTurns,
