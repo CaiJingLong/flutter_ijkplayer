@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'engine/ijk_controller_manager.dart';
 import 'entity/options.dart';
 import 'entity/video_info.dart';
-import 'error.dart';
 import 'helper/logutil.dart';
 import 'widget/controller_widget_builder.dart';
 import 'widget/ijk_status_widget.dart';
