@@ -2,6 +2,7 @@
 #import "IjkplayerPlugin.h"
 #import "CoolFlutterIjkManager.h"
 #import "CoolFlutterIJK.h"
+#import "FlutterViewController+CoolStatusBarHidden.h"
 
 NSString *flutterOrientationNotifyName = @"io.flutter.plugin.platform.SystemChromeOrientationNotificationName";
 const NSString *flutterOrientationNotifyKey = @"io.flutter.plugin.platform.SystemChromeOrientationNotificationKey";
@@ -115,6 +116,9 @@ static IjkplayerPlugin *__sharedInstance;
         } else if([@"unlockOrientation" isEqualToString:call.method]){
             [self unlockOrientation];
             result(@YES);
+        } else if([@"showStatusBar" isEqualToString:call.method]) {
+            BOOL showStatusBar = [call.arguments boolValue];
+            [self setStatusBarToShow:showStatusBar];
         } else {
             result(FlutterMethodNotImplemented);
         }
@@ -146,7 +150,7 @@ static IjkplayerPlugin *__sharedInstance;
     for (id number in orientations) {
         int value = [number intValue];
         UIDeviceOrientation orientation = [self convertIntToOrientation:value];
-        NSLog(@"orientation = %ld",orientation);
+        NSLog(@"orientation = %ld",(long)orientation);
         if (orientation == UIDeviceOrientationPortrait){
             mask |= UIInterfaceOrientationMaskPortrait;
         }else if (orientation == UIDeviceOrientationLandscapeLeft) {
@@ -306,8 +310,49 @@ static IjkplayerPlugin *__sharedInstance;
 //    [volumeView removeFromSuperview];
 }
 
--(void) hideSystemVolumeBar {
+-(void)hideSystemVolumeBar {
     
+}
+
+-(void)setStatusBarToShow:(BOOL)show{
+    UIViewController *ctl = [self getCurrentUIViewController];
+    if([ctl isKindOfClass:[FlutterViewController class] ]){
+        FlutterViewController *fCtl = (FlutterViewController*)ctl;
+        if(show){
+            [fCtl showStatusBar];
+        }else{
+            [fCtl hideStatusBar];
+        }
+    }
+}
+
+-(UIViewController*) getCurrentUIViewController{
+    UIViewController *result = nil;
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    
+    if(window.windowLevel != UIWindowLevelNormal){
+        NSArray *windows =[[UIApplication sharedApplication ]windows];
+        for(UIWindow *tmp in windows){
+            window = tmp;
+            break;
+        }
+    }
+    
+    result = window.rootViewController;
+    
+    while (result.presentedViewController) {
+        result = result.presentedViewController;
+    }
+    
+    if([result isKindOfClass:[UITabBarController class]]){
+        result = [(UITabBarController*)result selectedViewController];
+    }
+    
+    if([result isKindOfClass:[UINavigationController class]]){
+        result = [(UINavigationController*) result visibleViewController];
+    }
+    
+    return result;
 }
 
 @end

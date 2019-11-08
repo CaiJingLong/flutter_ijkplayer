@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ijkplayer_example/page/developing/test_hide_system_bar.dart';
 
 import 'crash_on_set_src_page.dart';
 import 'develop_prepare_page.dart';
@@ -25,6 +26,7 @@ class DevelopingIndexPageState extends State<DevelopingIndexPage> {
           buildButton("直播中断", LiveInterruptionPage()),
           buildButton("视频源错误", SreErrorPage()),
           buildButton("新的全屏", NewFullScreenPage()),
+          buildButton("隐藏或显示状态栏", TestHideSystemBar()),
         ],
       ),
     );
