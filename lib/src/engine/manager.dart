@@ -140,4 +140,10 @@ class IjkManager {
       _globalChannel.invokeMethod("unlockOrientation");
     }
   }
+
+  static showStatusBar(bool show) async {
+    if (Platform.isIOS || Platform.isAndroid) {
+      _globalChannel.invokeMethod("showStatusBar", show);
+    }
+  }
 }

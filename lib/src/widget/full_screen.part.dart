@@ -10,12 +10,16 @@ showFullScreenIJKPlayer(
   IjkMediaController controller, {
   IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder,
   FullScreenType fullScreenType = FullScreenType.rotateBox,
+  bool hideSystemBar = true,
+  void Function(bool enter) onFullscreen,
 }) async {
   if (fullScreenType == FullScreenType.rotateBox) {
     _showFullScreenWithRotateBox(
       context,
       controller,
       fullscreenControllerWidgetBuilder: fullscreenControllerWidgetBuilder,
+      hideSystemBar: hideSystemBar,
+      onFullscreen: onFullscreen,
     );
     return;
   }
@@ -24,13 +28,21 @@ showFullScreenIJKPlayer(
     context,
     controller,
     fullscreenControllerWidgetBuilder,
+    hideSystemBar: hideSystemBar,
+    onFullscreen: onFullscreen,
   );
 }
 
 _showFullScreenWithRotateScreen(
-    BuildContext context,
-    IjkMediaController controller,
-    IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder) async {
+  BuildContext context,
+  IjkMediaController controller,
+  IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder, {
+  bool hideSystemBar,
+  void Function(bool enter) onFullscreen,
+}) async {
+  if (hideSystemBar) {
+    IjkManager.showStatusBar(false);
+  }
   Navigator.push(
     context,
     FullScreenRoute(
@@ -45,7 +57,13 @@ _showFullScreenWithRotateScreen(
   ).then((_) {
     IjkManager.unlockOrientation();
     IjkManager.setCurrentOrientation(DeviceOrientation.portraitUp);
+    if (hideSystemBar) {
+      IjkManager.showStatusBar(true);
+    }
+    onFullscreen?.call(false);
   });
+
+  onFullscreen?.call(true);
 
   var info = await controller.getVideoInfo();
 
@@ -78,6 +96,8 @@ _showFullScreenWithRotateBox(
   BuildContext context,
   IjkMediaController controller, {
   IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder,
+  bool hideSystemBar,
+  void Function(bool enter) onFullscreen,
 }) async {
   var info = await controller.getVideoInfo();
 
@@ -97,6 +117,10 @@ _showFullScreenWithRotateBox(
     } else {
       axis = Axis.vertical;
     }
+  }
+
+  if (hideSystemBar) {
+    IjkManager.showStatusBar(false);
   }
 
   Navigator.push(
@@ -136,7 +160,14 @@ _showFullScreenWithRotateBox(
         );
       },
     ),
-  );
+  ).then((data) {
+    if (hideSystemBar) {
+      IjkManager.showStatusBar(true);
+    }
+    onFullscreen?.call(false);
+  });
+
+  onFullscreen?.call(true);
 }
 
 Widget _buildFullScreenMediaController(

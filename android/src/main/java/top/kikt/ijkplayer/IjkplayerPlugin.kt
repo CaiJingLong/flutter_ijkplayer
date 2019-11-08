@@ -15,13 +15,13 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer
  * IjkplayerPlugin
  */
 class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
-
+    
     override fun onMethodCall(call: MethodCall, result: Result) {
         IjkMediaPlayer.loadLibrariesOnce(null)
         IjkMediaPlayer.native_profileBegin("libijkplayer.so")
         handleMethodCall(call, result)
     }
-
+    
     private fun handleMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "init" -> {
@@ -76,25 +76,40 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
                 setBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE)
                 result.success(true)
             }
+            "showStatusBar" -> {
+                val show = call.arguments<Boolean>()
+                setStatusBar(show)
+            }
             else -> result.notImplemented()
         }
     }
-
+    
+    private fun setStatusBar(show: Boolean) {
+        val window = registrar.activity()?.window ?: return
+        if (show) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+        }
+    }
+    
     private fun getSystemVolume(): Int {
         val max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
         return (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat() / max * 100).toInt()
     }
-
+    
     private fun setVolume(volume: Int) {
         audioManager.apply {
             val max = getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-
+            
             val step = 100.toFloat() / max.toFloat()
-
+            
             val current = getSystemVolume()
-
+            
             val progress = current * step
-
+            
             if (volume > progress) {
                 volumeDown()
             } else if (volume < progress) {
@@ -102,42 +117,42 @@ class IjkplayerPlugin(private val registrar: Registrar) : MethodCallHandler {
             }
         }
     }
-
+    
     private fun volumeUp() {
         audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND)
     }
-
+    
     private fun volumeDown() {
         audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
     }
-
+    
     private val audioManager: AudioManager
         get() = registrar.activity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
+    
     private fun setBrightness(brightness: Float) {
         val window = registrar.activity().window
         val lp = window.attributes
         lp.screenBrightness = brightness
         window.attributes = lp
     }
-
+    
     private fun getBrightness(): Float {
         val window = registrar.activity().window
         val lp = window.attributes
         return lp.screenBrightness
     }
-
+    
     fun MethodCall.getLongArg(key: String): Long {
         return this.argument<Int>(key)!!.toLong()
     }
-
+    
     fun MethodCall.getLongArg(): Long {
         return this.arguments<Int>().toLong()
     }
-
+    
     companion object {
         lateinit var manager: IjkManager
-
+        
         /**
          * Plugin registration.
          */

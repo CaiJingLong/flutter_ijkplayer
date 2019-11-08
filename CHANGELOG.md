@@ -1,3 +1,10 @@
+## 0.3.5
+
+Feature:
+
+- Hide the status bar when entering full screen
+- The callback when the full screen state changes for `DefaultIJKControllerWidget`.
+
 ## 0.3.4
 
 Fix:

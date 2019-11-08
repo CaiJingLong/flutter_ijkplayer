@@ -438,17 +438,26 @@ IJKPlayer(
 
 这个类提供了一些属性进行自定义, 除`controller`外所有属性均为可选:
 
-|               name                |            type            |      default      |                      desc                       |
-| :-------------------------------: | :------------------------: | :---------------: | :---------------------------------------------: |
-|           doubleTapPlay           |            bool            |       false       |                  双击播放暂停                   |
-|          verticalGesture          |            bool            |       true        |                    纵向手势                     |
-|         horizontalGesture         |            bool            |       true        |                    横向手势                     |
-|            volumeType             |         VolumeType         | VolumeType.system |        纵向手势改变的声音类型(系统,媒体)        |
-|        playWillPauseOther         |            bool            |       true        |            播放当前是否暂停其他媒体             |
-|      currentFullScreenState       |            bool            |       false       | **如果你是自定义全屏界面, 这个必须设置为 true** |
-|       showFullScreenButton        |            bool            |       true        |                是否显示全屏按钮                 |
-| fullscreenControllerWidgetBuilder | IJKControllerWidgetBuilder |                   |              可以自定义全屏的界面               |
-|          fullScreenType           |       FullScreenType       |                   |     全屏的类型(旋转屏幕,或是使用 RotateBox)     |
+|               name                |            type            |      default      |                              desc                              |
+| :-------------------------------: | :------------------------: | :---------------: | :------------------------------------------------------------: |
+|           doubleTapPlay           |            bool            |       false       |                          双击播放暂停                          |
+|          verticalGesture          |            bool            |       true        |                            纵向手势                            |
+|         horizontalGesture         |            bool            |       true        |                            横向手势                            |
+|            volumeType             |         VolumeType         | VolumeType.system |               纵向手势改变的声音类型(系统,媒体)                |
+|        playWillPauseOther         |            bool            |       true        |                    播放当前是否暂停其他媒体                    |
+|      currentFullScreenState       |            bool            |       false       |        **如果你是自定义全屏界面, 这个必须设置为 true**         |
+|       showFullScreenButton        |            bool            |       true        |                        是否显示全屏按钮                        |
+| fullscreenControllerWidgetBuilder | IJKControllerWidgetBuilder |                   |                      可以自定义全屏的界面                      |
+|          fullScreenType           |       FullScreenType       |                   |            全屏的类型(旋转屏幕,或是使用 RotateBox)             |
+|     hideSystemBarOnFullScreen     |            bool            |       true        |         进入全屏时,是否自动隐藏状态栏(请看额外说明 1)          |
+|           onFullScreen            |    void Function(bool)     |       null        | 全屏状态改变时的回调, 参数为 true 是全屏状态, false 为普通状态 |
+
+**额外说明 1**: ios 需要向 Info.plist 添加一条属性
+
+```xml
+<key>UIViewControllerBasedStatusBarAppearance</key>
+<true/>
+```
 
 ### 自定义纹理界面
 
