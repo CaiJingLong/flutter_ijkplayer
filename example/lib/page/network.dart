@@ -23,6 +23,9 @@ class _NetworkPageState extends State<NetworkPage> {
     editingController.text =
         "https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-9aede6861be944d696fe365f3a33b7b4-sd.m3u8";
 
+    // editingController.text =
+        // "http://img.blingabc.com/608e6f5363c34db4a168be7a659d7e0d.mp4";
+
     mediaController
         .setIjkPlayerOptions([TargetPlatform.android], createIJKOptions());
     // editingController.text = "http://222.207.48.30/hls/startv.m3u8";
