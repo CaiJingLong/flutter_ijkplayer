@@ -81,8 +81,8 @@ class DefaultIJKControllerWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DefaultIJKControllerWidgetState createState() =>
-      _DefaultIJKControllerWidgetState();
+  DefaultIJKControllerWidgetState createState() =>
+      DefaultIJKControllerWidgetState();
 
   DefaultIJKControllerWidget copyWith({
     Key key,
@@ -115,7 +115,7 @@ class DefaultIJKControllerWidget extends StatefulWidget {
   }
 }
 
-class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
+class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     implements TooltipDelegate {
   IjkMediaController get controller => widget.controller;
 
@@ -222,28 +222,32 @@ class _DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     }
     var isFull = widget.currentFullScreenState;
 
+    return IconButton(
+      color: Colors.white,
+      icon: Icon(isFull ? Icons.fullscreen_exit : Icons.fullscreen),
+      onPressed: fullScreen,
+    );
+  }
+
+  void fullScreen() {
+    var isFull = widget.currentFullScreenState;
+
     IJKControllerWidgetBuilder fullscreenBuilder =
         widget.fullscreenControllerWidgetBuilder ??
             (ctx) => widget.copyWith(currentFullScreenState: true);
 
-    return IconButton(
-      color: Colors.white,
-      icon: Icon(isFull ? Icons.fullscreen_exit : Icons.fullscreen),
-      onPressed: () {
-        if (isFull) {
-          Navigator.pop(context);
-        } else {
-          showFullScreenIJKPlayer(
-            context,
-            controller,
-            fullscreenControllerWidgetBuilder: fullscreenBuilder,
-            fullScreenType: widget.fullScreenType,
-            hideSystemBar: widget.hideSystemBarOnFullScreen,
-            onFullscreen: widget.onFullScreen,
-          );
-        }
-      },
-    );
+    if (isFull) {
+      Navigator.pop(context);
+    } else {
+      showFullScreenIJKPlayer(
+        context,
+        controller,
+        fullscreenControllerWidgetBuilder: fullscreenBuilder,
+        fullScreenType: widget.fullScreenType,
+        hideSystemBar: widget.hideSystemBarOnFullScreen,
+        onFullscreen: widget.onFullScreen,
+      );
+    }
   }
 
   int _overlayTurns = 0;
