@@ -338,6 +338,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       widget.verticalGesture == true ? function : null;
 
   void _onHorizontalDragStart(DragStartDetails details) async {
+    // todo fix full screen horizontal gesture.
     var videoInfo = await controller.getVideoInfo();
     _calculator = _ProgressCalculator(details, videoInfo);
   }
