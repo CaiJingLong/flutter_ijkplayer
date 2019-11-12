@@ -77,4 +77,7 @@ class _I18nEn extends I18n {
 
   @override
   String get setSpeed => "Set media speed";
+
+  @override
+  String get autoFullScreenOnPlay => "Auto full screen on start.";
 }

@@ -5,6 +5,7 @@ import 'package:ijkplayer_example/page/video_list.dart';
 
 import '../i18n/i18n.dart';
 import 'asset_page.dart';
+import 'auto_full_screen.dart';
 import 'controller_stream_use.dart';
 import 'custom_ijk_opt_page.dart';
 import 'developing/develop_index.dart';
@@ -38,6 +39,7 @@ class _IndexPageState extends State<IndexPage> {
           buildButton(currentI18n.listViewButton, VideoList()),
           buildButton(currentI18n.fullScreenAutoButton, FullScreen()),
           buildButton(currentI18n.fullScreenManualButton, FullScreen2()),
+          buildButton(currentI18n.autoFullScreenOnPlay, AutoFullScreenPage()),
           buildButton(currentI18n.withDialogButton, DialogVideoPage()),
           buildButton(currentI18n.pageViewButton, PagingPickPage()),
           buildButton(currentI18n.useStreamUsage, ControllerStreamUsagePage()),
