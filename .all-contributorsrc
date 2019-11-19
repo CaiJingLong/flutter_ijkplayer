@@ -11,19 +11,20 @@
   "commitConvention": "gitmoji",
   "contributors": [
     {
-      "login": "gwuhaolin",
-      "name": "浩麟",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/5773264?v=4",
-      "profile": "https://github.com/gwuhaolin",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
       "login": "CaiJingLong",
       "name": "Caijinglong",
       "avatar_url": "https://avatars0.githubusercontent.com/u/14145407?v=4",
       "profile": "https://www.kikt.top",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    },
+    {
+      "login": "gwuhaolin",
+      "name": "浩麟",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/5773264?v=4",
+      "profile": "https://github.com/gwuhaolin",
       "contributions": [
         "code"
       ]
