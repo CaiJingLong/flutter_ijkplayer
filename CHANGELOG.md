@@ -1,3 +1,7 @@
+## 0.3.5+1
+
+To adapt to the new version of the flutter sdk check kt plugin.
+
 ## 0.3.5
 
 Feature:
