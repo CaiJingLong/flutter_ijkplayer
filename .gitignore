@@ -9,3 +9,5 @@ build/
 doc/
 pubspec.lock
 fvm
+
+node_modules
