@@ -1,16 +1,24 @@
 {
-  "files": ["CONTRIBUTING.md"],
+  "projectName": "flutter_ijkplayer",
+  "projectOwner": "caijinglong",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "CONTRIBUTING.md"
+  ],
   "imageSize": 100,
-  "contributorsPerLine": 7,
-  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#contributors)",
-  "contributorTemplate": "<%= avatarBlock %><br /><%= contributions %>",
-  "types": {
-    "custom": {
-      "symbol": "🔭",
-      "description": "A custom contribution type.",
-      "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
+  "commit": true,
+  "commitConvention": "gitmoji",
+  "contributors": [
+    {
+      "login": "gwuhaolin",
+      "name": "浩麟",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/5773264?v=4",
+      "profile": "https://github.com/gwuhaolin",
+      "contributions": [
+        "code"
+      ]
     }
-  },
-  "skipCi": "true",
-  "contributors": []
+  ],
+  "contributorsPerLine": 7
 }
