@@ -148,13 +148,16 @@ _showFullScreenWithRotateBox(
           }
         }*/
 
-        return SafeArea(
-          child: RotatedBox(
-            quarterTurns: quarterTurns,
-            child: IjkPlayer(
-              mediaController: controller,
-              controllerWidgetBuilder: (ctl) =>
-                  fullscreenControllerWidgetBuilder(ctl),
+        return _RotateBoxProvider(
+          quarterTurns: quarterTurns,
+          child: SafeArea(
+            child: RotatedBox(
+              quarterTurns: quarterTurns,
+              child: IjkPlayer(
+                mediaController: controller,
+                controllerWidgetBuilder: (ctl) =>
+                    fullscreenControllerWidgetBuilder(ctl),
+              ),
             ),
           ),
         );
@@ -180,4 +183,24 @@ Widget _buildFullScreenMediaController(
 
 Widget buildFullscreenMediaController(IjkMediaController controller) {
   return _buildFullScreenMediaController(controller, true);
+}
+
+class _RotateBoxProvider extends InheritedWidget {
+  final int quarterTurns;
+
+  _RotateBoxProvider({
+    @required this.quarterTurns,
+    @required Widget child,
+  }) : super(
+          child: child,
+        );
+
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) {
+    return false;
+  }
+
+  static _RotateBoxProvider of(BuildContext context) {
+    return context.inheritFromWidgetOfExactType(_RotateBoxProvider);
+  }
 }
