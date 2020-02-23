@@ -6,6 +6,7 @@ import 'package:oktoast/oktoast.dart';
 void main() async {
   IjkConfig.isLog = true;
 //  IjkConfig.level = LogLevel.verbose;
+  WidgetsFlutterBinding.ensureInitialized();
   await IjkManager.initIJKPlayer();
   runApp(MyApp());
 }
