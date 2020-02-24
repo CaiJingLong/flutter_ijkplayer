@@ -29,6 +29,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
+        consumerProguardFiles 'proguard-rules.pro'
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -37,6 +38,12 @@ android {
     sourceSets.main {
         jniLibs.srcDirs 'src/main/libs'
         java.srcDirs = ['src/main/java', 'src/main/kotlin']
+    }
+
+    buildTypes {
+        profile {
+            initWith debug
+        }
     }
 }
 
