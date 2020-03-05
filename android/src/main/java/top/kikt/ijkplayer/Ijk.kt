@@ -219,7 +219,7 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
             result?.success(true)
         } else {
             throwable.printStackTrace()
-            result?.error("1", "set resource error", throwable)
+            result?.error("1", "set resource error", throwable.toString())
         }
     }
 
