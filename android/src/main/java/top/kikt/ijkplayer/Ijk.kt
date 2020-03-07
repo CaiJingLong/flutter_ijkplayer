@@ -7,6 +7,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.media.AudioManager
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.util.Base64
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
@@ -16,6 +18,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.lang.RuntimeException
 
 class Ijk(private val registry: PluginRegistry.Registrar, private val options: Map<String, Any>) {
 
@@ -29,6 +32,8 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
     private val methodChannel: MethodChannel = MethodChannel(registry.messenger(), "top.kikt/ijkplayer/$id")
 
     private val notifyChannel: NotifyChannel = NotifyChannel(registry, id, this)
+
+    private val handler = Handler(Looper.getMainLooper())
 
     var degree = 0
 
@@ -214,7 +219,7 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
             result?.success(true)
         } else {
             throwable.printStackTrace()
-            result?.error("1", "set resource error", throwable)
+            result?.error("1", "set resource error", throwable.toString())
         }
     }
 
@@ -230,8 +235,19 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
             mediaPlayer.setDataSource(appContext, uri, headers)
 //            }
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
+
+            val timeoutRunnable = Runnable {
+                // to avoid 'Reply already submitted' exception
+                mediaPlayer.setOnPreparedListener(null)
+                callback(RuntimeException("Prepare timeout"))
+            }
+            handler.postDelayed(timeoutRunnable, 15 * 1000)
+            mediaPlayer.setOnPreparedListener {
+                handler.removeCallbacks(timeoutRunnable)
+                callback(null)
+            }
+
             mediaPlayer.prepareAsync()
-            callback(null)
         } catch (e: Exception) {
             e.printStackTrace()
             callback(e)

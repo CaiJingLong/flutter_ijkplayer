@@ -97,12 +97,16 @@ class IjkMediaController
     bool autoPlay = false,
   }) async {
     _ijkStatus = IjkStatus.preparing;
-    await _initDataSource(autoPlay);
-    await _plugin?.setNetworkDataSource(
-      uri: url,
-      headers: headers,
-    );
-    _ijkStatus = IjkStatus.prepared;
+    try {
+      await _initDataSource(autoPlay);
+      await _plugin?.setNetworkDataSource(
+        uri: url,
+        headers: headers,
+      );
+      _ijkStatus = IjkStatus.prepared;
+    } catch (e) {
+      _ijkStatus = IjkStatus.setDatasourceFail;
+    }
   }
 
   /// set asset DataSource
