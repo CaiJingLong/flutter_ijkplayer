@@ -1,3 +1,13 @@
+## 0.3.6
+
+Fix:
+
+- iOS
+  - Support hareware decoding in iOS.
+
+- android
+  - [#204](https://github.com/CaiJingLong/flutter_ijkplayer/pull/204)
+
 ## 0.3.5+1
 
 To adapt to the new version of the flutter sdk check kt plugin.

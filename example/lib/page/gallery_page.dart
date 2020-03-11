@@ -18,6 +18,14 @@ class _PlayGalleryPageState extends State<PlayGalleryPage> {
   @override
   void initState() {
     super.initState();
+    mediaController.addIjkPlayerOptions([
+      TargetPlatform.iOS
+    ], [
+      IjkOption(IjkOptionCategory.player, 'videotoolbox', 1),
+      IjkOption(IjkOptionCategory.player, 'video-max-frame-width-default', 1),
+      IjkOption(IjkOptionCategory.player, 'videotoolbox-max-frame-width', 1920),
+      // IjkOption(IjkOptionCategory.player, 'videotoolbox-max-frame-width', 960),
+    ]);
   }
 
   @override
