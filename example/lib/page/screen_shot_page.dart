@@ -29,6 +29,14 @@ class _ScreenShotPageState extends State<ScreenShotPage> {
         // IjkOption(IjkOptionCategory.player, "videotoolbox", 1),
       ],
     );
+    mediaController.addIjkPlayerOptions([
+      TargetPlatform.iOS
+    ], [
+      IjkOption(IjkOptionCategory.player, 'videotoolbox', 1),
+      IjkOption(IjkOptionCategory.player, 'video-max-frame-width-default', 1),
+      IjkOption(IjkOptionCategory.player, 'videotoolbox-max-frame-width', 1920),
+      // IjkOption(IjkOptionCategory.player, 'videotoolbox-max-frame-width', 960),
+    ]);
     mediaController.setDataSource(
         DataSource.network(
             "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4"),
