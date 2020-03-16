@@ -7,9 +7,12 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.media.AudioManager
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.ParcelFileDescriptor
 import android.util.Base64
+import androidx.annotation.RequiresApi
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import top.kikt.ijkplayer.entity.IjkOption
@@ -18,6 +21,8 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.PipedInputStream
+import java.io.RandomAccessFile
 import java.lang.RuntimeException
 
 class Ijk(private val registry: PluginRegistry.Registrar, private val options: Map<String, Any>) {
@@ -78,6 +83,22 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
                         }
                     }
                 }
+                "setPhotoManagerUrl" -> {
+                    val mediaUrl = call.argument<String>("mediaUrl")
+                    if (mediaUrl != null) {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                            setUri("file://$mediaUrl", hashMapOf()) { throwable ->
+                                handleSetUriResult(throwable, result)
+                            }
+                        } else {
+                            setUri(mediaUrl, emptyMap()) {
+                                handleSetUriResult(it, result)
+                            }
+                        }
+                    } else {
+                        handleSetUriResult(Exception("没有找到资源"), result)
+                    }
+                }
                 "play" -> {
                     play()
                     result?.success(true)
@@ -123,6 +144,7 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
             }
         }
     }
+
 
     private val appContext: Context
         get() = registry.activity().application
@@ -199,8 +221,6 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
         val width = mediaPlayer.videoWidth
         val height = mediaPlayer.videoHeight
         val outputFps = mediaPlayer.videoOutputFramesPerSecond
-//        mediaPlayer.mediaInfo.mAudioDecoder
-//        mediaPlayer.mediaInfo.mVideoDecoder
         return Info(
                 duration = duration.toDouble() / 1000,
                 currentPosition = currentPosition.toDouble() / 1000,
@@ -226,14 +246,7 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
     private fun setUri(uriString: String, headers: Map<String, String>?, callback: (Throwable?) -> Unit) {
         try {
             val uri = Uri.parse(uriString)
-//            val scheme = uri.scheme
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-//                    (TextUtils.isEmpty(scheme) || scheme.equals("file", ignoreCase = true))) {
-//                val dataSource = FileMediaDataSource(File(uri.toString()))
-//                mediaPlayer.setDataSource(dataSource)
-//            } else {
             mediaPlayer.setDataSource(appContext, uri, headers)
-//            }
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
 
             val timeoutRunnable = Runnable {

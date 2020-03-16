@@ -4,6 +4,7 @@ enum DataSourceType {
   network,
   file,
   asset,
+  photoManager,
 }
 
 /// Current IjkMedia status

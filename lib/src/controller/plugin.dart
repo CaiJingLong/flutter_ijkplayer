@@ -101,6 +101,18 @@ class _IjkPlugin {
     LogUtils.debug("id = $textureId file path = $path");
   }
 
+  Future<void> setPhotoManagerUrl(String mediaUrl) async {
+    if (isDisposed) {
+      return;
+    }
+    if (mediaUrl == null) {
+      return;
+    }
+    await channel.invokeMethod("setPhotoManagerUrl", <String, dynamic>{
+      "mediaUrl": mediaUrl,
+    });
+  }
+
   Future<Map<String, dynamic>> getInfo() async {
     if (isDisposed) {
       return null;

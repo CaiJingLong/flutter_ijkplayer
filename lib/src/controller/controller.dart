@@ -136,6 +136,24 @@ class IjkMediaController
     _ijkStatus = IjkStatus.prepared;
   }
 
+  Future<void> setPhotoManagerDataSource(
+    String mediaUrl, {
+    bool autoPlay = false,
+  }) async {
+    assert(Platform.isAndroid || Platform.isIOS);
+    if (Platform.isIOS) {
+      final file = File.fromUri(Uri.parse(mediaUrl));
+      await setFileDataSource(file, autoPlay: autoPlay);
+      return;
+    }
+    if (Platform.isAndroid) {
+      _ijkStatus = IjkStatus.preparing;
+      await _initDataSource(autoPlay);
+      await _plugin?.setPhotoManagerUrl(mediaUrl);
+      _ijkStatus = IjkStatus.prepared;
+    }
+  }
+
   /// Set datasource with [DataSource]
   Future<void> setDataSource(
     DataSource source, {
@@ -159,6 +177,12 @@ class IjkMediaController
         await setNetworkDataSource(
           source._netWorkUrl,
           headers: source._headers,
+          autoPlay: autoPlay,
+        );
+        break;
+      case DataSourceType.photoManager:
+        await setPhotoManagerDataSource(
+          source._mediaUrl,
           autoPlay: autoPlay,
         );
         break;

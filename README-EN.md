@@ -188,10 +188,14 @@ await controller.setAssetDataSource("assets/test.mp4");
 // file
 await controller.setFileDataSource(File("/sdcard/1.mp4"));
 
+// For photo_manager mediaUrl, Hundreds of MB of album files do not need to be cached as files to use.
+await controller.setPhotoManagerDataSource(await assetEntity.getMediaUrl());
+
 // dataSource
 var dataSource = DataSource.file(File("/sdcard/1.mp4"));
 var dataSource = DataSource.network("https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4", headers:<String,String>{});
 var dataSource = DataSource.asset("assets/test.mp4");
+var dataSource = DataSource.photoManagerUrl(await assetEntity.getMediaUrl());
 await controller.setDataSource(dataSource);
 
 
