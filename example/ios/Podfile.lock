@@ -2,15 +2,15 @@ PODS:
   - Flutter (1.0.0)
   - flutter_ijkplayer (0.0.1):
     - Flutter
-    - FlutterIJK (~> 0.1.1)
-  - FlutterIJK (0.1.1)
+    - FlutterIJK (~> 0.2.0)
+  - FlutterIJK (0.2.0)
   - photo_manager (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_ijkplayer (from `/Volumes/Samsung-T5/code/flutter/plugins/flutter_ijkplayer/ios/flutter_ijkplayer.podspec`)
-  - photo_manager (from `/Users/caijinglong/.pub-cache/hosted/pub.dartlang.org/photo_manager-0.4.8/ios/photo_manager.podspec`)
+  - photo_manager (from `/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.4.8/ios/photo_manager.podspec`)
 
 SPEC REPOS:
   trunk:
@@ -22,12 +22,12 @@ EXTERNAL SOURCES:
   flutter_ijkplayer:
     :path: "/Volumes/Samsung-T5/code/flutter/plugins/flutter_ijkplayer/ios/flutter_ijkplayer.podspec"
   photo_manager:
-    :path: "/Users/caijinglong/.pub-cache/hosted/pub.dartlang.org/photo_manager-0.4.8/ios/photo_manager.podspec"
+    :path: "/Users/caijinglong/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-0.4.8/ios/photo_manager.podspec"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_ijkplayer: 03f91d9ecd623b64a6c005465327ec8a256fd461
-  FlutterIJK: f3c0ead9ca31b93d993d46dda53156fdc7b22d2c
+  flutter_ijkplayer: f19c2873e1351868c5f614a73f5b912eb1cda57f
+  FlutterIJK: c1c06b442d8991062845f0674066a1610bcdaf89
   photo_manager: f7c619c2cc8c2adb8d85c63363babac477de9c67
 
 PODFILE CHECKSUM: 806836eca77383388df20b27737ff664222206cd
