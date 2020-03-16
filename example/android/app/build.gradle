@@ -32,7 +32,7 @@ android {
             storePassword '123456'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     lintOptions {
         disable 'InvalidPackage'
     }
