@@ -2,7 +2,6 @@ package top.kikt.ijkplayer
 
 /// create 2019/3/7 by cai
 
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.AudioManager
@@ -10,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.os.ParcelFileDescriptor
 import android.util.Base64
 import androidx.annotation.RequiresApi
 import io.flutter.plugin.common.MethodChannel
@@ -21,9 +19,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import tv.danmaku.ijk.media.player.TextureMediaPlayer
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.PipedInputStream
-import java.io.RandomAccessFile
-import java.lang.RuntimeException
+import java.io.FileInputStream
 
 class Ijk(private val registry: PluginRegistry.Registrar, private val options: Map<String, Any>) {
 
@@ -43,6 +39,8 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
     var degree = 0
 
     var isDisposed = false
+
+    private var tmpFile:File? = null
 
     init {
         textureMediaPlayer = TextureMediaPlayer(mediaPlayer)
@@ -91,7 +89,7 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
                                 handleSetUriResult(throwable, result)
                             }
                         } else {
-                            setUri(mediaUrl, emptyMap()) {
+                            setAndroidQUrl(mediaUrl){
                                 handleSetUriResult(it, result)
                             }
                         }
@@ -267,6 +265,32 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun setAndroidQUrl(mediaUri: String, callback: (Throwable?) -> Unit) {
+        try {
+            val inputStream = appContext.contentResolver.openInputStream(Uri.parse(mediaUri))
+                    ?: throw RuntimeException("Cannot open $mediaUri")
+            if (inputStream is FileInputStream) {
+                mediaPlayer.setDataSource(inputStream.fd)
+            } else {
+                throw RuntimeException("Cannot open $mediaUri")
+            }
+            val timeoutRunnable = Runnable {
+                mediaPlayer.setOnPreparedListener(null)
+                callback(RuntimeException("Prepare timeout"))
+            }
+            handler.postDelayed(timeoutRunnable, 15 * 1000)
+            mediaPlayer.setOnPreparedListener {
+                handler.removeCallbacks(timeoutRunnable)
+                callback(null)
+            }
+            mediaPlayer.prepareAsync()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            callback(e)
+        }
+    }
+
     private fun setAssetUri(name: String, `package`: String?, callback: (Throwable?) -> Unit) {
         try {
             mediaPlayer.setOnPreparedListener {
@@ -280,16 +304,21 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
                     }
             val assetManager = registry.context().assets
             val input = assetManager.open(asset)
-            val cacheDir = registry.context().cacheDir.absoluteFile.path
+            if (input is FileInputStream) {
+                mediaPlayer.setDataSource(input.fd)
+            } else {
+                val cacheDir = registry.context().cacheDir.absoluteFile.path
 
-            val fileName = Base64.encodeToString(asset.toByteArray(), Base64.DEFAULT)
-            val file = File(cacheDir, fileName)
-            file.outputStream().use { outputStream ->
-                input.use { inputStream ->
-                    inputStream.copyTo(outputStream)
+                val fileName = Base64.encodeToString(asset.toByteArray(), Base64.DEFAULT)
+                val file = File(cacheDir, fileName)
+                file.outputStream().use { outputStream ->
+                    input.use { inputStream ->
+                        inputStream.copyTo(outputStream)
+                    }
                 }
+                this.tmpFile = file
+                mediaPlayer.setDataSource(FileMediaDataSource(file))
             }
-            mediaPlayer.setDataSource(FileMediaDataSource(file))
             mediaPlayer.prepareAsync()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -303,6 +332,9 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
         }
         isDisposed = true
         tryCatchError {
+            if (tmpFile?.exists() == true) {
+                tmpFile?.delete()
+            }
             notifyChannel.dispose()
             methodChannel.setMethodCallHandler(null)
             textureMediaPlayer.stop()

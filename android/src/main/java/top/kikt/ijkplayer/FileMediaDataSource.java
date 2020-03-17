@@ -26,8 +26,10 @@ import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
 public class FileMediaDataSource implements IMediaDataSource {
     private RandomAccessFile mFile;
     private long mFileSize;
+    private File originFile;
 
     public FileMediaDataSource(File file) throws IOException {
+        this.originFile =file;
         mFile = new RandomAccessFile(file, "r");
         mFileSize = mFile.length();
     }
@@ -50,8 +52,11 @@ public class FileMediaDataSource implements IMediaDataSource {
 
     @Override
     public void close() throws IOException {
-        mFileSize = 0;
-        mFile.close();
+        if (originFile.exists()) {
+            mFileSize = 0;
+            mFile.close();
+        }
         mFile = null;
+
     }
 }

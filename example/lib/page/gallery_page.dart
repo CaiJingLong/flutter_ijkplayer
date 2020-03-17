@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
 import 'package:photo/photo.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class PlayGalleryPage extends StatefulWidget {
   @override
@@ -13,14 +12,16 @@ class PlayGalleryPage extends StatefulWidget {
 class _PlayGalleryPageState extends State<PlayGalleryPage> {
   IjkMediaController mediaController = IjkMediaController();
 
-  File file;
+  String mediaUrl;
 
   @override
   void initState() {
     super.initState();
     mediaController.addIjkPlayerOptions([
-      TargetPlatform.iOS
+      TargetPlatform.iOS,
+      TargetPlatform.android,
     ], [
+      IjkOption(IjkOptionCategory.player, 'mediacodec', 1),
       IjkOption(IjkOptionCategory.player, 'videotoolbox', 1),
       IjkOption(IjkOptionCategory.player, 'video-max-frame-width-default', 1),
       IjkOption(IjkOptionCategory.player, 'videotoolbox-max-frame-width', 1920),
@@ -46,7 +47,9 @@ class _PlayGalleryPageState extends State<PlayGalleryPage> {
             child: Text("Pick"),
             onPressed: _pickVideo,
           ),
-          _buildFileText(),
+          ListTile(
+            title: Text("mediaUrl = $mediaUrl"),
+          ),
           Container(
             height: 400,
             child: IjkPlayer(
@@ -58,19 +61,6 @@ class _PlayGalleryPageState extends State<PlayGalleryPage> {
     );
   }
 
-  _buildFileText() {
-    if (file?.existsSync() == true) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          "file.path: ${file.path}",
-          textAlign: TextAlign.center,
-        ),
-      );
-    }
-    return Container();
-  }
-
   void _pickVideo() async {
     var assetList = await PhotoPicker.pickAsset(
       context: context,
@@ -79,16 +69,16 @@ class _PlayGalleryPageState extends State<PlayGalleryPage> {
     );
     if (assetList?.isNotEmpty == true) {
       var asset = assetList[0];
-      this.file = await asset.file;
-      _playVideo();
+      _playVideo(asset);
     }
   }
 
-  void _playVideo() async {
-    if (this.file != null && this.file.existsSync())
-      await mediaController.setFileDataSource(
-        file,
-        autoPlay: true,
-      );
+  void _playVideo(AssetEntity asset) async {
+    mediaUrl = await asset.getMediaUrl();
+    setState(() {});
+    final file = await asset.file;
+    if (file != null && file.existsSync()) {
+      await mediaController.setFileDataSource(file);
+    }
   }
 }
