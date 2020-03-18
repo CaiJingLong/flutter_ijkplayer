@@ -21,7 +21,7 @@ A new flutter plugin project.
   # s.ios.vendored_frameworks = 'IJKMediaFramework.framework'
   # s.frameworks  = "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "CoreVideo", "MobileCoreServices", "OpenGLES", "QuartzCore", "VideoToolbox", "Foundation", "UIKit", "MediaPlayer"
   # s.libraries   = "bz2", "z", "stdc++"
-  s.dependency 'FlutterIJK', '~> 0.2.2'
+  s.dependency 'FlutterIJK', '~> 0.2.3'
 
   # s.script_phase = {:name => 'extract framework', :script=> 'echo "Hello World"; pwd' ,:execution_position => :before_compile}
 

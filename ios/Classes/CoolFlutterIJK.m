@@ -333,7 +333,7 @@
 
 - (void)releaseLatestPixelBuffer {
   if (latestPixelBuffer) {
-    CVBufferRelease(latestPixelBuffer);
+    CFAutorelease(latestPixelBuffer);
   }
 }
 
