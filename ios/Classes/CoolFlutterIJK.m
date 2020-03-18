@@ -334,12 +334,13 @@
 - (void)releaseLatestPixelBuffer {
   if (latestPixelBuffer) {
     CVBufferRelease(latestPixelBuffer);
-    latestPixelBuffer = nil;
   }
 }
 
 - (CVPixelBufferRef _Nullable)copyPixelBuffer {
-  [self releaseLatestPixelBuffer];
+    if(controller.isVideoToolboxOpen){
+        [self releaseLatestPixelBuffer];
+    }
   CVPixelBufferRef newBuffer = [controller framePixelbuffer];
   if (newBuffer) {
     CFRetain(newBuffer);
