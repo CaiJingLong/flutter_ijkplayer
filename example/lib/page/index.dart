@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/page/paging_page.dart';
 import 'package:ijkplayer_example/page/screen_shot_page.dart';
 import 'package:ijkplayer_example/page/video_list.dart';
@@ -51,6 +52,12 @@ class _IndexPageState extends State<IndexPage> {
           buildButton(currentI18n.setSpeed, SpeedPage()),
           buildButton(
               currentI18n.customFullScreenWidget, CustomFullControllerPage()),
+          FlatButton(
+            onPressed: () {
+              IjkManager.initIJKPlayer();
+            },
+            child: Text("release all ijkplayer resource"),
+          ),
         ],
       ),
     );

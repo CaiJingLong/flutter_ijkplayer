@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/const/resource.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 
 class FullScreen extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class _FullScreenState extends State<FullScreen> {
   @override
   void initState() {
     super.initState();
+    OptionUtils.addDefaultOptions(controller);
     controller.setDataSource(source, autoPlay: true);
   }
 

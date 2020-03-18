@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/const/video_datasource.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 
 class ErrorUrlPage extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _ErrorUrlPageState extends State<ErrorUrlPage> {
     // ijkErrorSub = mediaController.ijkErrorStream.listen((error) {
     //   print("error = $error");
     // });
-
+    OptionUtils.addDefaultOptions(mediaController);
     mediaController.setDataSource(
       VideoDataSource.reportErrorM3u8FromAliyun,
       autoPlay: true,

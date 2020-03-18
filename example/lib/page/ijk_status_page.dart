@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 
 class IjkStatusPage extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _IjkStatusPageState extends State<IjkStatusPage> {
     super.initState();
     editingController.text =
         "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4";
+        OptionUtils.addDefaultOptions(mediaController);
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 import 'package:oktoast/oktoast.dart';
 
 class ControllerStreamUsagePage extends StatefulWidget {
@@ -18,6 +19,7 @@ class _ControllerStreamUsagePageState extends State<ControllerStreamUsagePage> {
   @override
   void initState() {
     super.initState();
+    OptionUtils.addDefaultOptions(controller);
     controller.setDataSource(
       DataSource.asset("assets/sample1.mp4"),
       autoPlay: true,

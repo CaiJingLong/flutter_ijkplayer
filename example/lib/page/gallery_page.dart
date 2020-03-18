@@ -22,6 +22,7 @@ class _PlayGalleryPageState extends State<PlayGalleryPage> {
       TargetPlatform.android,
     ], [
       IjkOption(IjkOptionCategory.player, 'mediacodec', 1),
+      IjkOption(IjkOptionCategory.player, 'mediacodec-hevc', 1),
       IjkOption(IjkOptionCategory.player, 'videotoolbox', 1),
       IjkOption(IjkOptionCategory.player, 'video-max-frame-width-default', 1),
       IjkOption(IjkOptionCategory.player, 'videotoolbox-max-frame-width', 1920),

@@ -6,6 +6,8 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
 import 'dart:ui' as ui;
 
+import 'package:ijkplayer_example/utils/options_utils.dart';
+
 class ScreenShotPage extends StatefulWidget {
   @override
   _ScreenShotPageState createState() => _ScreenShotPageState();
@@ -19,24 +21,7 @@ class _ScreenShotPageState extends State<ScreenShotPage> {
   @override
   void initState() {
     super.initState();
-    mediaController.setIjkPlayerOptions(
-      [
-        TargetPlatform.android,
-        TargetPlatform.iOS,
-      ],
-      [
-        // IjkOption(IjkOptionCategory.player, "mediacodec", 1),
-        // IjkOption(IjkOptionCategory.player, "videotoolbox", 1),
-      ],
-    );
-    mediaController.addIjkPlayerOptions([
-      TargetPlatform.iOS
-    ], [
-      IjkOption(IjkOptionCategory.player, 'videotoolbox', 1),
-      IjkOption(IjkOptionCategory.player, 'video-max-frame-width-default', 1),
-      IjkOption(IjkOptionCategory.player, 'videotoolbox-max-frame-width', 1920),
-      // IjkOption(IjkOptionCategory.player, 'videotoolbox-max-frame-width', 960),
-    ]);
+    OptionUtils.addDefaultOptions(mediaController);
     mediaController.setDataSource(
         DataSource.network(
             "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4"),

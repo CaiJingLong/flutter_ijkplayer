@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:photo/photo.dart';
 
 class PagingPickPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,6 +165,7 @@ class _PagingPageState extends State<PagingPage> {
     var ctl = map[src];
     if (ctl == null) {
       ctl = IjkMediaController();
+      OptionUtils.addDefaultOptions(ctl);
       map[src] = ctl;
       ctl.setDataSource(src, autoPlay: false);
     }

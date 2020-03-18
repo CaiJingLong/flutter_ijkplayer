@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/const/video_datasource.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 
 class AutoFullScreenPage extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _AutoFullScreenPageState extends State<AutoFullScreenPage> {
   @override
   void initState() {
     super.initState();
+    OptionUtils.addDefaultOptions(controller);
     setDataSource();
   }
 

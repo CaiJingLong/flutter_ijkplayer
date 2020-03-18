@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 import 'package:photo/photo.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -17,6 +18,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    OptionUtils.addDefaultOptions(controller);
   }
 
   @override

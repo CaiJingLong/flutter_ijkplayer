@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 
 class DialogVideoPage extends StatefulWidget {
   @override
@@ -9,6 +10,12 @@ class DialogVideoPage extends StatefulWidget {
 
 class _DialogVideoPageState extends State<DialogVideoPage> {
   IjkMediaController controller = IjkMediaController();
+
+  @override
+  void initState() {
+    super.initState();
+    OptionUtils.addDefaultOptions(controller);
+  }
 
   @override
   void dispose() {

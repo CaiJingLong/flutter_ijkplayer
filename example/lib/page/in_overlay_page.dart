@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
+import 'package:ijkplayer_example/utils/options_utils.dart';
 
 class InOverlayPage extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _InOverlayPageState extends State<InOverlayPage> {
   @override
   void initState() {
     super.initState();
+    OptionUtils.addDefaultOptions(controller);
     controller.setDataSource(
       DataSource.network(
         "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4",
