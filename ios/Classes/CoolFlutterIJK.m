@@ -193,6 +193,8 @@
   //    [options setFormatOptionIntValue:5 forKey:@"reconnect"];
   //    [options setFormatOptionIntValue:5 forKey:@"framedrop"];
   //    [options setFormatOptionIntValue:1 forKey:@"enable-accurate-seek"];
+  // fix: mix usage of http/https urls of the same domain
+  [options setFormatOptionIntValue:1 forKey:@"dns_cache_clear"];
 
   //    [options setPlayerOptionIntValue:0
   //    forKey:@"video-max-frame-width-default"]; [options
