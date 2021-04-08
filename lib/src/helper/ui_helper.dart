@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 
 class UIHelper {
-  static Rect findGlobalRect(GlobalKey key) {
-    RenderBox renderObject = key.currentContext?.findRenderObject();
+  static Rect? findGlobalRect(GlobalKey key) {
+    RenderBox? renderObject = key.currentContext?.findRenderObject() as RenderBox?;
     if (renderObject == null) {
       return null;
     }
 
-    var globalOffset = renderObject?.localToGlobal(Offset.zero);
+    var globalOffset = renderObject.localToGlobal(Offset.zero);
 
     if (globalOffset == null) {
       return null;
@@ -18,8 +18,8 @@ class UIHelper {
     return bounds;
   }
 
-  static Offset globalOffsetToLocal(GlobalKey key, Offset offsetGlobal) {
-    RenderBox renderObject = key.currentContext?.findRenderObject();
+  static Offset? globalOffsetToLocal(GlobalKey key, Offset offsetGlobal) {
+    RenderBox? renderObject = key.currentContext?.findRenderObject() as RenderBox?;
     if (renderObject == null) {
       return null;
     }

@@ -12,10 +12,10 @@ typedef Widget StatusWidgetBuilder(
 /// Default IjkStatusWidget
 class IjkStatusWidget extends StatelessWidget {
   final IjkMediaController controller;
-  final StatusWidgetBuilder statusWidgetBuilder;
+  final StatusWidgetBuilder? statusWidgetBuilder;
 
   const IjkStatusWidget({
-    this.controller,
+    required this.controller,
     this.statusWidgetBuilder = IjkStatusWidget.buildStatusWidget,
   });
 
@@ -27,7 +27,7 @@ class IjkStatusWidget extends StatelessWidget {
       initialData: controller.ijkStatus,
       stream: controller.ijkStatusStream,
       builder: (BuildContext context, snapshot) {
-        return statusBuilder.call(context, controller, snapshot.data);
+        return statusBuilder.call(context, controller, snapshot.data!);
       },
     );
   }
@@ -79,7 +79,7 @@ Widget _buildNothing(BuildContext context) {
   );
 }
 
-Widget _buildCenterIconButton(IconData iconData, Function onTap) {
+Widget _buildCenterIconButton(IconData iconData, Function() onTap) {
   return Center(
     child: Container(
       width: 50,

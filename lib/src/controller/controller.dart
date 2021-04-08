@@ -6,7 +6,7 @@ class IjkMediaController
   /// It will automatically correct the direction of the video.
   bool autoRotate;
 
-  int index;
+  late int index;
 
   String get debugLabel => index.toString();
 
@@ -59,7 +59,7 @@ class IjkMediaController
       this.textureId = id;
       _plugin = _IjkPlugin(id);
       eventChannel = _IJKEventChannel(this);
-      await eventChannel.init();
+      await eventChannel?.init();
       volume = 100;
     } catch (e) {
       await reset();
@@ -114,7 +114,7 @@ class IjkMediaController
   /// see [setDataSource]
   Future<void> setAssetDataSource(
     String name, {
-    String package,
+    String? package,
     bool autoPlay = false,
   }) async {
     _ijkStatus = IjkStatus.preparing;
@@ -161,28 +161,32 @@ class IjkMediaController
   }) async {
     switch (source._type) {
       case DataSourceType.asset:
+      assert(source._assetName != null);
         await setAssetDataSource(
-          source._assetName,
+          source._assetName!,
           package: source._assetPackage,
           autoPlay: autoPlay,
         );
         break;
       case DataSourceType.file:
+      assert(source._file != null);
         await setFileDataSource(
-          source._file,
+          source._file!,
           autoPlay: autoPlay,
         );
         break;
       case DataSourceType.network:
+      assert(source._netWorkUrl != null);
         await setNetworkDataSource(
-          source._netWorkUrl,
-          headers: source._headers,
+          source._netWorkUrl!,
+          headers: source._headers!,
           autoPlay: autoPlay,
         );
         break;
       case DataSourceType.photoManager:
+      assert(source._mediaUrl != null);
         await setPhotoManagerDataSource(
-          source._mediaUrl,
+          source._mediaUrl!,
           autoPlay: autoPlay,
         );
         break;
@@ -270,7 +274,7 @@ class IjkMediaController
 
   /// get video info from native
   Future<VideoInfo> getVideoInfo() async {
-    Map<String, dynamic> result = await _plugin?.getInfo();
+    Map<String, dynamic>? result = await _plugin?.getInfo();
     var info = VideoInfo.fromMap(result);
     return info;
   }
@@ -301,7 +305,7 @@ class IjkMediaController
   }
 
   /// get system volume
-  Future<int> getSystemVolume() async {
+  Future<int?> getSystemVolume() async {
     return IjkManager.getSystemVolume();
   }
 
@@ -340,8 +344,8 @@ class IjkMediaController
   /// Intercept the video frame image and get the `Uint8List` format.
   ///
   /// Player UI is not included. If you need the effect of the player, use the screenshot of the system.
-  Future<Uint8List> screenShot() {
-    return _plugin.screenShot();
+  Future<Uint8List?>? screenShot() {
+    return _plugin?.screenShot();
   }
 
   /// Set [IjkOption] with IJKPlayer.
@@ -374,6 +378,6 @@ class IjkMediaController
   }
 
   Future<void> setSpeed(double speed) async {
-    await _plugin.setSpeed(speed);
+    await _plugin?.setSpeed(speed);
   }
 }

@@ -28,9 +28,9 @@ class DefaultIJKPlayerWrapper extends StatelessWidget {
   final VideoInfo info;
 
   const DefaultIJKPlayerWrapper({
-    Key key,
-    this.controller,
-    this.info,
+    Key? key,
+    required this.controller,
+    required this.info,
   }) : super(key: key);
 
   @override

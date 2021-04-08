@@ -52,7 +52,7 @@ class DefaultIJKControllerWidget extends StatefulWidget {
   final bool currentFullScreenState;
 
   /// Build widget for full screen.
-  final IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder;
+  final IJKControllerWidgetBuilder? fullscreenControllerWidgetBuilder;
 
   /// See [FullScreenType]
   final FullScreenType fullScreenType;
@@ -61,12 +61,12 @@ class DefaultIJKControllerWidget extends StatefulWidget {
   final bool hideSystemBarOnFullScreen;
 
   /// Callback in full screen, full screen when enter true, false to exit full screen.
-  final void Function(bool enter) onFullScreen;
+  final void Function(bool enter)? onFullScreen;
 
   /// The UI of the controller.
   const DefaultIJKControllerWidget({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
     this.doubleTapPlay = false,
     this.verticalGesture = true,
     this.horizontalGesture = true,
@@ -85,17 +85,17 @@ class DefaultIJKControllerWidget extends StatefulWidget {
       DefaultIJKControllerWidgetState();
 
   DefaultIJKControllerWidget copyWith({
-    Key key,
-    IjkMediaController controller,
-    bool doubleTapPlay,
-    bool verticalGesture,
-    bool horizontalGesture,
-    VolumeType volumeType,
-    bool playWillPauseOther,
-    bool currentFullScreenState,
-    bool showFullScreenButton,
-    IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder,
-    FullScreenType fullScreenType,
+    Key? key,
+    IjkMediaController? controller,
+    bool? doubleTapPlay,
+    bool? verticalGesture,
+    bool? horizontalGesture,
+    VolumeType? volumeType,
+    bool? playWillPauseOther,
+    bool? currentFullScreenState,
+    bool? showFullScreenButton,
+    IJKControllerWidgetBuilder? fullscreenControllerWidgetBuilder,
+    FullScreenType? fullScreenType
   }) {
     return DefaultIJKControllerWidget(
       controller: controller ?? this.controller,
@@ -133,19 +133,19 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
 
   bool get isShow => _isShow;
 
-  Timer progressTimer;
+  Timer? progressTimer;
 
-  StreamSubscription controllerSubscription;
+  StreamSubscription<int>? controllerSubscription;
 
   @override
   void initState() {
     super.initState();
     startTimer();
     controllerSubscription =
-        controller.textureIdStream.listen(_onTextureIdChange);
+        controller.textureIdStream?.listen(_onTextureIdChange);
   }
 
-  void _onTextureIdChange(int textureId) {
+  void _onTextureIdChange(int? textureId) {
     LogUtils.debug("onTextureChange $textureId");
     if (textureId != null) {
       startTimer();
@@ -161,7 +161,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
 
   @override
   void dispose() {
-    controllerSubscription.cancel();
+    controllerSubscription?.cancel();
     stopTimer();
     IjkManager.resetBrightness();
     super.dispose();
@@ -263,7 +263,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     );
   }
 
-  OverlayEntry _tipOverlay;
+  OverlayEntry? _tipOverlay;
 
   Widget createTooltipWidgetWrapper(Widget widget) {
     var typography = Typography(platform: TargetPlatform.android);
@@ -273,7 +273,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       color: Colors.white,
       fontWeight: FontWeight.normal,
     );
-    var mergedTextStyle = theme.body2.merge(style);
+    var mergedTextStyle = theme.body2?.merge(style);
     return Container(
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.5),
@@ -283,7 +283,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       width: 100.0,
       child: DefaultTextStyle(
         child: widget,
-        style: mergedTextStyle,
+        style: mergedTextStyle!,
       ),
     );
   }
@@ -310,7 +310,9 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
         return w;
       },
     );
-    Overlay.of(context).insert(_tipOverlay);
+    if(_tipOverlay != null) {
+      Overlay.of(context)?.insert(_tipOverlay!);
+    }
   }
 
   void hideTooltip() {
@@ -318,11 +320,11 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     _tipOverlay = null;
   }
 
-  _ProgressCalculator _calculator;
+  _ProgressCalculator? _calculator;
 
   onTap() => isShow = !isShow;
 
-  Function onDoubleTap() {
+  void Function()? onDoubleTap() {
     return widget.doubleTapPlay
         ? () {
             LogUtils.debug("ondouble tap");
@@ -331,10 +333,10 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
         : null;
   }
 
-  Function wrapHorizontalGesture(Function function) =>
+  void Function(dynamic)? wrapHorizontalGesture(void Function(dynamic) function) =>
       widget.horizontalGesture == true ? function : null;
 
-  Function wrapVerticalGesture(Function function) =>
+  Function? wrapVerticalGesture(Function function) =>
       widget.verticalGesture == true ? function : null;
 
   void _onHorizontalDragStart(DragStartDetails details) async {
@@ -342,7 +344,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     _calculator = _ProgressCalculator(details, videoInfo);
     final rotateBoxProvider = _RotateBoxProvider.of(context);
     if(rotateBoxProvider != null && rotateBoxProvider.quarterTurns == 1){
-      _calculator.replaceXToY = true;
+      _calculator?.replaceXToY = true;
     }
   }
 
@@ -350,12 +352,12 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     if (_calculator == null || details == null) {
       return;
     }
-    var updateText = _calculator.calcUpdate(details);
+    var updateText = _calculator?.calcUpdate(details);
 
-    var offsetPosition = _calculator.getOffsetPosition();
+    var offsetPosition = _calculator?.getOffsetPosition();
 
     IconData iconData =
-        offsetPosition > 0 ? Icons.fast_forward : Icons.fast_rewind;
+        (offsetPosition ?? 0) > 0 ? Icons.fast_forward : Icons.fast_rewind;
     var w = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -365,7 +367,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
           size: 40.0,
         ),
         Text(
-          updateText,
+          updateText ?? '',
           textAlign: TextAlign.center,
         ),
       ],
@@ -387,13 +389,13 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
   }
 
   bool verticalDragging = false;
-  bool leftVerticalDrag;
+  bool? leftVerticalDrag;
 
   void _onVerticalDragStart(DragStartDetails details) {
     verticalDragging = true;
-    var width = UIHelper.findGlobalRect(currentKey).width;
+    var width = UIHelper.findGlobalRect(currentKey)?.width ?? 1;
     var dx =
-        UIHelper.globalOffsetToLocal(currentKey, details.globalPosition).dx;
+        UIHelper.globalOffsetToLocal(currentKey, details.globalPosition)?.dx ?? 0;
     leftVerticalDrag = dx / width <= 0.5;
   }
 
@@ -422,7 +424,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
 
       text = currentVolume.toString();
     } else if (leftVerticalDrag == true) {
-      var currentBright = await IjkManager.getSystemBrightness();
+      var currentBright = (await IjkManager.getSystemBrightness()) ?? 1;
       double target;
       if (details.delta.dy > 0) {
         target = currentBright - 0.03;
@@ -483,9 +485,8 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       case VolumeType.media:
         return controller.volume;
       case VolumeType.system:
-        return controller.getSystemVolume();
+        return controller.getSystemVolume() as Future<int>;
     }
-    return 0;
   }
 
   Future<void> volumeUp() async {
@@ -520,7 +521,7 @@ class _ProgressCalculator {
   bool replaceXToY = false;
   VideoInfo info;
 
-  double dx;
+  double? dx;
 
   _ProgressCalculator(this.startDetails, this.info);
 
@@ -530,13 +531,13 @@ class _ProgressCalculator {
     } else {
       dx = details.globalPosition.dx - startDetails.globalPosition.dx;
     }
-    var f = dx > 0 ? "+" : "-";
+    var f = (dx ?? 0) > 0 ? "+" : "-";
     var offset = getOffsetPosition().round().abs();
     return "$f${offset}s";
   }
 
   double getTargetSeek(DragEndDetails details) {
-    var target = info.currentPosition + getOffsetPosition();
+    var target = info.currentPosition ?? 0 + getOffsetPosition();
     if (target < 0) {
       target = 0;
     } else if (target > info.duration) {
@@ -546,21 +547,21 @@ class _ProgressCalculator {
   }
 
   double getOffsetPosition() {
-    return dx / 10;
+    return (dx ?? 0) / 10;
   }
 }
 
 class PortraitController extends StatelessWidget {
   final IjkMediaController controller;
   final VideoInfo info;
-  final TooltipDelegate tooltipDelegate;
+  final TooltipDelegate? tooltipDelegate;
   final bool playWillPauseOther;
-  final Widget fullScreenWidget;
+  final Widget? fullScreenWidget;
 
   const PortraitController({
-    Key key,
-    this.controller,
-    this.info,
+    Key? key,
+    required this.controller,
+    required this.info,
     this.tooltipDelegate,
     this.playWillPauseOther = true,
     this.fullScreenWidget,
@@ -630,7 +631,7 @@ class PortraitController extends StatelessWidget {
     return Container(
       height: 22,
       child: ProgressBar(
-        current: info.currentPosition,
+        current: info.currentPosition ?? 0,
         max: info.duration,
         changeProgressHandler: (progress) async {
           await controller.seekToProgress(progress);
@@ -646,7 +647,7 @@ class PortraitController extends StatelessWidget {
   buildCurrentText() {
     return haveTime
         ? Text(
-            TimeHelper.getTimeText(info.currentPosition),
+            TimeHelper.getTimeText(info.currentPosition ?? 0),
           )
         : Container();
   }
@@ -673,7 +674,7 @@ class PortraitController extends StatelessWidget {
   void showProgressTooltip(VideoInfo info, double progress) {
     var target = info.duration * progress;
 
-    var diff = info.currentPosition - target;
+    var diff = info.currentPosition ?? 0 - target;
 
     String diffString;
     if (diff < 1 && diff > -1) {
@@ -704,7 +705,9 @@ class PortraitController extends StatelessWidget {
     );
 
     var tooltip = tooltipDelegate?.createTooltipWidgetWrapper(text);
-    tooltipDelegate?.showTooltip(tooltip);
+    if(tooltip != null) {
+      tooltipDelegate?.showTooltip(tooltip);
+    }
   }
 
   Widget buildFullScreenButton() {
