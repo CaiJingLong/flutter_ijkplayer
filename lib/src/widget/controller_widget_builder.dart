@@ -189,12 +189,12 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       behavior: HitTestBehavior.opaque,
       child: buildContent(),
       onDoubleTap: onDoubleTap(),
-      onHorizontalDragStart: wrapHorizontalGesture(_onHorizontalDragStart),
-      onHorizontalDragUpdate: wrapHorizontalGesture(_onHorizontalDragUpdate),
-      onHorizontalDragEnd: wrapHorizontalGesture(_onHorizontalDragEnd),
-      onVerticalDragStart: wrapVerticalGesture(_onVerticalDragStart),
-      onVerticalDragUpdate: wrapVerticalGesture(_onVerticalDragUpdate),
-      onVerticalDragEnd: wrapVerticalGesture(_onVerticalDragEnd),
+      onHorizontalDragStart: wrapHorizontalGesture(_onHorizontalDragStart as dynamic),
+      onHorizontalDragUpdate: wrapHorizontalGesture(_onHorizontalDragUpdate as dynamic),
+      onHorizontalDragEnd: wrapHorizontalGesture(_onHorizontalDragEnd as dynamic),
+      onVerticalDragStart: wrapVerticalGesture(_onVerticalDragStart as dynamic),
+      onVerticalDragUpdate: wrapVerticalGesture(_onVerticalDragUpdate as dynamic),
+      onVerticalDragEnd: wrapVerticalGesture(_onVerticalDragEnd as dynamic),
       onTap: onTap,
       key: currentKey,
     );
@@ -336,7 +336,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
   void Function(dynamic)? wrapHorizontalGesture(void Function(dynamic) function) =>
       widget.horizontalGesture == true ? function : null;
 
-  Function? wrapVerticalGesture(Function function) =>
+  void Function(dynamic)? wrapVerticalGesture(void Function(dynamic) function) =>
       widget.verticalGesture == true ? function : null;
 
   void _onHorizontalDragStart(DragStartDetails details) async {
