@@ -21,7 +21,7 @@ mixin IjkMediaControllerStreamMixin {
   int? _textureId;
 
   /// texture id from native
-  int get textureId => _textureId ?? -1;//TODO: 可能有bug
+  int? get textureId => _textureId;
 
   /// set texture id, Normally the user does not call
   set textureId(int? id) {

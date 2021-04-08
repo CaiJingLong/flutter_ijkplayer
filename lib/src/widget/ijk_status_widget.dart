@@ -55,8 +55,8 @@ class IjkStatusWidget extends StatelessWidget {
     }
     if (status == IjkStatus.complete) {
       return _buildCenterIconButton(Icons.replay, () async {
-        await controller?.seekTo(0);
-        await controller?.play();
+        await controller.seekTo(0);
+        await controller.play();
       });
     }
     return Container();

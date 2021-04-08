@@ -25,12 +25,12 @@ Widget buildDefaultIjkPlayer(
 /// This widget solves the aspect ratio problem in video direction.
 class DefaultIJKPlayerWrapper extends StatelessWidget {
   final IjkMediaController controller;
-  final VideoInfo info;
+  final VideoInfo? info;
 
   const DefaultIJKPlayerWrapper({
     Key? key,
     required this.controller,
-    required this.info,
+    this.info,
   }) : super(key: key);
 
   @override

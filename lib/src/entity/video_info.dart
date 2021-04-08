@@ -26,7 +26,7 @@ class VideoInfo {
   Map<String, dynamic>? _map;
 
   /// Percentage playback progress
-  double get progress => (currentPosition ?? 0) / (duration ?? 1);
+  double get progress => (currentPosition ?? 0) / duration;
 
   ///Is there any information?
   bool get hasData => _map != null;
