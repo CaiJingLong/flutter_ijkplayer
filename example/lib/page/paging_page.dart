@@ -15,7 +15,7 @@ class PagingPickPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(currentI18n.pick),
             onPressed: () => pickVideo(context),
           ),
@@ -79,8 +79,8 @@ class PagingPage extends StatefulWidget {
   final List<DataSource> dataSourceList;
 
   const PagingPage({
-    Key key,
-    this.dataSourceList,
+    Key? key,
+    required this.dataSourceList,
   }) : super(key: key);
 
   @override
@@ -99,7 +99,7 @@ class _PagingPageState extends State<PagingPage> {
 
   void initFirst() async {
     await Future.delayed(Duration(seconds: 1));
-    getControllerWithSrc(widget.dataSourceList[0])?.play();
+    getControllerWithSrc(widget.dataSourceList[0]).play();
   }
 
   @override
@@ -110,7 +110,7 @@ class _PagingPageState extends State<PagingPage> {
 
   _disposeAllCtl() {
     for (var ctl in map.values) {
-      ctl?.dispose();
+      ctl.dispose();
     }
   }
 
@@ -126,9 +126,9 @@ class _PagingPageState extends State<PagingPage> {
         print("current page = $current");
         var src = widget.dataSourceList[current];
         var ctl = getControllerWithSrc(src);
-        ctl?.pauseOtherController();
-        ctl?.seekTo(0);
-        ctl?.play();
+        ctl.pauseOtherController();
+        ctl.seekTo(0);
+        ctl.play();
       },
     );
   }

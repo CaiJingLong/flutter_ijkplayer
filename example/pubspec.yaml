@@ -17,22 +17,22 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
-  intl: ">=0.15.8 <1.0.0"
+  intl: ^0.17.0
 
   flutter_ijkplayer:
     path: ../
 
-dependency_overrides:
-  photo_manager:
-    git:
-      url: https://github.com/caijinglong/flutter_photo_manager.git
-      ref: master
+# dependency_overrides:
+#   photo_manager:
+#     git:
+#       url: https://github.com/caijinglong/flutter_photo_manager.git
+#       ref: master
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  intl_translation: ^0.17.3
+  # intl_translation: ^0.17.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

@@ -48,7 +48,7 @@ class _AssetPageState extends State<AssetPage> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 }

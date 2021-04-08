@@ -23,7 +23,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -163,23 +163,23 @@ class HomePageState extends State<HomePage> {
   _buildControllerButtons() {
     return Row(
       children: <Widget>[
-        FlatButton(
+        TextButton(
           child: StreamBuilder<bool>(
             stream: controller.playingStream,
-            initialData: controller?.isPlaying ?? false,
+            initialData: controller.isPlaying,
             builder: (context, snapshot) {
-              var isPlaying = snapshot.hasData && snapshot.data;
+              var isPlaying = snapshot.hasData && (snapshot.data ?? false);
               return Text(isPlaying ? "暂停" : "播放");
             },
           ),
           onPressed: () async {
-            await controller?.playOrPause();
+            await controller.playOrPause();
           },
         ),
-        FlatButton(
+        TextButton(
           child: Text("停止"),
           onPressed: () async {
-            await controller?.stop();
+            await controller.stop();
           },
         ),
       ],
@@ -188,15 +188,15 @@ class HomePageState extends State<HomePage> {
 
   _buildVolumeBar() {
     return StreamBuilder<int>(
-      stream: controller?.volumeStream,
-      initialData: controller?.volume,
+      stream: controller.volumeStream,
+      initialData: controller.volume,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container();
         }
         var volume = snapshot.data;
         return Slider(
-          value: volume / 100,
+          value: (volume ?? 0) / 100,
           onChanged: (double value) {
             var targetVolume = (value * 100).toInt();
             controller.volume = targetVolume;

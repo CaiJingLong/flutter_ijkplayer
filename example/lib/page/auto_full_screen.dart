@@ -25,7 +25,7 @@ class _AutoFullScreenPageState extends State<AutoFullScreenPage> {
       VideoDataSource.springBootMenuM3u8,
       autoPlay: true,
     );
-    key.currentState.fullScreen();
+    key.currentState?.fullScreen();
   }
 
   @override
