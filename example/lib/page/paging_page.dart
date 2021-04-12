@@ -3,7 +3,7 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
 import 'package:ijkplayer_example/utils/options_utils.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:photo/photo.dart';
+// import 'package:photo/photo.dart';
 
 class PagingPickPage extends StatelessWidget {
 
@@ -25,38 +25,38 @@ class PagingPickPage extends StatelessWidget {
   }
 
   pickVideo(BuildContext context) async {
-    var photos = await PhotoPicker.pickAsset(
-      context: context,
-      maxSelected: 8,
-      pickType: PickType.onlyVideo,
-    );
+    // var photos = await PhotoPicker.pickAsset(
+    //   context: context,
+    //   maxSelected: 8,
+    //   pickType: PickType.onlyVideo,
+    // );
 
-    if (photos == null || photos.isEmpty) {
-      showToast(currentI18n.noPickTip);
-      return;
-    }
+    // if (photos == null || photos.isEmpty) {
+    //   showToast(currentI18n.noPickTip);
+    //   return;
+    // }
 
-    showDialog(
-      context: context,
-      builder: (_) => buildLoadingWidget(),
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (_) => buildLoadingWidget(),
+    // );
 
-    List<DataSource> dataSourceList = [];
-    for (var photo in photos) {
-      var file = await photo.file;
-      dataSourceList.add(DataSource.file(file));
-    }
+    // List<DataSource> dataSourceList = [];
+    // for (var photo in photos) {
+    //   var file = await photo.file;
+    //   dataSourceList.add(DataSource.file(file));
+    // }
 
-    Navigator.pop(context);
+    // Navigator.pop(context);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => PagingPage(
-          dataSourceList: dataSourceList,
-        ),
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => PagingPage(
+    //       dataSourceList: dataSourceList,
+    //     ),
+    //   ),
+    // );
   }
 }
 

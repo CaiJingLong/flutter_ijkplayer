@@ -1,4 +1,5 @@
 name: ijkplayer_example
+number: "1.0"
 description: Demonstrates how to use the ijkplayer plugin.
 publish_to: "none"
 
@@ -11,8 +12,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  photo: ^0.4.8
-
+  # photo: ^0.4.8
+  photo_manager: ^1.1.1
   oktoast: ^3.0.0
 
   flutter_localizations:
