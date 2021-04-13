@@ -15,7 +15,7 @@ class VideoInfo {
   double? currentPosition;
 
   /// In play
-  late bool isPlaying;
+  bool isPlaying = false;
 
   /// Degree of Video
   int? degree;
