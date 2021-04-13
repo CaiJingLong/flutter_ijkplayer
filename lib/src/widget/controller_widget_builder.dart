@@ -189,12 +189,12 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       behavior: HitTestBehavior.opaque,
       child: buildContent(),
       onDoubleTap: onDoubleTap(),
-      onHorizontalDragStart: wrapHorizontalGesture(_onHorizontalDragStart as dynamic),
-      onHorizontalDragUpdate: wrapHorizontalGesture(_onHorizontalDragUpdate as dynamic),
-      onHorizontalDragEnd: wrapHorizontalGesture(_onHorizontalDragEnd as dynamic),
-      onVerticalDragStart: wrapVerticalGesture(_onVerticalDragStart as dynamic),
-      onVerticalDragUpdate: wrapVerticalGesture(_onVerticalDragUpdate as dynamic),
-      onVerticalDragEnd: wrapVerticalGesture(_onVerticalDragEnd as dynamic),
+      onHorizontalDragStart: wrapHorizontalGesture(_onHorizontalDragStart) as void Function(DragStartDetails)?,
+      onHorizontalDragUpdate: wrapHorizontalGesture(_onHorizontalDragUpdate) as void Function(DragUpdateDetails)?,
+      onHorizontalDragEnd: wrapHorizontalGesture(_onHorizontalDragEnd) as void Function(DragEndDetails)?,
+      onVerticalDragStart: wrapVerticalGesture(_onVerticalDragStart) as void Function(DragStartDetails)?,
+      onVerticalDragUpdate: wrapVerticalGesture(_onVerticalDragUpdate) as void Function(DragUpdateDetails)?,
+      onVerticalDragEnd: wrapVerticalGesture(_onVerticalDragEnd) as void Function(DragEndDetails)?,
       onTap: onTap,
       key: currentKey,
     );
@@ -333,10 +333,10 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
         : null;
   }
 
-  void Function(dynamic)? wrapHorizontalGesture(void Function(dynamic) function) =>
+  Function? wrapHorizontalGesture(Function function) =>
       widget.horizontalGesture == true ? function : null;
 
-  void Function(dynamic)? wrapVerticalGesture(void Function(dynamic) function) =>
+  Function? wrapVerticalGesture(Function function) =>
       widget.verticalGesture == true ? function : null;
 
   void _onHorizontalDragStart(DragStartDetails details) async {
@@ -348,7 +348,7 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
     }
   }
 
-  void _onHorizontalDragUpdate(DragUpdateDetails details) {
+  void _onHorizontalDragUpdate(DragUpdateDetails? details) {
     if (_calculator == null || details == null) {
       return;
     }
@@ -485,7 +485,8 @@ class DefaultIJKControllerWidgetState extends State<DefaultIJKControllerWidget>
       case VolumeType.media:
         return controller.volume;
       case VolumeType.system:
-        return controller.getSystemVolume() as Future<int>;
+        var volume = await controller.getSystemVolume();
+        return Future.value(volume ?? 0);
     }
   }
 
