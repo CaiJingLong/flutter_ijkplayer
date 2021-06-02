@@ -161,7 +161,7 @@ class IjkMediaController
   }) async {
     switch (source._type) {
       case DataSourceType.asset:
-      assert(source._assetName != null);
+        assert(source._assetName != null);
         await setAssetDataSource(
           source._assetName!,
           package: source._assetPackage,
@@ -169,14 +169,14 @@ class IjkMediaController
         );
         break;
       case DataSourceType.file:
-      assert(source._file != null);
+        assert(source._file != null);
         await setFileDataSource(
           source._file!,
           autoPlay: autoPlay,
         );
         break;
       case DataSourceType.network:
-      assert(source._netWorkUrl != null);
+        assert(source._netWorkUrl != null);
         await setNetworkDataSource(
           source._netWorkUrl!,
           headers: source._headers!,
@@ -184,7 +184,7 @@ class IjkMediaController
         );
         break;
       case DataSourceType.photoManager:
-      assert(source._mediaUrl != null);
+        assert(source._mediaUrl != null);
         await setPhotoManagerDataSource(
           source._mediaUrl!,
           autoPlay: autoPlay,
@@ -205,8 +205,6 @@ class IjkMediaController
 
   /// dispose last textureId resource
   Future<void> _initDataSource(bool autoPlay) async {
-    autoPlay ??= false;
-
     var autoPlayValue = autoPlay ? 1 : 0;
     addIjkPlayerOptions([
       TargetPlatform.android,
