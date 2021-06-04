@@ -29,20 +29,20 @@ part 'engine/manager.dart';
 
 /// Main Classes of Library
 class IjkPlayer extends StatefulWidget {
-  final IjkMediaController mediaController;
+  final IjkMediaController? mediaController;
 
   /// See [DefaultIJKControllerWidget]
-  final IJKControllerWidgetBuilder controllerWidgetBuilder;
+  final IJKControllerWidgetBuilder? controllerWidgetBuilder;
 
   /// See [buildDefaultIjkPlayer]
-  final IJKTextureBuilder textureBuilder;
+  final IJKTextureBuilder? textureBuilder;
 
-  final StatusWidgetBuilder statusWidgetBuilder;
+  final StatusWidgetBuilder? statusWidgetBuilder;
 
   /// Main Classes of Library
   const IjkPlayer({
-    Key key,
-    @required this.mediaController,
+    Key? key,
+    required this.mediaController,
     this.controllerWidgetBuilder = defaultBuildIjkControllerWidget,
     this.textureBuilder = buildDefaultIjkPlayer,
     this.statusWidgetBuilder = IjkStatusWidget.buildStatusWidget,
@@ -55,7 +55,7 @@ class IjkPlayer extends StatefulWidget {
 /// State of [IjkPlayer]
 class IjkPlayerState extends State<IjkPlayer> {
   /// see [IjkMediaController]
-  IjkMediaController controller;
+  late IjkMediaController controller;
   GlobalKey _wrapperKey = GlobalKey();
 
   @override
@@ -97,7 +97,7 @@ class IjkPlayerState extends State<IjkPlayer> {
     Widget stack = Stack(
       children: <Widget>[
         IgnorePointer(child: video),
-        controllerWidget,
+        controllerWidget ?? Container(),
         statusWidget,
       ],
     );
@@ -108,11 +108,11 @@ class IjkPlayerState extends State<IjkPlayer> {
     );
   }
 
-  Widget _buildTexture(int id, VideoInfo info) {
-    if (widget?.textureBuilder != null) {
-      var texture = widget.textureBuilder.call(context, controller, info);
+  Widget _buildTexture(int? id, VideoInfo? info) {
+    if (widget.textureBuilder != null && info != null) {
+      var texture = widget.textureBuilder?.call(context, controller, info);
       return _IjkPlayerWrapper(
-        child: texture,
+        child: texture ?? Container(),
         globalKey: _wrapperKey,
         controller: controller,
       );
@@ -142,7 +142,7 @@ class IjkPlayerState extends State<IjkPlayer> {
       stream: controller.ijkStatusStream,
       builder: (BuildContext context, snapshot) {
         return widget.statusWidgetBuilder
-                ?.call(context, controller, snapshot.data) ??
+                ?.call(context, controller, snapshot.data ?? IjkStatus.error) ??
             Container();
       },
     );
@@ -155,10 +155,10 @@ class _IjkPlayerWrapper extends StatefulWidget {
   final IjkMediaController controller;
 
   const _IjkPlayerWrapper({
-    @required this.globalKey,
-    @required this.child,
-    Key key,
-    @required this.controller,
+    required this.globalKey,
+    required this.child,
+    Key? key,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -169,12 +169,12 @@ class __IjkPlayerWrapperState extends State<_IjkPlayerWrapper> {
   @override
   void initState() {
     super.initState();
-    widget.controller?.attach(widget.globalKey);
+    widget.controller.attach(widget.globalKey);
   }
 
   @override
   void dispose() {
-    widget.controller?.detach(widget.globalKey);
+    widget.controller.detach(widget.globalKey);
     super.dispose();
   }
 

@@ -75,7 +75,7 @@ class VideoItem extends StatefulWidget {
 }
 
 class _VideoItemState extends State<VideoItem> {
-  IjkMediaController controller;
+  IjkMediaController? controller;
 
   var isInit = false;
   var isLoading = false;
@@ -134,8 +134,8 @@ class _VideoItemState extends State<VideoItem> {
     setState(() {
       isLoading = true;
     });
-    await controller.setDataSource(widget.dataSource, autoPlay: true);
-    await controller.pauseOtherController();
+    await controller?.setDataSource(widget.dataSource, autoPlay: true);
+    await controller?.pauseOtherController();
     setState(() {
       isLoading = false;
       isInit = true;

@@ -3,30 +3,30 @@ import 'dart:convert';
 /// about video info
 class VideoInfo {
   /// Width of Video
-  int width;
+  int? width;
 
   /// Height of Video
-  int height;
+  int? height;
 
   /// Total length of video
-  double duration;
+  late double duration;
 
   /// Current playback progress
-  double currentPosition;
+  double? currentPosition;
 
   /// In play
-  bool isPlaying;
+  bool isPlaying = false;
 
   /// Degree of Video
-  int degree;
+  int? degree;
 
   /// The media tcp speed, unit is byte
-  int tcpSpeed;
+  int? tcpSpeed;
 
-  Map<String, dynamic> _map;
+  Map<String, dynamic>? _map;
 
   /// Percentage playback progress
-  double get progress => (currentPosition ?? 0) / (duration ?? 1);
+  double get progress => (currentPosition ?? 0) / duration;
 
   ///Is there any information?
   bool get hasData => _map != null;
@@ -38,7 +38,7 @@ class VideoInfo {
       if (width == 0 || height == 0) {
         r = 1280 / 720;
       } else {
-        r = width / height;
+        r = width! / height!;
       }
     } else {
       r = 1280 / 720;
@@ -48,7 +48,7 @@ class VideoInfo {
   }
 
   /// Constructing from the native method
-  VideoInfo.fromMap(Map<String, dynamic> map) {
+ VideoInfo.fromMap(Map<String, dynamic>? map) {
     if (map == null) {
       return;
     }

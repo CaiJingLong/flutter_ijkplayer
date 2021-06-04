@@ -3,7 +3,7 @@ import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:ijkplayer_example/i18n/i18n.dart';
 import 'package:ijkplayer_example/utils/options_utils.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:photo/photo.dart';
+// import 'package:photo/photo.dart';
 
 class PagingPickPage extends StatelessWidget {
 
@@ -15,7 +15,7 @@ class PagingPickPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(currentI18n.pick),
             onPressed: () => pickVideo(context),
           ),
@@ -25,38 +25,38 @@ class PagingPickPage extends StatelessWidget {
   }
 
   pickVideo(BuildContext context) async {
-    var photos = await PhotoPicker.pickAsset(
-      context: context,
-      maxSelected: 8,
-      pickType: PickType.onlyVideo,
-    );
+    // var photos = await PhotoPicker.pickAsset(
+    //   context: context,
+    //   maxSelected: 8,
+    //   pickType: PickType.onlyVideo,
+    // );
 
-    if (photos == null || photos.isEmpty) {
-      showToast(currentI18n.noPickTip);
-      return;
-    }
+    // if (photos == null || photos.isEmpty) {
+    //   showToast(currentI18n.noPickTip);
+    //   return;
+    // }
 
-    showDialog(
-      context: context,
-      builder: (_) => buildLoadingWidget(),
-    );
+    // showDialog(
+    //   context: context,
+    //   builder: (_) => buildLoadingWidget(),
+    // );
 
-    List<DataSource> dataSourceList = [];
-    for (var photo in photos) {
-      var file = await photo.file;
-      dataSourceList.add(DataSource.file(file));
-    }
+    // List<DataSource> dataSourceList = [];
+    // for (var photo in photos) {
+    //   var file = await photo.file;
+    //   dataSourceList.add(DataSource.file(file));
+    // }
 
-    Navigator.pop(context);
+    // Navigator.pop(context);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => PagingPage(
-          dataSourceList: dataSourceList,
-        ),
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => PagingPage(
+    //       dataSourceList: dataSourceList,
+    //     ),
+    //   ),
+    // );
   }
 }
 
@@ -79,8 +79,8 @@ class PagingPage extends StatefulWidget {
   final List<DataSource> dataSourceList;
 
   const PagingPage({
-    Key key,
-    this.dataSourceList,
+    Key? key,
+    required this.dataSourceList,
   }) : super(key: key);
 
   @override
@@ -99,7 +99,7 @@ class _PagingPageState extends State<PagingPage> {
 
   void initFirst() async {
     await Future.delayed(Duration(seconds: 1));
-    getControllerWithSrc(widget.dataSourceList[0])?.play();
+    getControllerWithSrc(widget.dataSourceList[0]).play();
   }
 
   @override
@@ -110,7 +110,7 @@ class _PagingPageState extends State<PagingPage> {
 
   _disposeAllCtl() {
     for (var ctl in map.values) {
-      ctl?.dispose();
+      ctl.dispose();
     }
   }
 
@@ -126,9 +126,9 @@ class _PagingPageState extends State<PagingPage> {
         print("current page = $current");
         var src = widget.dataSourceList[current];
         var ctl = getControllerWithSrc(src);
-        ctl?.pauseOtherController();
-        ctl?.seekTo(0);
-        ctl?.play();
+        ctl.pauseOtherController();
+        ctl.seekTo(0);
+        ctl.play();
       },
     );
   }

@@ -8,13 +8,13 @@ class NewFullScreenPage extends StatefulWidget {
 }
 
 class _NewFullScreenPageState extends State<NewFullScreenPage> {
-  IjkMediaController controller;
+  IjkMediaController? controller;
 
   @override
   void initState() {
     super.initState();
     controller = IjkMediaController();
-    controller.setDataSource(VideoDataSource.springBootMenuM3u8);
+    controller?.setDataSource(VideoDataSource.springBootMenuM3u8);
   }
 
   @override

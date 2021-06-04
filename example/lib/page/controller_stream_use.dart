@@ -30,7 +30,7 @@ class _ControllerStreamUsagePageState extends State<ControllerStreamUsagePage> {
   @override
   void dispose() {
     subscription?.cancel();
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -103,10 +103,10 @@ class _ControllerStreamUsagePageState extends State<ControllerStreamUsagePage> {
   Widget buildVideoInfo() {
     return StreamBuilder<VideoInfo>(
       builder: (BuildContext context, snapshot) {
-        if (!snapshot.hasData || !snapshot.data.hasData) {
+        if (!snapshot.hasData || !(snapshot.data?.hasData ?? false)) {
           return buildText("videoInfo: null");
         }
-        return buildInfo(snapshot.data);
+        return buildInfo(snapshot.data!);
       },
       stream: controller.videoInfoStream,
       initialData: controller.videoInfo,
@@ -130,10 +130,10 @@ class _ControllerStreamUsagePageState extends State<ControllerStreamUsagePage> {
     );
   }
 
-  StreamSubscription subscription;
+  StreamSubscription<IjkMediaController>? subscription;
 
   subscriptPlayFinish() {
-    subscription = controller.playFinishStream.listen((data) {
+    subscription = controller.playFinishStream?.listen((data) {
       showToast(currentI18n.playFinishToast);
     });
   }
@@ -185,8 +185,8 @@ Widget buildText(String text) {
   );
 }
 
-Widget buildButton(String text, Function function) {
-  return OutlineButton(
+Widget buildButton(String text, void Function() function) {
+  return OutlinedButton(
     child: Text(text),
     onPressed: function,
   );

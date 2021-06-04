@@ -4,7 +4,7 @@ part of '../ijkplayer.dart';
 MethodChannel _globalChannel = MethodChannel("top.kikt/ijkplayer");
 
 Future<int> _createIjk({
-  List<IjkOption> options,
+  required List<IjkOption> options,
 }) async {
   List<Map<String, dynamic>> _optionList = [];
 
@@ -63,7 +63,7 @@ class _IjkPlugin {
   }
 
   Future<void> setNetworkDataSource(
-      {String uri, Map<String, String> headers = const {}}) async {
+      {required String uri, Map<String, String> headers = const {}}) async {
     if (isDisposed) {
       return;
     }
@@ -74,7 +74,7 @@ class _IjkPlugin {
     });
   }
 
-  Future<void> setAssetDataSource(String name, String package) async {
+  Future<void> setAssetDataSource(String name, String? package) async {
     if (isDisposed) {
       return;
     }
@@ -113,7 +113,7 @@ class _IjkPlugin {
     });
   }
 
-  Future<Map<String, dynamic>> getInfo() async {
+  Future<Map<String, dynamic>?> getInfo() async {
     if (isDisposed) {
       return null;
     }
@@ -148,7 +148,7 @@ class _IjkPlugin {
     });
   }
 
-  Future<Uint8List> screenShot() async {
+  Future<Uint8List?> screenShot() async {
     if (isDisposed) {
       return null;
     }

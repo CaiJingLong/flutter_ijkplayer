@@ -8,18 +8,18 @@ typedef TapProgressHandler(double progress);
 class ProgressBar extends StatefulWidget {
   final double max;
   final double current;
-  final double buffered;
+  final double? buffered;
   final Color backgroundColor;
   final Color bufferColor;
   final Color playedColor;
-  final ChangeProgressHandler changeProgressHandler;
-  final TapProgressHandler tapProgressHandler;
+  final ChangeProgressHandler? changeProgressHandler;
+  final TapProgressHandler? tapProgressHandler;
   final double progressFlex;
 
   const ProgressBar({
-    Key key,
-    @required this.max,
-    @required this.current,
+    Key? key,
+    required this.max,
+    required this.current,
     this.buffered,
     this.backgroundColor = const Color(0xFF616161),
     this.bufferColor = Colors.grey,
@@ -36,12 +36,12 @@ class ProgressBar extends StatefulWidget {
 class _ProgressBarState extends State<ProgressBar> {
   GlobalKey _progressKey = GlobalKey();
 
-  double tempLeft;
+  double? tempLeft;
 
   double get left {
     var l = widget.current / widget.max;
     if (tempLeft != null) {
-      return tempLeft;
+      return tempLeft!;
     }
     return l;
   }
@@ -121,17 +121,17 @@ class _ProgressBarState extends State<ProgressBar> {
 
   void _onTapDown(TapDownDetails details) {
     var progress = getProgress(details.globalPosition);
-    widget.tapProgressHandler(progress);
+    widget.tapProgressHandler?.call(progress);
   }
 
   void _onPanUpdate(DragUpdateDetails details) {
     var progress = getProgress(details.globalPosition);
-    widget.tapProgressHandler(progress);
+    widget.tapProgressHandler?.call(progress);
   }
 
   void _onTapUp(TapUpDetails details) {
     var progress = getProgress(details.globalPosition);
-    widget.changeProgressHandler(progress);
+    widget.changeProgressHandler?.call(progress);
   }
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
@@ -139,13 +139,13 @@ class _ProgressBarState extends State<ProgressBar> {
     setState(() {
       tempLeft = progress;
     });
-    widget.tapProgressHandler(progress);
+    widget.tapProgressHandler?.call(progress);
   }
 
   double getProgress(Offset globalPosition) {
     var offset = _getLocalOffset(globalPosition);
     var globalRect = UIHelper.findGlobalRect(_progressKey);
-    var progress = offset.dx / globalRect.width;
+    var progress = offset!.dx / globalRect!.width;
     if (progress > 1) {
       progress = 1;
     } else if (progress < 0) {
@@ -154,7 +154,7 @@ class _ProgressBarState extends State<ProgressBar> {
     return progress;
   }
 
-  Offset _getLocalOffset(Offset globalPosition) {
+  Offset? _getLocalOffset(Offset globalPosition) {
     return UIHelper.globalOffsetToLocal(
       _progressKey,
       globalPosition,
@@ -163,7 +163,7 @@ class _ProgressBarState extends State<ProgressBar> {
 
   void _onHorizontalDragEnd(DragEndDetails details) {
     if (tempLeft != null) {
-      widget.changeProgressHandler(tempLeft);
+      widget.changeProgressHandler?.call(tempLeft!);
       tempLeft = null;
     }
   }

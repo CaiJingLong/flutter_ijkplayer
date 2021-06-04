@@ -26,7 +26,7 @@ class _FullScreenState extends State<FullScreen> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -157,14 +157,14 @@ class _FullScreen2State extends State<FullScreen2> {
               },
             ),
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: () async {
               await controller.setDataSource(source);
               await controller.play();
             },
             child: Text(currentI18n.play),
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: setLandScapeLeft,
             child: Text(currentI18n.fullScreen),
           ),
@@ -193,7 +193,7 @@ class CustomFullControllerPage extends StatefulWidget {
 }
 
 class _CustomFullControllerPageState extends State<CustomFullControllerPage> {
-  IjkMediaController controller;
+  late IjkMediaController controller;
 
   @override
   void initState() {

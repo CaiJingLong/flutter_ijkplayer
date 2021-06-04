@@ -18,32 +18,34 @@ mixin IjkMediaControllerStreamMixin {
   var _isDispose = false;
 
   /// texture id from native
-  int _textureId;
+  int? _textureId;
 
   /// texture id from native
-  int get textureId => _textureId;
+  int? get textureId => _textureId;
 
   /// set texture id, Normally the user does not call
-  set textureId(int id) {
+  set textureId(int? id) {
     if (_isDispose) return;
     _textureId = id;
-    _textureIdController?.add(id);
+    if(id != null) {
+      _textureIdController?.add(id);
+    }
   }
 
   /// on texture id change
-  StreamController<int> _textureIdController = StreamController.broadcast();
+  StreamController<int>? _textureIdController = StreamController.broadcast();
 
   /// on texture id change
-  Stream<int> get textureIdStream => _textureIdController?.stream;
+  Stream<int>? get textureIdStream => _textureIdController?.stream;
 
   /// Channel of flutter and native.
-  _IjkPlugin _plugin;
+  _IjkPlugin? _plugin;
 
   /// Whether texture id is null
   bool get isInit => textureId == null;
 
   /// channel of native to flutter
-  _IJKEventChannel eventChannel;
+  _IJKEventChannel? eventChannel;
 
   /// playing state
   bool _isPlaying = false;
@@ -62,17 +64,17 @@ mixin IjkMediaControllerStreamMixin {
   }
 
   /// playing state stream controller
-  StreamController<bool> _playingController = StreamController.broadcast();
+  StreamController<bool>? _playingController = StreamController.broadcast();
 
   /// playing state stream
-  Stream<bool> get playingStream => _playingController?.stream;
+  Stream<bool>? get playingStream => _playingController?.stream;
 
   /// video info stream controller
-  StreamController<VideoInfo> _videoInfoController =
+  StreamController<VideoInfo>? _videoInfoController =
       StreamController.broadcast();
 
   /// video info stream
-  Stream<VideoInfo> get videoInfoStream => _videoInfoController?.stream;
+  Stream<VideoInfo>? get videoInfoStream => _videoInfoController?.stream;
 
   VideoInfo _videoInfo = VideoInfo.fromMap(null);
 
@@ -80,10 +82,10 @@ mixin IjkMediaControllerStreamMixin {
   VideoInfo get videoInfo => _videoInfo;
 
   /// video volume stream controller
-  StreamController<int> _volumeController = StreamController.broadcast();
+  StreamController<int>? _volumeController = StreamController.broadcast();
 
   /// video volume stream
-  Stream<int> get volumeStream => _volumeController?.stream;
+  Stream<int>? get volumeStream => _volumeController?.stream;
 
   /// video volume, not system volume
   int _volume = 100;
@@ -105,12 +107,12 @@ mixin IjkMediaControllerStreamMixin {
   int get volume => _volume;
 
   /// playFinish
-  StreamController<IjkMediaController> _playFinishController =
+  StreamController<IjkMediaController>? _playFinishController =
       StreamController.broadcast();
 
   /// On play finish
-  Stream<IjkMediaController> get playFinishStream =>
-      _playFinishController.stream;
+  Stream<IjkMediaController>? get playFinishStream =>
+      _playFinishController?.stream;
 
   IjkStatus __ijkStatus = IjkStatus.noDatasource;
 
@@ -126,14 +128,14 @@ mixin IjkMediaControllerStreamMixin {
   }
 
   /// playFinish
-  StreamController<IjkStatus> _ijkStatusController =
+  StreamController<IjkStatus>? _ijkStatusController =
       StreamController.broadcast();
 
   /// On play finish
-  Stream<IjkStatus> get ijkStatusStream => _ijkStatusController.stream;
+  Stream<IjkStatus>? get ijkStatusStream => _ijkStatusController?.stream;
 
   /// errorStream
-  StreamController<int> _ijkErrorController = StreamController.broadcast();
+  StreamController<int>? _ijkErrorController = StreamController.broadcast();
 
   /// # On Error stream
   ///
@@ -194,7 +196,7 @@ mixin IjkMediaControllerStreamMixin {
   /// };
   ///
   /// ```
-  Stream<int> get ijkErrorStream => _ijkErrorController.stream;
+  Stream<int>? get ijkErrorStream => _ijkErrorController?.stream;
 
   void _setVolume(int value);
 

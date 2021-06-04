@@ -18,7 +18,7 @@ class _CustomIjkOptionPageState extends State<CustomIjkOptionPage> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
