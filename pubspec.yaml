@@ -1,6 +1,6 @@
 name: flutter_ijkplayer
 description: Base by bilibili ijkplayer, it's video/audio player, support https、rtmp、m3u8 and more protocol.
-version: 0.3.6
+version: 0.3.7
 # author: caijinglong<cjl_spy@163.com>
 homepage: https://github.com/CaiJingLong/flutter_ijkplayer
 
