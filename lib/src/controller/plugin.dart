@@ -140,12 +140,12 @@ class _IjkPlugin {
 
   ///
   Future<void> setVolume(int volume) async {
-    // if (isDisposed) {
-    //   return null;
-    // }
-    // await channel.invokeMethod("setVolume", <String, dynamic>{
-    //   "volume": volume,
-    // });//TODO设置播放音量
+    if (isDisposed) {
+      return null;
+    }
+    await channel.invokeMethod("setVolume", <String, dynamic>{
+      "volume": volume,
+    });
   }
 
   Future<Uint8List?> screenShot() async {
