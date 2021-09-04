@@ -9,13 +9,13 @@ class VideoWidget extends StatefulWidget {
 }
 
 class _VideoWidgetState extends State<VideoWidget> with WidgetsBindingObserver {
-  IjkMediaController controller;
+  IjkMediaController? controller;
   @override
   void initState() {
     super.initState();
     controller = IjkMediaController();
-    controller.setNetworkDataSource(widget.url, autoPlay: true);
-    Stream<IjkStatus> ijkStatusStream = controller.ijkStatusStream;
+    controller?.setNetworkDataSource(widget.url, autoPlay: true);
+    Stream<IjkStatus> ijkStatusStream = controller!.ijkStatusStream!;
     ijkStatusStream.listen((status) {
       if (status == IjkStatus.complete) {
         controller?.play();

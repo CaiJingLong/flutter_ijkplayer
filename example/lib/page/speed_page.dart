@@ -9,7 +9,7 @@ class SpeedPage extends StatefulWidget {
 }
 
 class _SpeedPageState extends State<SpeedPage> {
-  IjkMediaController controller = IjkMediaController();
+  IjkMediaController? controller = IjkMediaController();
 
   double speed = 1;
 
@@ -19,13 +19,13 @@ class _SpeedPageState extends State<SpeedPage> {
     var url = "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4";
     var dataSource = DataSource.network(url);
 
-    OptionUtils.addDefaultOptions(controller);
+    OptionUtils.addDefaultOptions(controller!);
     controller?.setDataSource(dataSource, autoPlay: true);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    controller?.dispose();
     controller = null;
     super.dispose();
   }

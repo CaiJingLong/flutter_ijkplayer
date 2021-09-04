@@ -4,27 +4,27 @@ import 'package:flutter_ijkplayer/src/helper/config.dart';
 class LogUtils {
   LogUtils._();
 
-  static void verbose(Object msg) {
+  static void verbose(Object? msg) {
     log("${msg?.toString()}", LogLevel.verbose);
   }
 
-  static void debug(Object msg) {
+  static void debug(Object? msg) {
     log("${msg?.toString()}", LogLevel.debug);
   }
 
-  static void info(Object msg) {
+  static void info(Object? msg) {
     log("${msg?.toString()}", LogLevel.info);
   }
 
-  static void warning(Object msg) {
+  static void warning(Object? msg) {
     log("${msg?.toString()}", LogLevel.warning);
   }
 
-  static void error(Object msg) {
+  static void error(Object? msg) {
     log("${msg?.toString()}", LogLevel.error);
   }
 
-  static void log(Object msg, LogLevel level) {
+  static void log(Object? msg, LogLevel? level) {
     if (level == null) {
       return;
     }

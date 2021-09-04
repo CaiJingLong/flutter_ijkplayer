@@ -6,7 +6,7 @@ class IjkMediaController
   /// It will automatically correct the direction of the video.
   bool autoRotate;
 
-  int index;
+  late int index;
 
   String get debugLabel => index.toString();
 
@@ -14,11 +14,13 @@ class IjkMediaController
 
   bool needChangeSpeed;
 
+  Completer<int> _nativeSetup;
+
   /// MediaController
   IjkMediaController({
     this.autoRotate = true,
     this.needChangeSpeed = true,
-  }) {
+  }): _nativeSetup = Completer() {
     index = IjkMediaPlayerManager().add(this);
     if (needChangeSpeed) {
       setIjkPlayerOptions(
@@ -30,6 +32,7 @@ class IjkMediaController
             IjkOption(IjkOptionCategory.player, "soundtouch", 1),
           ].toSet());
     }
+    _initIjk();
   }
 
   @override
@@ -59,10 +62,11 @@ class IjkMediaController
       this.textureId = id;
       _plugin = _IjkPlugin(id);
       eventChannel = _IJKEventChannel(this);
-      await eventChannel.init();
-      volume = 100;
+      await eventChannel?.init();
+      _nativeSetup.complete(id);
     } catch (e) {
       await reset();
+      _initIjk();
       LogUtils.warning(e);
       LogUtils.warning("初始化失败");
     }
@@ -79,7 +83,7 @@ class IjkMediaController
 
   /// dispose all resource
   Future<void> reset([changeStatus = true]) async {
-    volume = 100;
+    _volume = 100;
     this.textureId = null;
     _plugin?.dispose();
     _plugin = null;
@@ -96,6 +100,7 @@ class IjkMediaController
     Map<String, String> headers = const {},
     bool autoPlay = false,
   }) async {
+    await _nativeSetup.future;
     _ijkStatus = IjkStatus.preparing;
     try {
       await _initDataSource(autoPlay);
@@ -114,9 +119,10 @@ class IjkMediaController
   /// see [setDataSource]
   Future<void> setAssetDataSource(
     String name, {
-    String package,
+    String? package,
     bool autoPlay = false,
   }) async {
+    await _nativeSetup.future;
     _ijkStatus = IjkStatus.preparing;
     await _initDataSource(autoPlay);
     await _plugin?.setAssetDataSource(name, package);
@@ -130,6 +136,7 @@ class IjkMediaController
     File file, {
     bool autoPlay = false,
   }) async {
+    await _nativeSetup.future;
     _ijkStatus = IjkStatus.preparing;
     await _initDataSource(autoPlay);
     await _plugin?.setFileDataSource(file.absolute.path);
@@ -140,6 +147,7 @@ class IjkMediaController
     String mediaUrl, {
     bool autoPlay = false,
   }) async {
+    await _nativeSetup.future;
     assert(Platform.isAndroid || Platform.isIOS);
     if (Platform.isIOS) {
       final file = File.fromUri(Uri.parse(mediaUrl));
@@ -159,30 +167,35 @@ class IjkMediaController
     DataSource source, {
     bool autoPlay = false,
   }) async {
+    await _nativeSetup.future;
     switch (source._type) {
       case DataSourceType.asset:
+        assert(source._assetName != null);
         await setAssetDataSource(
-          source._assetName,
+          source._assetName!,
           package: source._assetPackage,
           autoPlay: autoPlay,
         );
         break;
       case DataSourceType.file:
+        assert(source._file != null);
         await setFileDataSource(
-          source._file,
+          source._file!,
           autoPlay: autoPlay,
         );
         break;
       case DataSourceType.network:
+        assert(source._netWorkUrl != null);
         await setNetworkDataSource(
-          source._netWorkUrl,
-          headers: source._headers,
+          source._netWorkUrl!,
+          headers: source._headers!,
           autoPlay: autoPlay,
         );
         break;
       case DataSourceType.photoManager:
+        assert(source._mediaUrl != null);
         await setPhotoManagerDataSource(
-          source._mediaUrl,
+          source._mediaUrl!,
           autoPlay: autoPlay,
         );
         break;
@@ -201,8 +214,6 @@ class IjkMediaController
 
   /// dispose last textureId resource
   Future<void> _initDataSource(bool autoPlay) async {
-    autoPlay ??= false;
-
     var autoPlayValue = autoPlay ? 1 : 0;
     addIjkPlayerOptions([
       TargetPlatform.android,
@@ -210,17 +221,13 @@ class IjkMediaController
     ], [
       IjkOption(IjkOptionCategory.player, "start-on-prepared", autoPlayValue),
     ]);
-
-    if (this.textureId != null) {
-      await _plugin?.dispose();
-    }
-    await _initIjk();
   }
 
   /// Play or pause according to your current status
   Future<void> playOrPause({
     pauseOther = false,
   }) async {
+    await _nativeSetup.future;
     var videoInfo = await getVideoInfo();
     var playing = videoInfo.isPlaying;
     if (playing) {
@@ -234,6 +241,7 @@ class IjkMediaController
   Future<void> play({
     pauseOther = false,
   }) async {
+    await _nativeSetup.future;
     if (pauseOther) {
       await pauseOtherController();
     }
@@ -245,6 +253,7 @@ class IjkMediaController
 
   /// pause media
   Future<void> pause() async {
+    await _nativeSetup.future;
     LogUtils.info("$this pause");
     await _plugin?.pause();
     refreshVideoInfo();
@@ -255,6 +264,7 @@ class IjkMediaController
   ///
   /// [target] unit is second
   Future<void> seekTo(double target) async {
+    await _nativeSetup.future;
     await _plugin?.seekTo(target);
     _ijkStatus = IjkStatus.pause;
     refreshVideoInfo();
@@ -262,6 +272,7 @@ class IjkMediaController
 
   /// seek to progress
   Future<void> seekToProgress(double progress) async {
+    await _nativeSetup.future;
     var videoInfo = await getVideoInfo();
     var target = videoInfo.duration * progress;
     await this.seekTo(target);
@@ -270,13 +281,15 @@ class IjkMediaController
 
   /// get video info from native
   Future<VideoInfo> getVideoInfo() async {
-    Map<String, dynamic> result = await _plugin?.getInfo();
+    await _nativeSetup.future;
+    Map<String, dynamic>? result = await _plugin?.getInfo();
     var info = VideoInfo.fromMap(result);
     return info;
   }
 
   /// request info and notify
   Future<void> refreshVideoInfo() async {
+    await _nativeSetup.future;
     var info = await getVideoInfo();
     _videoInfo = info;
     isPlaying = info.isPlaying;
@@ -288,20 +301,20 @@ class IjkMediaController
 
   /// set video volume
   Future<void> _setVolume(int volume) async {
+    await _nativeSetup.future;
     await _plugin?.setVolume(volume);
   }
 
   /// [pause] and [seekTo] 0
   Future<void> stop() async {
-//    await _plugin?.stop();
-//    refreshVideoInfo();
+    await _nativeSetup.future;
     await _plugin?.pause();
     await _plugin?.seekTo(0);
     refreshVideoInfo();
   }
 
   /// get system volume
-  Future<int> getSystemVolume() async {
+  Future<int?> getSystemVolume() async {
     return IjkManager.getSystemVolume();
   }
 
@@ -312,6 +325,7 @@ class IjkMediaController
 
   /// Pause all other players.
   Future<void> pauseOtherController() async {
+    await _nativeSetup.future;
     await IjkMediaPlayerManager().pauseOther(this);
   }
 
@@ -340,8 +354,9 @@ class IjkMediaController
   /// Intercept the video frame image and get the `Uint8List` format.
   ///
   /// Player UI is not included. If you need the effect of the player, use the screenshot of the system.
-  Future<Uint8List> screenShot() {
-    return _plugin.screenShot();
+  Future<Uint8List?>? screenShot() async {
+    await _nativeSetup.future;
+    return _plugin?.screenShot();
   }
 
   /// Set [IjkOption] with IJKPlayer.
@@ -374,6 +389,7 @@ class IjkMediaController
   }
 
   Future<void> setSpeed(double speed) async {
-    await _plugin.setSpeed(speed);
+    await _nativeSetup.future;
+    await _plugin?.setSpeed(speed);
   }
 }

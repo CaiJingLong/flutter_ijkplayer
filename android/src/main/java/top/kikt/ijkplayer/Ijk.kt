@@ -145,7 +145,7 @@ class Ijk(private val registry: PluginRegistry.Registrar, private val options: M
 
 
     private val appContext: Context
-        get() = registry.activity().application
+    get() = if (registry.activity() == null) registry.context() else registry.activity()!!.application
 
     private fun configOptions() {
         // see https://www.jianshu.com/p/843c86a9e9ad

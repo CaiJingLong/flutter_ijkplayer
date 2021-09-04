@@ -7,7 +7,7 @@ class CrashOnSetSrcPage extends StatefulWidget {
 }
 
 class _CrashOnSetSrcPageState extends State<CrashOnSetSrcPage> {
-  IjkMediaController controller;
+  IjkMediaController? controller;
 
   List<String> networkList = [
     "http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
@@ -25,7 +25,7 @@ class _CrashOnSetSrcPageState extends State<CrashOnSetSrcPage> {
 
   @override
   void dispose() {
-    controller.dispose();
+    controller?.dispose();
     super.dispose();
   }
 
@@ -48,7 +48,7 @@ class _CrashOnSetSrcPageState extends State<CrashOnSetSrcPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final url = networkList[currentIndex];
-          controller.setDataSource(DataSource.network(url), autoPlay: true);
+          controller?.setDataSource(DataSource.network(url), autoPlay: true);
           currentIndex++;
           currentIndex %= networkList.length;
         },

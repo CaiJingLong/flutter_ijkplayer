@@ -19,7 +19,7 @@ class _DialogVideoPageState extends State<DialogVideoPage> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 

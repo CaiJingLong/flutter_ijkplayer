@@ -16,7 +16,7 @@ class ScreenShotPage extends StatefulWidget {
 class _ScreenShotPageState extends State<ScreenShotPage> {
   IjkMediaController mediaController = IjkMediaController();
 
-  ImageProvider provider;
+  ImageProvider? provider;
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _ScreenShotPageState extends State<ScreenShotPage> {
           provider == null
               ? Container()
               : Image(
-                  image: provider,
+                  image: provider!,
                 ),
         ],
       ),

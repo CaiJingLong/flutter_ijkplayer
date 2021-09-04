@@ -10,7 +10,7 @@ class InOverlayPage extends StatefulWidget {
 
 class _InOverlayPageState extends State<InOverlayPage> {
   IjkMediaController controller = IjkMediaController();
-  OverlayEntry entry;
+  OverlayEntry? entry;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _InOverlayPageState extends State<InOverlayPage> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -62,7 +62,7 @@ class _InOverlayPageState extends State<InOverlayPage> {
 
   void showInOverlay() async {
     var info = await controller.getVideoInfo();
-    OverlayEntry _entry;
+    OverlayEntry? _entry;
     _entry = OverlayEntry(
       builder: (BuildContext context) {
         return OverlayWidget(
@@ -74,20 +74,20 @@ class _InOverlayPageState extends State<InOverlayPage> {
         );
       },
     );
-    Overlay.of(context).insert(_entry);
+    Overlay.of(context)?.insert(_entry);
   }
 }
 
 class OverlayWidget extends StatefulWidget {
-  final VideoInfo initVideoInfo;
-  final IjkMediaController controller;
-  final Function onTapClose;
+  final VideoInfo? initVideoInfo;
+  final IjkMediaController? controller;
+  final Function() onTapClose;
 
   const OverlayWidget({
-    Key key,
+    Key? key,
     this.initVideoInfo,
     this.controller,
-    this.onTapClose,
+    required this.onTapClose,
   }) : super(key: key);
 
   @override
@@ -109,7 +109,7 @@ class _OverlayWidgetState extends State<OverlayWidget> {
         child: Container(
           width: _overlayWidth,
           child: AspectRatio(
-            aspectRatio: widget.initVideoInfo.ratio,
+            aspectRatio: widget.initVideoInfo?.ratio ?? 1,
             child: IjkPlayer(
               mediaController: widget.controller,
               controllerWidgetBuilder: (ctl) {
@@ -125,7 +125,7 @@ class _OverlayWidgetState extends State<OverlayWidget> {
     );
   }
 
-  Offset _startOffset;
+  Offset _startOffset = Offset(0, 0);
 
   bool _onOffsetNoticiation(OffsetNotication notification) {
     if (notification.type == OffsetType.start) {
@@ -162,12 +162,12 @@ class _OverlayWidgetState extends State<OverlayWidget> {
 
 class OverlayControllerWidget extends StatefulWidget {
   final IjkMediaController controller;
-  final Function onTapClose;
+  final Function() onTapClose;
 
   const OverlayControllerWidget({
-    Key key,
-    this.controller,
-    this.onTapClose,
+    Key? key,
+    required this.controller,
+    required this.onTapClose,
   }) : super(key: key);
 
   @override
@@ -228,9 +228,9 @@ class _OverlayControllerWidgetState extends State<OverlayControllerWidget> {
 }
 
 class OffsetNotication extends Notification {
-  Offset offset;
+  late Offset offset;
 
-  OffsetType type;
+  late OffsetType type;
 }
 
 enum OffsetType {

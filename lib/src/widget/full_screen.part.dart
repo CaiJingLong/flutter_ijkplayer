@@ -8,10 +8,10 @@ enum FullScreenType {
 showFullScreenIJKPlayer(
   BuildContext context,
   IjkMediaController controller, {
-  IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder,
+  IJKControllerWidgetBuilder? fullscreenControllerWidgetBuilder,
   FullScreenType fullScreenType = FullScreenType.rotateBox,
   bool hideSystemBar = true,
-  void Function(bool enter) onFullscreen,
+  void Function(bool enter)? onFullscreen,
 }) async {
   if (fullScreenType == FullScreenType.rotateBox) {
     _showFullScreenWithRotateBox(
@@ -36,11 +36,11 @@ showFullScreenIJKPlayer(
 _showFullScreenWithRotateScreen(
   BuildContext context,
   IjkMediaController controller,
-  IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder, {
-  bool hideSystemBar,
-  void Function(bool enter) onFullscreen,
+  IJKControllerWidgetBuilder? fullscreenControllerWidgetBuilder, {
+  bool? hideSystemBar,
+  void Function(bool enter)? onFullscreen,
 }) async {
-  if (hideSystemBar) {
+  if (hideSystemBar ?? false) {
     IjkManager.showStatusBar(false);
   }
   Navigator.push(
@@ -50,14 +50,14 @@ _showFullScreenWithRotateScreen(
         return IjkPlayer(
           mediaController: controller,
           controllerWidgetBuilder: (ctl) =>
-              fullscreenControllerWidgetBuilder(ctl),
+              fullscreenControllerWidgetBuilder?.call(ctl) ?? Container(),
         );
       },
     ),
   ).then((_) {
     IjkManager.unlockOrientation();
     IjkManager.setCurrentOrientation(DeviceOrientation.portraitUp);
-    if (hideSystemBar) {
+    if (hideSystemBar ?? false) {
       IjkManager.showStatusBar(true);
     }
     onFullscreen?.call(false);
@@ -71,7 +71,7 @@ _showFullScreenWithRotateScreen(
 
   if (info.width == 0 || info.height == 0) {
     axis = Axis.horizontal;
-  } else if (info.width > info.height) {
+  } else if ((info.width ?? 0) > (info.height ?? 0)) {
     if (info.degree == 90 || info.degree == 270) {
       axis = Axis.vertical;
     } else {
@@ -95,9 +95,9 @@ _showFullScreenWithRotateScreen(
 _showFullScreenWithRotateBox(
   BuildContext context,
   IjkMediaController controller, {
-  IJKControllerWidgetBuilder fullscreenControllerWidgetBuilder,
-  bool hideSystemBar,
-  void Function(bool enter) onFullscreen,
+  IJKControllerWidgetBuilder? fullscreenControllerWidgetBuilder,
+  bool? hideSystemBar,
+  void Function(bool enter)? onFullscreen,
 }) async {
   var info = await controller.getVideoInfo();
 
@@ -105,7 +105,7 @@ _showFullScreenWithRotateBox(
 
   if (info.width == 0 || info.height == 0) {
     axis = Axis.horizontal;
-  } else if (info.width > info.height) {
+  } else if ((info.width ?? 0) > (info.height ?? 0)) {
     if (info.degree == 90 || info.degree == 270) {
       axis = Axis.vertical;
     } else {
@@ -119,7 +119,7 @@ _showFullScreenWithRotateBox(
     }
   }
 
-  if (hideSystemBar) {
+  if (hideSystemBar ?? false) {
     IjkManager.showStatusBar(false);
   }
 
@@ -156,7 +156,7 @@ _showFullScreenWithRotateBox(
               child: IjkPlayer(
                 mediaController: controller,
                 controllerWidgetBuilder: (ctl) =>
-                    fullscreenControllerWidgetBuilder(ctl),
+                    fullscreenControllerWidgetBuilder?.call(ctl) ?? Container(),
               ),
             ),
           ),
@@ -164,7 +164,7 @@ _showFullScreenWithRotateBox(
       },
     ),
   ).then((data) {
-    if (hideSystemBar) {
+    if (hideSystemBar ?? false) {
       IjkManager.showStatusBar(true);
     }
     onFullscreen?.call(false);
@@ -189,8 +189,8 @@ class _RotateBoxProvider extends InheritedWidget {
   final int quarterTurns;
 
   _RotateBoxProvider({
-    @required this.quarterTurns,
-    @required Widget child,
+    required this.quarterTurns,
+    required Widget child,
   }) : super(
           child: child,
         );
@@ -200,7 +200,7 @@ class _RotateBoxProvider extends InheritedWidget {
     return false;
   }
 
-  static _RotateBoxProvider of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(_RotateBoxProvider);
+  static _RotateBoxProvider? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_RotateBoxProvider>();
   }
 }
